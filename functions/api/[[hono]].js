@@ -6,7 +6,7 @@ import { v2ApiRouter } from "#backend/apiv2.js";
 const app = new Hono();
 
 app.get("/api", async (c) => {
-  return c.text("Data api");
+  return c.text("Data api example");
 });
 
 // route grouping
