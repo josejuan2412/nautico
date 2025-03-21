@@ -1,8 +1,6 @@
 import hono from "hono";
-import { env } from "hono/adapter";
 import { graphqlServer } from "@hono/graphql-server";
 
-import { Env } from "../env";
 import { schema } from "../graphql/schema";
 import { rootResolver } from "../graphql/resolvers/index";
 
@@ -12,7 +10,7 @@ export function server(
 ): Promise<Response | void> {
   const s = graphqlServer({
     schema,
-    rootResolver: rootResolver(env<Env>(c)),
+    rootResolver,
     graphiql: true,
   });
 
