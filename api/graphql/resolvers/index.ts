@@ -1,12 +1,13 @@
 import { type RootResolver } from "@hono/graphql-server";
 
 import { hello } from "./hello";
-import { AppEnv } from "../../env";
+import { Env } from "../../env";
 
-export function rootResolver(env: AppEnv): RootResolver {
+export function rootResolver(env: Env): RootResolver {
+  console.log(env);
   const resolver: RootResolver = () => {
     return {
-      hello: hello(env),
+      hello,
     };
   };
   return resolver;

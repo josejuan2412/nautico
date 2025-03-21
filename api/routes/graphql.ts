@@ -1,22 +1,18 @@
-import { Context, Env, Next } from "hono";
+import hono from "hono";
 import { env } from "hono/adapter";
 import { graphqlServer } from "@hono/graphql-server";
 
+import { Env } from "../env";
 import { schema } from "../graphql/schema";
 import { rootResolver } from "../graphql/resolvers/index";
-import { AppEnv } from "../env";
-
-// import { BlankEnv } from "hono/types";
 
 export function server(
-  c: Context<Env, never, object>,
-  next: Next,
+  c: hono.Context<hono.Env, never, object>,
+  next: hono.Next,
 ): Promise<Response | void> {
-  const appEnv = env<AppEnv>(c);
-
   const s = graphqlServer({
     schema,
-    rootResolver: rootResolver(appEnv),
+    rootResolver: rootResolver(env<Env>(c)),
     graphiql: true,
   });
 

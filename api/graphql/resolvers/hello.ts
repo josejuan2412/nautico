@@ -1,6 +1,3 @@
-import { AppEnv } from "../../env";
-
-export function hello(env: AppEnv): string {
-  console.log(env);
+export function hello(): string {
   return "world";
 }
