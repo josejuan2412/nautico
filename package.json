@@ -24,6 +24,8 @@
     "lint": "eslint . --ext js,jsx,ts,tsx --report-unused-disable-directives --max-warnings 0"
   },
   "dependencies": {
+    "@hono/graphql-server": "^0.5.1",
+    "graphql": "^16.10.0",
     "hono": "^4.4.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
