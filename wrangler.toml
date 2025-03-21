@@ -10,3 +10,4 @@ production = {}
 binding = "DB"                                       # available in your Worker on env.DB
 database_name = "nautico-db"
 database_id = "47a0f7a4-1dd1-4a54-ad2e-17e588f2a291"
+preview_database_id = "DB"
