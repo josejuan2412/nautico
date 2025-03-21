@@ -1,6 +1,9 @@
 {
   "files": [],
   "include": ["globals.d.ts"],
+  "compilerOptions": {
+    "types": ["worker-configuration.d.ts", "node"]
+  },
   "references": [
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" }

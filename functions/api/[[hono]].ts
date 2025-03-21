@@ -1,36 +1,19 @@
 import { Hono } from "hono";
+import { env } from "hono/adapter";
 import { handle } from "hono/cloudflare-pages";
-import { type RootResolver, graphqlServer } from "@hono/graphql-server";
-import { buildSchema } from "graphql";
+import { D1Database } from "@cloudflare/workers-types";
+
+import { server } from "../../resolvers";
 
 export const app = new Hono();
 
-const schema = buildSchema(`
-type Query {
-  hello: String
-}
-`);
-
-const rootResolver: RootResolver = () => {
-  return {
-    hello: () => {
-      return "hello";
-    },
-  };
-};
-
-app.get("/api", (c) => {
-  return c.text("Hello Hono!");
+app.get("/api", async (c) => {
+  const { DB } = env<{ DB: D1Database }>(c);
+  const { results } = await DB.prepare("SELECT * FROM example").all();
+  return c.json(results);
 });
 
-app.use(
-  "/api/graphql",
-  graphqlServer({
-    schema,
-    rootResolver,
-    graphiql: true, // if `true`, presents GraphiQL when the GraphQL endpoint is loaded in a browser.
-  }),
-);
+app.use("/api/graphql", server);
 
 app.fire();
 // connect hono app with cloudflare pages request handler
