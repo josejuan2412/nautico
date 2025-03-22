@@ -2,7 +2,6 @@ import { buildSchema } from "graphql";
 export const schema = buildSchema(`
   scalar Date
   type Event {
-    # Event identifier
     id: ID!
     name: String!
     position: Int!
@@ -17,7 +16,7 @@ export const schema = buildSchema(`
     desc
   }
   type Query {
-    hello: String
+    event(id: ID!): Event
     events(orderBy: OrderBy, direction: Direction): [Event!]!
   }
 `);
