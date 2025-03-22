@@ -16,7 +16,7 @@ export async function getPictures(
   }
 
   const { objects } = await BUCKET.list({
-    prefix: `${directory}/`,
+    prefix: directory,
   });
 
   return objects.map(mapToPicture);
