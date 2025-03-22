@@ -9,7 +9,7 @@ export async function getPictures(
   env: Env,
 ): Promise<Array<Picture>> {
   const { directory } = group;
-  const { BUCKET } = env;
+  const { BUCKET, BUCKET_DOMAIN } = env;
 
   if (!directory) {
     return [];
@@ -19,17 +19,19 @@ export async function getPictures(
     prefix: directory,
   });
 
-  return objects.map(mapToPicture);
+  return objects.map(mapToPicture(BUCKET_DOMAIN));
 }
 
-function mapToPicture(object: R2Object): Picture {
-  const { etag, key, version, size, uploaded } = object;
-  return {
-    id: etag,
-    key,
-    url: key,
-    version,
-    size,
-    uploaded,
+function mapToPicture(bucketDomain: string) {
+  return (object: R2Object): Picture => {
+    const { etag, key, version, size, uploaded } = object;
+    return {
+      id: etag,
+      key,
+      url: `${bucketDomain}/${key}`,
+      version,
+      size,
+      uploaded,
+    };
   };
 }

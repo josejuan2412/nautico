@@ -15,3 +15,6 @@ preview_database_id = "DB"
 [[r2_buckets]]
 binding = 'BUCKET'
 bucket_name = 'nautico-bucket'
+
+[vars]
+BUCKET_DOMAIN = "https://image.fennex.dev"
