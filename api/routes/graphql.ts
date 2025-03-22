@@ -1,18 +1,8 @@
-import hono from "hono";
-import { graphqlServer } from "@hono/graphql-server";
+import { createYoga } from "graphql-yoga";
 
-import { schema } from "../graphql/schema";
-import { rootResolver } from "../graphql/resolvers/index";
+import { schema } from "../graphql/resolvers";
 
-export function server(
-  c: hono.Context<hono.Env, never, object>,
-  next: hono.Next,
-): Promise<Response | void> {
-  const s = graphqlServer({
-    schema,
-    rootResolver,
-    graphiql: true,
-  });
-
-  return s(c, next);
-}
+export const yoga = createYoga({
+  graphiql: true,
+  schema,
+});

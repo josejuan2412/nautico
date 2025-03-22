@@ -4,7 +4,7 @@ import { handle } from "hono/cloudflare-pages";
 
 import { Env } from "../../api/env";
 
-import { server } from "../../api/routes/graphql";
+import { yoga } from "../../api/routes/graphql";
 import healthRoute from "../../api/routes/health";
 
 const basename = "/api";
@@ -18,16 +18,15 @@ app.get(basename, async (c) => {
     prefix: "january-2025/",
   });
 
-  console.log(`OBJECTS: `, objects);
-
   return c.json(objects);
 });
 
 app.route(`${basename}/health`, healthRoute);
-app.use(`${basename}/graphql`, async (c, next) => {
-  return await server(c, next);
+app.use(`${basename}/graphql`, async (c) => {
+  const req: Request = c.req.raw;
+  // @ts-expect-error Request
+  return yoga.fetch(req, c.env);
 });
-//app.use(`${basename}/graphql`, graphqlRoute());
 
 app.fire();
 // connect hono app with cloudflare pages request handler

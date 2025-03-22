@@ -1,14 +1,13 @@
-import hono from "hono";
-import { env } from "hono/adapter";
 import { Env } from "../../env";
 import { Event } from "../../../models/Event";
 
 export async function getEvents(
+  _: unknown,
   args: GetEventsArgs,
-  context: hono.Context<hono.Env, never, object>,
+  env: Env,
 ): Promise<Array<Event>> {
   const { orderBy = "position", direction = "asc" } = args;
-  const { DB } = env<Env>(context);
+  const { DB } = env;
 
   const query = `SELECT * FROM event ORDER BY ${orderBy} ${direction}`;
 
@@ -23,11 +22,12 @@ export interface GetEventsArgs {
 }
 
 export async function getEventById(
+  _: unknown,
   args: GetEventArgs,
-  context: hono.Context<hono.Env, never, object>,
+  env: Env,
 ): Promise<Event | null> {
   const { id } = args;
-  const { DB } = env<Env>(context);
+  const { DB } = env;
 
   const query = `SELECT * FROM event WHERE id = ?`;
 

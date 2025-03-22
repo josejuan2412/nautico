@@ -2,7 +2,7 @@
   "files": [],
   "include": ["globals.d.ts"],
   "compilerOptions": {
-    "types": ["worker-configuration.d.ts", "node"]
+    "types": ["worker-configuration.d.ts", "node", "@cloudflare/workers-types"]
   },
   "references": [
     { "path": "./tsconfig.app.json" },
