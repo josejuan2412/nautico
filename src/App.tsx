@@ -9,7 +9,7 @@ import {
 import "./App.css";
 import Home from "./pages/home";
 import Tournament from "./pages/tournament";
-import Voyage from "./pages/voyage";
+import Departures from "./pages/departures";
 import History from "./pages/history";
 
 function App() {
@@ -24,7 +24,7 @@ function App() {
     },
     {
       path: "/voyages",
-      element: <Voyage />,
+      element: <Departures />,
     },
     {
       path: "/history",
