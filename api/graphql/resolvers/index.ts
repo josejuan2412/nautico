@@ -1,6 +1,6 @@
 import { type RootResolver } from "@hono/graphql-server";
 
-import { getEvents, getEventById } from "./events";
+import { getEvents, getEventById } from "./event";
 
 export const rootResolver: RootResolver = () => {
   return {

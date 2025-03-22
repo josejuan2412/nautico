@@ -1,11 +1,19 @@
 import { buildSchema } from "graphql";
 export const schema = buildSchema(`
   scalar Date
+  type Group {
+    id: ID!
+    name: String!
+    directory: String!
+    position: Int!
+    date: Date!
+  }
   type Event {
     id: ID!
     name: String!
     position: Int!
     date: Date!
+    groups: [Group!]
   }
   enum OrderBy {
     position
