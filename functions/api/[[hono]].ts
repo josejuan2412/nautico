@@ -12,17 +12,15 @@ const basename = "/api";
 export const app = new Hono();
 
 app.get(basename, async (c) => {
-  const { DB } = env<Env>(c);
+  const { BUCKET } = env<Env>(c);
 
-  const { results } = await DB.prepare(
-    "SELECT id, name, position, date(date) as date FROM event ORDER BY position ASC",
-  ).all();
-  return c.json(
-    results.map((r) => {
-      r.date = new Date(`${r.date}`);
-      return r;
-    }),
-  );
+  const objects = await BUCKET.list({
+    prefix: "january-2025/",
+  });
+
+  console.log(`OBJECTS: `, objects);
+
+  return c.json(objects);
 });
 
 app.route(`${basename}/health`, healthRoute);

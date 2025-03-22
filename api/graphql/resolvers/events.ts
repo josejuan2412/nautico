@@ -10,14 +10,7 @@ export async function getEvents(
   const { orderBy = "position", direction = "asc" } = args;
   const { DB } = env<Env>(c);
 
-  const query = `
-    SELECT
-      id,
-      name,
-      position,
-      date(date) as date
-    FROM event
-    ORDER BY ${orderBy} ${direction}`;
+  const query = `SELECT * FROM event ORDER BY ${orderBy} ${direction}`;
 
   const { results } = await DB.prepare(query).all();
 
@@ -36,14 +29,7 @@ export async function getEventById(
   const { id } = args;
   const { DB } = env<Env>(c);
 
-  const query = `
-  SELECT
-    id,
-    name,
-    position,
-    date(date) as date
-  FROM event
-  WHERE id = ?`;
+  const query = `SELECT * FROM event WHERE id = ?`;
 
   const { results } = await DB.prepare(query)
     .bind(parseInt(`${id}`))
