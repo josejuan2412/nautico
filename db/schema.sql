@@ -47,9 +47,19 @@ CREATE TABLE IF NOT EXISTS tournament (
     id INTEGER PRIMARY KEY,
     name TEXT NOT NULL DEFAULT '',
     slug TEXT NOT NULL UNIQUE,
+    position INTEGER DEFAULT 0,
     date DATETIME DEFAULT current_timestamp,
-    created_at DATETIME DEFAULT current_timestamp
+    created_at DATETIME DEFAULT current_timestamp,
 );
+
+/*Create index for sorting*/
+CREATE INDEX IF NOT EXISTS idx_tournament_slug ON tournament (slug);
+
+/*Create index for sorting*/
+CREATE INDEX IF NOT EXISTS idx_tournament_position ON tournament (position);
+
+/*Create index for sorting*/
+CREATE INDEX IF NOT EXISTS idx_tournament_date ON tournament (date);
 
 /*Create index for sorting*/
 CREATE INDEX IF NOT EXISTS idx_tournament_created_at ON tournament (created_at);
