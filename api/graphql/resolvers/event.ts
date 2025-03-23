@@ -1,11 +1,11 @@
 import { Env } from "../../env";
-import { Event } from "../../../models/Event";
+import { Nautico } from "../../../models";
 
 export async function getEvents(
   _: unknown,
   args: GetEventsArgs,
   env: Env,
-): Promise<Array<Event>> {
+): Promise<Array<Nautico.Event>> {
   const { orderBy = "position", direction = "asc" } = args;
   const { DB } = env;
 
@@ -25,7 +25,7 @@ export async function getEventById(
   _: unknown,
   args: GetEventArgs,
   env: Env,
-): Promise<Event | null> {
+): Promise<Nautico.Event | null> {
   const { id } = args;
   const { DB } = env;
 
@@ -46,7 +46,7 @@ interface GetEventArgs {
   id: number;
 }
 
-function mapToEvent(row: Record<string, unknown>): Event {
+function mapToEvent(row: Record<string, unknown>): Nautico.Event {
   const { id, name, position, date } = row;
 
   return {

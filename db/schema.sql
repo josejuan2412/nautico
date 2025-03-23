@@ -47,6 +47,7 @@ CREATE TABLE IF NOT EXISTS tournament (
     id INTEGER PRIMARY KEY,
     name TEXT NOT NULL DEFAULT '',
     slug TEXT NOT NULL UNIQUE,
+    date DATETIME DEFAULT current_timestamp,
     created_at DATETIME DEFAULT current_timestamp
 );
 
