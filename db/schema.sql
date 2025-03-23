@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS tournament (
     slug TEXT NOT NULL UNIQUE,
     position INTEGER DEFAULT 0,
     date DATETIME DEFAULT current_timestamp,
-    created_at DATETIME DEFAULT current_timestamp,
+    created_at DATETIME DEFAULT current_timestamp
 );
 
 /*Create index for sorting*/
@@ -68,6 +68,7 @@ CREATE INDEX IF NOT EXISTS idx_tournament_created_at ON tournament (created_at);
 CREATE TABLE IF NOT EXISTS tournament_fisherman (
     id INTEGER PRIMARY KEY,
     name TEXT NOT NULL DEFAULT '',
+    email TEXT,
     tournament_id INTEGER NOT NULL,
     is_enabled INTEGER NOT NULL DEFAULT 0,
     created_at DATETIME DEFAULT current_timestamp,
@@ -118,7 +119,7 @@ CREATE TABLE IF NOT EXISTS tournament_entry (
     id INTEGER PRIMARY KEY,
     tournament_id INTEGER NOT NULL,
     tournament_fisherman_id INTEGER NOT NULL,
-    tournament_boat_id INTEGER NOT NULL,
+    tournament_boat_id INTEGER DEFAULT NULL,
     tournament_category_id INTEGER NOT NULL,
     value REAL NOT NULL DEFAULT 0,
     created_at DATETIME DEFAULT current_timestamp,

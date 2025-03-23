@@ -28,6 +28,12 @@ export namespace Nautico {
       name: string;
       createdAt: Date;
     }
+
+    export interface Entry {
+      id: number;
+      value: number;
+      createdAt: Date;
+    }
   }
 
   export interface FileGroup {
