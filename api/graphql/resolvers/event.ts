@@ -13,7 +13,7 @@ export async function getEvents(
 
   const { results } = await DB.prepare(query).all();
 
-  return results.map(mapToEvent);
+  return results.map(toEvent);
 }
 
 export interface GetEventsArgs {
@@ -39,14 +39,14 @@ export async function getEventById(
     return null;
   }
 
-  return results.map(mapToEvent)[0];
+  return results.map(toEvent)[0];
 }
 
 interface GetEventArgs {
   id: number;
 }
 
-function mapToEvent(row: Record<string, unknown>): Nautico.Event {
+function toEvent(row: Record<string, unknown>): Nautico.Event {
   const { id, name, position, date } = row;
 
   return {

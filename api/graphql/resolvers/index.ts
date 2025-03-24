@@ -3,21 +3,36 @@ import { createSchema } from "graphql-yoga";
 import { typeDefs } from "../schema";
 
 import { getEvents, getEventById } from "./event";
-import { getGroups } from "./group";
-import { getPictures } from "./picture";
+import { getTournaments, getTournamentById } from "./tournament";
+import { getEntriesFromCategory, getEntriesFromTournament } from "./entry";
+import {
+  getFishermansFromTournament,
+  getFishermanFromEntry,
+} from "./fisherman";
+import { getBoatsFromTournament, getBoatFromEntry } from "./boat";
+import { getCategories } from "./category";
 
 export const schema = createSchema({
   typeDefs,
   resolvers: {
     Query: {
-      events: getEvents,
       event: getEventById,
+      events: getEvents,
+      tournament: getTournamentById,
+      tournaments: getTournaments,
     },
-    Event: {
-      groups: getGroups,
+    Tournament: {
+      fishermans: getFishermansFromTournament,
+      boats: getBoatsFromTournament,
+      entries: getEntriesFromTournament,
+      categories: getCategories,
     },
-    Group: {
-      pictures: getPictures,
+    Entry: {
+      fisherman: getFishermanFromEntry,
+      boat: getBoatFromEntry,
+    },
+    Category: {
+      entries: getEntriesFromCategory,
     },
   },
 });

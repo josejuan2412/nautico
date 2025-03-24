@@ -37,7 +37,7 @@ CREATE INDEX IF NOT EXISTS idx_event_file_group_event_id ON event_file_group (ev
 
 CREATE INDEX IF NOT EXISTS idx_event_file_group_file_group_id ON event_file_group (file_group_id);
 
-CREATE INDEX IF NOT EXISTS idx_event_file_group_position ON event_group (position);
+CREATE INDEX IF NOT EXISTS idx_event_file_group_position ON event_file_group (position);
 
 CREATE INDEX IF NOT EXISTS idx_event_file_group_date ON event_file_group (date);
 
@@ -47,9 +47,19 @@ CREATE TABLE IF NOT EXISTS tournament (
     id INTEGER PRIMARY KEY,
     name TEXT NOT NULL DEFAULT '',
     slug TEXT NOT NULL UNIQUE,
+    position INTEGER DEFAULT 0,
     date DATETIME DEFAULT current_timestamp,
     created_at DATETIME DEFAULT current_timestamp
 );
+
+/*Create index for sorting*/
+CREATE INDEX IF NOT EXISTS idx_tournament_slug ON tournament (slug);
+
+/*Create index for sorting*/
+CREATE INDEX IF NOT EXISTS idx_tournament_position ON tournament (position);
+
+/*Create index for sorting*/
+CREATE INDEX IF NOT EXISTS idx_tournament_date ON tournament (date);
 
 /*Create index for sorting*/
 CREATE INDEX IF NOT EXISTS idx_tournament_created_at ON tournament (created_at);
@@ -58,6 +68,7 @@ CREATE INDEX IF NOT EXISTS idx_tournament_created_at ON tournament (created_at);
 CREATE TABLE IF NOT EXISTS tournament_fisherman (
     id INTEGER PRIMARY KEY,
     name TEXT NOT NULL DEFAULT '',
+    email TEXT,
     tournament_id INTEGER NOT NULL,
     is_enabled INTEGER NOT NULL DEFAULT 0,
     created_at DATETIME DEFAULT current_timestamp,
@@ -95,7 +106,7 @@ CREATE TABLE IF NOT EXISTS tournament_category (
     id INTEGER PRIMARY KEY,
     name TEXT NOT NULL DEFAULT '',
     tournament_id INTEGER NOT NULL,
-    category_type TEXT CHECK (category_type IN ('points', 'weight')) NOT NULL DEFAULT 'points',
+    category_type TEXT CHECK (category_type IN ('points', 'weight')) NOT NULL DEFAULT 'weight',
     is_largest INTEGER NOT NULL DEFAULT 0,
     created_at DATETIME DEFAULT current_timestamp,
     FOREIGN KEY (tournament_id) REFERENCES tournament (id)
@@ -108,7 +119,7 @@ CREATE TABLE IF NOT EXISTS tournament_entry (
     id INTEGER PRIMARY KEY,
     tournament_id INTEGER NOT NULL,
     tournament_fisherman_id INTEGER NOT NULL,
-    tournament_boat_id INTEGER NOT NULL,
+    tournament_boat_id INTEGER DEFAULT NULL,
     tournament_category_id INTEGER NOT NULL,
     value REAL NOT NULL DEFAULT 0,
     created_at DATETIME DEFAULT current_timestamp,

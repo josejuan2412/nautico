@@ -3,6 +3,8 @@ export namespace Nautico {
     id: number;
     name: string;
     slug: string;
+    position: number;
+    date: Date;
     createdAt: Date;
   }
 
@@ -25,6 +27,12 @@ export namespace Nautico {
       id: number;
       name: string;
       createdAt: Date;
+    }
+
+    export interface Entry {
+      id: number;
+      value: number;
+      date: Date;
     }
   }
 

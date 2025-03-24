@@ -16,15 +16,53 @@ export const typeDefs = `
     date: Date!
   }
 
+  type Boat {
+    id: ID!
+    name: String!
+  }
+
+  type Fisherman {
+    id: ID!
+    name: String!
+    isEnabled: Boolean!
+  }
+
+  type Entry {
+    id: ID!
+    value: Float!
+    date: Date!
+    fisherman: Fisherman
+    boat: Boat
+  }
+
+  enum CategoryType {
+    points
+    weight
+  }
+
+  type Category {
+    id: ID!
+    name: String!
+    type: CategoryType!
+    isLargest: Boolean!
+    entries: [Entry!]!
+  }
+
   type Tournament {
     id: ID!
     name: String!
     slug: String!
     date: Date!
+    fishermans: [Fisherman!]!
+    boats: [Boat!]!
+    entries: [Entry!]!
+    categories: [Category!]!
   }
 
   type Query {
     event(id: ID!): Event
     events(orderBy: OrderBy, direction: Direction): [Event!]!
+    tournament(id: ID!): Tournament
+    tournaments(orderBy: OrderBy, direction: Direction): [Tournament!]!
   }
 `;
