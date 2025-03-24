@@ -29,10 +29,11 @@ export async function getEntriesFromTournament(
 
 export async function getEntriesFromCategory(
   category: Nautico.Tournament.Category,
-  _: unknown,
+  args: EntriesFromCategoryArgs,
   env: Env,
 ): Promise<Array<Nautico.Tournament.Entry>> {
-  const { id, type, isLargest } = category;
+  const { id, type, limit } = category;
+  const { ignoreLimit } = args;
   const { DB } = env;
 
   let query = `
@@ -44,8 +45,7 @@ export async function getEntriesFromCategory(
         tournament_category_id = ?
     ORDER BY
         "value" DESC,
-        created_at ASC
-    ${isLargest ? "LIMIT 1" : ""};`;
+        created_at ASC`;
 
   if (type === "points") {
     query = `
@@ -60,7 +60,11 @@ export async function getEntriesFromCategory(
           tournament_fisherman_id
       ORDER BY
           "total" DESC,
-          created_at ASC;`;
+          created_at ASC`;
+  }
+
+  if (!ignoreLimit) {
+    query += `\n LIMIT ${limit};`;
   }
 
   let { results } = await DB.prepare(query)
@@ -82,6 +86,10 @@ export async function getEntriesFromCategory(
   const entries = results.map(toEntry);
 
   return entries;
+}
+
+interface EntriesFromCategoryArgs {
+  ignoreLimit: boolean;
 }
 
 function toEntry(row: Record<string, unknown>): Nautico.Tournament.Entry {

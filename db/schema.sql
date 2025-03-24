@@ -107,7 +107,7 @@ CREATE TABLE IF NOT EXISTS tournament_category (
     name TEXT NOT NULL DEFAULT '',
     tournament_id INTEGER NOT NULL,
     category_type TEXT CHECK (category_type IN ('points', 'weight')) NOT NULL DEFAULT 'weight',
-    is_largest INTEGER NOT NULL DEFAULT 0,
+    category_limit INTEGER NOT NULL DEFAULT 1,
     created_at DATETIME DEFAULT current_timestamp,
     FOREIGN KEY (tournament_id) REFERENCES tournament (id)
 );

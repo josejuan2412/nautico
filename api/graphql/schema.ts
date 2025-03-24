@@ -32,6 +32,7 @@ export const typeDefs = `
     value: Float!
     date: Date!
     fisherman: Fisherman
+    category: Category
     boat: Boat
   }
 
@@ -44,8 +45,8 @@ export const typeDefs = `
     id: ID!
     name: String!
     type: CategoryType!
-    isLargest: Boolean!
-    entries: [Entry!]!
+    limit: Int!
+    entries(ignoreLimit: Boolean): [Entry!]!
   }
 
   type Tournament {

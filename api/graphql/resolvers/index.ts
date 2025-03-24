@@ -10,7 +10,7 @@ import {
   getFishermanFromEntry,
 } from "./fisherman";
 import { getBoatsFromTournament, getBoatFromEntry } from "./boat";
-import { getCategories } from "./category";
+import { getCategories, getCategoryFromEntry } from "./category";
 
 export const schema = createSchema({
   typeDefs,
@@ -30,6 +30,7 @@ export const schema = createSchema({
     Entry: {
       fisherman: getFishermanFromEntry,
       boat: getBoatFromEntry,
+      category: getCategoryFromEntry,
     },
     Category: {
       entries: getEntriesFromCategory,
