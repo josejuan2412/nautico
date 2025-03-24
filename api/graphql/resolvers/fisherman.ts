@@ -1,13 +1,12 @@
 import { Env } from "../../env";
 import { Nautico } from "../../../models";
 
-export async function getFishermanFromTournament(
+export async function getFishermansFromTournament(
   tournament: Nautico.Tournament,
-  args: GetFishermansArgs,
+  _: unknown,
   env: Env,
 ): Promise<Array<Nautico.Tournament.Fisherman>> {
   const { id } = tournament;
-  const { orderBy = "position", direction = "asc" } = args;
   const { DB } = env;
 
   const query = `
@@ -16,18 +15,15 @@ export async function getFishermanFromTournament(
     FROM
         tournament_fisherman
     WHERE
-        tournament_id = ?
-    ORDER BY
-        ${orderBy} ${direction};`;
+        tournament_id = ?`;
 
-  const { results } = await DB.prepare(query).bind(id).all();
+  console.log(`QUERY: `, query);
+
+  const { results } = await DB.prepare(query)
+    .bind(parseInt(`${id}`))
+    .all();
 
   return results.map(mapToFisherman);
-}
-
-interface GetFishermansArgs {
-  orderBy?: "position" | "date";
-  direction?: "asc" | "desc";
 }
 
 export async function getFishermanFromEntry(
@@ -47,7 +43,9 @@ export async function getFishermanFromEntry(
   WHERE
       te.id = ?;`;
 
-  const { results } = await DB.prepare(query).bind(id).all();
+  const { results } = await DB.prepare(query)
+    .bind(parseInt(`${id}`))
+    .all();
   if (!results.length) {
     return null;
   }

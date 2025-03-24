@@ -77,13 +77,3 @@ INSERT INTO
     )
 VALUES
     (3, 1, 2, 1, 1, 30.95);
-
-SELECT
-    *
-FROM
-    tournament_entry
-WHERE
-    tournament_id = 1
-ORDER BY
-    "value" DESC,
-    created_at ASC;

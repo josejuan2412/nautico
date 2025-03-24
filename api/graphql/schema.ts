@@ -29,7 +29,7 @@ export const typeDefs = `
 
   type Entry {
     id: ID!
-    value: Int!
+    value: Float!
     date: Date!
     fisherman: Fisherman
     boat: Boat

@@ -8,7 +8,10 @@ import {
   getTournamentById,
   getEntriesFromTournament,
 } from "./tournament";
-import { getFishermanFromTournament, getFishermanFromEntry } from "./fisherman";
+import {
+  getFishermansFromTournament,
+  getFishermanFromEntry,
+} from "./fisherman";
 import { getBoatsFromTournament, getBoatFromEntry } from "./boat";
 
 export const schema = createSchema({
@@ -21,7 +24,7 @@ export const schema = createSchema({
       tournaments: getTournaments,
     },
     Tournament: {
-      fishermans: getFishermanFromTournament,
+      fishermans: getFishermansFromTournament,
       boats: getBoatsFromTournament,
       entries: getEntriesFromTournament,
     },

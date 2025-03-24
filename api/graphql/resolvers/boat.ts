@@ -3,11 +3,10 @@ import { Nautico } from "../../../models";
 
 export async function getBoatsFromTournament(
   tournament: Nautico.Tournament,
-  args: GetFishermansArgs,
+  _: unknown,
   env: Env,
 ): Promise<Array<Nautico.Tournament.Boat>> {
   const { id } = tournament;
-  const { orderBy = "position", direction = "asc" } = args;
   const { DB } = env;
 
   const query = `
@@ -16,18 +15,13 @@ export async function getBoatsFromTournament(
     FROM
         tournament_boat
     WHERE
-        tournament_id = ?
-    ORDER BY
-        ${orderBy} ${direction};`;
+        tournament_id = ?;`;
 
-  const { results } = await DB.prepare(query).bind(id).all();
+  const { results } = await DB.prepare(query)
+    .bind(parseInt(`${id}`))
+    .all();
 
   return results.map(mapToBoat);
-}
-
-interface GetFishermansArgs {
-  orderBy?: "position" | "date";
-  direction?: "asc" | "desc";
 }
 
 export async function getBoatFromEntry(
@@ -45,9 +39,11 @@ export async function getBoatFromEntry(
         tournament_entry te
         LEFT JOIN tournament_boat tb ON (te.tournament_boat_id = tb.id)
     WHERE
-        te.id = ?;`;
+        te.id = ${id} AND tb.id IS NOT NULL;`;
 
-  const { results } = await DB.prepare(query).bind(id).all();
+  const { results } = await DB.prepare(query)
+    // .bind(parseInt(`${id}`))
+    .all();
   if (!results.length) {
     return null;
   }

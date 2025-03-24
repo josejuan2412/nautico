@@ -89,10 +89,10 @@ function mapToTournament(row: Record<string, unknown>): Nautico.Tournament {
 }
 
 function mapToEntry(row: Record<string, unknown>): Nautico.Tournament.Entry {
-  const { id, value, createdAt } = row;
+  const { id, value, created_at } = row;
   return {
     id: parseInt(`${id}`),
     value: parseFloat(`${value}`),
-    createdAt: new Date(`${createdAt}`),
+    date: new Date(`${created_at}`),
   };
 }

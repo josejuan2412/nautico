@@ -32,7 +32,7 @@ export namespace Nautico {
     export interface Entry {
       id: number;
       value: number;
-      createdAt: Date;
+      date: Date;
     }
   }
 
