@@ -16,7 +16,7 @@ export async function getTournaments(
   return results.map(mapToTournament);
 }
 
-export interface GetTournamentsArgs {
+interface GetTournamentsArgs {
   orderBy?: "position" | "date";
   direction?: "asc" | "desc";
 }
@@ -46,6 +46,36 @@ interface GetTournamentArgs {
   id: number;
 }
 
+export async function getEntriesFromTournament(
+  tournament: Nautico.Tournament,
+  args: GetTournamentArgs,
+  env: Env,
+): Promise<Array<Nautico.Tournament.Entry>> {
+  const { id } = tournament;
+  const { DB } = env;
+
+  const query = `
+    SELECT
+        *
+    FROM
+        tournament_entry
+    WHERE
+        tournament_id = ?
+    ORDER BY
+        "value" DESC,
+        created_at ASC;`;
+
+  const { results } = await DB.prepare(query)
+    .bind(parseInt(`${id}`))
+    .all();
+
+  return results.map(mapToEntry);
+}
+
+interface GetTournamentArgs {
+  direction?: "asc" | "desc";
+}
+
 function mapToTournament(row: Record<string, unknown>): Nautico.Tournament {
   const { id, name, slug, position, date, created_at } = row;
   return {
@@ -55,5 +85,14 @@ function mapToTournament(row: Record<string, unknown>): Nautico.Tournament {
     position: parseInt(`${position}`),
     date: new Date(`${date}`),
     createdAt: new Date(`${created_at}`),
+  };
+}
+
+function mapToEntry(row: Record<string, unknown>): Nautico.Tournament.Entry {
+  const { id, value, createdAt } = row;
+  return {
+    id: parseInt(`${id}`),
+    value: parseFloat(`${value}`),
+    createdAt: new Date(`${createdAt}`),
   };
 }

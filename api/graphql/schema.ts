@@ -48,5 +48,7 @@ export const typeDefs = `
   type Query {
     event(id: ID!): Event
     events(orderBy: OrderBy, direction: Direction): [Event!]!
+    tournament(id: ID!): Tournament
+    tournaments(orderBy: OrderBy, direction: Direction): [Tournament!]!
   }
 `;

@@ -25,7 +25,7 @@ export async function getBoatsFromTournament(
   return results.map(mapToBoat);
 }
 
-export interface GetFishermansArgs {
+interface GetFishermansArgs {
   orderBy?: "position" | "date";
   direction?: "asc" | "desc";
 }
