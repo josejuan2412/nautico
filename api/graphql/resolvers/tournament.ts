@@ -21,19 +21,24 @@ interface GetTournamentsArgs {
   direction?: "asc" | "desc";
 }
 
-export async function getTournamentById(
+export async function getTournament(
   _: unknown,
   args: GetTournamentArgs,
   env: Env,
 ): Promise<Nautico.Tournament | null> {
-  const { id } = args;
+  const { id, latest } = args;
   const { DB } = env;
 
-  const query = `SELECT * FROM tournament WHERE id = ?`;
+  if (!latest && id === undefined) {
+    throw new Error("You must specify an id");
+  }
 
-  const { results } = await DB.prepare(query)
-    .bind(parseInt(`${id}`))
-    .all();
+  let query = `SELECT * FROM tournament WHERE id = ${id} LIMIT 1;`;
+  if (latest) {
+    query = `SELECT * FROM tournament ORDER BY "date" DESC LIMIT 1;`;
+  }
+
+  const { results } = await DB.prepare(query).all();
 
   if (!results.length) {
     return null;
@@ -44,6 +49,7 @@ export async function getTournamentById(
 
 interface GetTournamentArgs {
   id: number;
+  latest: boolean;
 }
 
 function toTournament(row: Record<string, unknown>): Nautico.Tournament {
