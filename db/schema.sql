@@ -37,7 +37,7 @@ CREATE INDEX IF NOT EXISTS idx_event_file_group_event_id ON event_file_group (ev
 
 CREATE INDEX IF NOT EXISTS idx_event_file_group_file_group_id ON event_file_group (file_group_id);
 
-CREATE INDEX IF NOT EXISTS idx_event_file_group_position ON event_group (position);
+CREATE INDEX IF NOT EXISTS idx_event_file_group_position ON event_file_group (position);
 
 CREATE INDEX IF NOT EXISTS idx_event_file_group_date ON event_file_group (date);
 
