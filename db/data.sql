@@ -36,6 +36,12 @@ INSERT INTO
 VALUES
     (2, 'Jane Doe', 1, 1);
 
+/*Add boat in the tournament*/
+INSERT INTO
+    tournament_boat (id, name, tournament_id)
+VALUES
+    (1, 'Last cast', 1);
+
 /*Add tournament entry*/
 INSERT INTO
     tournament_entry (
@@ -48,11 +54,14 @@ INSERT INTO
 VALUES
     (1, 1, 1, 1, 25.64);
 
-SELECT
-    *
-FROM
-    tournament_fisherman
-WHERE
-    tournament_id = 1
-ORDER BY
-    position asc;
+INSERT INTO
+    tournament_entry (
+        id,
+        tournament_id,
+        tournament_fisherman_id,
+        tournament_boat_id,
+        tournament_category_id,
+        value
+    )
+VALUES
+    (2, 1, 1, 1, 1, 30.95);
