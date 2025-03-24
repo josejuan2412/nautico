@@ -35,6 +35,19 @@ export const typeDefs = `
     boat: Boat
   }
 
+  enum CategoryType {
+    points
+    weight
+  }
+
+  type Category {
+    id: ID!
+    name: String!
+    type: CategoryType!
+    isLargest: Boolean!
+    entries: [Entry!]!
+  }
+
   type Tournament {
     id: ID!
     name: String!
@@ -43,6 +56,7 @@ export const typeDefs = `
     fishermans: [Fisherman!]!
     boats: [Boat!]!
     entries: [Entry!]!
+    categories: [Category!]!
   }
 
   type Query {

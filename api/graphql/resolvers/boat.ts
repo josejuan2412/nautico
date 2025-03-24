@@ -21,7 +21,7 @@ export async function getBoatsFromTournament(
     .bind(parseInt(`${id}`))
     .all();
 
-  return results.map(mapToBoat);
+  return results.map(toBoat);
 }
 
 export async function getBoatFromEntry(
@@ -48,10 +48,10 @@ export async function getBoatFromEntry(
     return null;
   }
 
-  return mapToBoat(results[0]);
+  return toBoat(results[0]);
 }
 
-function mapToBoat(row: Record<string, unknown>): Nautico.Tournament.Boat {
+function toBoat(row: Record<string, unknown>): Nautico.Tournament.Boat {
   const { id, name, created_at } = row;
   return {
     id: parseInt(`${id}`),

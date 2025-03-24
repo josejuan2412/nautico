@@ -1,18 +1,3 @@
-INSERT INTO
-    event (id, name, position)
-VALUES
-    (1, 'January 2025', 0);
-
-INSERT INTO
-    event (id, name, position)
-VALUES
-    (2, 'February 2025', 1);
-
-INSERT INTO
-    event (id, name, position)
-VALUES
-    (3, 'March 2025', 2);
-
 /*Create tournament*/
 INSERT INTO
     tournament (id, name, slug, position)
@@ -24,6 +9,12 @@ INSERT INTO
     tournament_category (id, name, tournament_id, category_type)
 VALUES
     (1, 'Wahoo', 1, 'weight');
+
+/*Add category*/
+INSERT INTO
+    tournament_category (id, name, tournament_id, category_type)
+VALUES
+    (2, 'Merlin', 1, 'points');
 
 /*Add fisherman in the tournament*/
 INSERT INTO
@@ -77,3 +68,51 @@ INSERT INTO
     )
 VALUES
     (3, 1, 2, 1, 1, 30.95);
+
+INSERT INTO
+    tournament_entry (
+        id,
+        tournament_id,
+        tournament_fisherman_id,
+        tournament_boat_id,
+        tournament_category_id,
+        value
+    )
+VALUES
+    (4, 1, 1, 1, 2, 100);
+
+INSERT INTO
+    tournament_entry (
+        id,
+        tournament_id,
+        tournament_fisherman_id,
+        tournament_boat_id,
+        tournament_category_id,
+        value
+    )
+VALUES
+    (5, 1, 1, 1, 2, 200);
+
+INSERT INTO
+    tournament_entry (
+        id,
+        tournament_id,
+        tournament_fisherman_id,
+        tournament_boat_id,
+        tournament_category_id,
+        value
+    )
+VALUES
+    (6, 1, 2, 1, 2, 200);
+
+INSERT INTO
+    tournament_entry (
+        id,
+        tournament_id,
+        tournament_fisherman_id,
+        tournament_boat_id,
+        tournament_category_id,
+        value
+    )
+VALUES
+    (7, 1, 2, 1, 2, 50);

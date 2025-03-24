@@ -15,15 +15,13 @@ export async function getFishermansFromTournament(
     FROM
         tournament_fisherman
     WHERE
-        tournament_id = ?`;
-
-  console.log(`QUERY: `, query);
+        tournament_id = ?;`;
 
   const { results } = await DB.prepare(query)
     .bind(parseInt(`${id}`))
     .all();
 
-  return results.map(mapToFisherman);
+  return results.map(toFisherman);
 }
 
 export async function getFishermanFromEntry(
@@ -50,10 +48,10 @@ export async function getFishermanFromEntry(
     return null;
   }
 
-  return mapToFisherman(results[0]);
+  return toFisherman(results[0]);
 }
 
-function mapToFisherman(
+function toFisherman(
   row: Record<string, unknown>,
 ): Nautico.Tournament.Fisherman {
   const { id, name, is_enabled, created_at } = row;

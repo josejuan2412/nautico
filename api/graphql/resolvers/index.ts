@@ -3,16 +3,14 @@ import { createSchema } from "graphql-yoga";
 import { typeDefs } from "../schema";
 
 import { getEvents, getEventById } from "./event";
-import {
-  getTournaments,
-  getTournamentById,
-  getEntriesFromTournament,
-} from "./tournament";
+import { getTournaments, getTournamentById } from "./tournament";
+import { getEntriesFromCategory, getEntriesFromTournament } from "./entry";
 import {
   getFishermansFromTournament,
   getFishermanFromEntry,
 } from "./fisherman";
 import { getBoatsFromTournament, getBoatFromEntry } from "./boat";
+import { getCategories } from "./category";
 
 export const schema = createSchema({
   typeDefs,
@@ -27,10 +25,14 @@ export const schema = createSchema({
       fishermans: getFishermansFromTournament,
       boats: getBoatsFromTournament,
       entries: getEntriesFromTournament,
+      categories: getCategories,
     },
     Entry: {
       fisherman: getFishermanFromEntry,
       boat: getBoatFromEntry,
+    },
+    Category: {
+      entries: getEntriesFromCategory,
     },
   },
 });
