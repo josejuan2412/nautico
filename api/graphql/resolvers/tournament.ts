@@ -10,8 +10,6 @@ export async function tournamentCreate(
   const { input } = args;
   const { name, slug, position, date } = input;
   const { DB } = env;
-  console.log(`ARGS: `, input);
-  // sconsole.log(`ENV: `, env);
   if (!name) {
     throw new GraphQLError(
       `Cannot create a tournament because required property 'name' is missing`,
@@ -53,6 +51,68 @@ export async function tournamentCreate(
 
   try {
     const { results } = await DB.prepare(query).all();
+    return toTournament(results[0]);
+  } catch (e) {
+    throw new GraphQLError(e.message);
+  }
+}
+
+export async function tournamentUpdate(
+  _: unknown,
+  args: { input: TournamentInput },
+  env: Env,
+): Promise<Nautico.Tournament> {
+  const { input } = args;
+  const { id, name, slug, position, date } = input;
+  const { DB } = env;
+  if (!id) {
+    throw new GraphQLError(
+      `Cannot update a tournament because required property 'id' is missing`,
+    );
+  }
+
+  const queryValues: Array<string> = [];
+  if (name) {
+    queryValues.push(`"name" = '${name}'`);
+  }
+
+  if (slug) {
+    if (isNumeric(`${slug}`)) {
+      throw new GraphQLError(
+        `Cannot update a tournament because the property 'slug' can't be numeric`,
+      );
+    }
+
+    queryValues.push(`slug = '${slug}'`);
+  }
+
+  if (position !== undefined) {
+    queryValues.push(`"position" = ${position}`);
+  }
+
+  if (date) {
+    queryValues.push(`"date" = datetime('${date.toString()}')`);
+  }
+
+  if (!queryValues.length) {
+    throw new GraphQLError(
+      `Cannot update a tournament because at least one property is required`,
+    );
+  }
+
+  const query = `
+    UPDATE tournament SET
+      ${queryValues.join(", ")}
+    WHERE
+      id = ${id}
+    RETURNING *;
+  `;
+
+  try {
+    const { results } = await DB.prepare(query).all();
+    if (!results.length) {
+      throw new Error(`Tournament not found for the id: ${id}`);
+    }
     return toTournament(results[0]);
   } catch (e) {
     throw new GraphQLError(e.message);

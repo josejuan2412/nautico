@@ -55,6 +55,7 @@ export const typeDefs = `
     name: String!
     slug: String!
     date: Date!
+    position: Int!
     fishermans: [Fisherman!]!
     boats: [Boat!]!
     entries: [Entry!]!
@@ -78,5 +79,6 @@ export const typeDefs = `
 
   type Mutation {
     tournamentCreate(input: TournamentInput!): Tournament!
+    tournamentUpdate(input: TournamentInput!): Tournament!
   }
 `;
