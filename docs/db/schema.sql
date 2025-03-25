@@ -77,7 +77,7 @@ CREATE TABLE IF NOT EXISTS tournament_fisherman (
 );
 
 /*Create unique index for email*/
-CREATE UNIQUE INDEX idx_unique_email_tournament_id ON tournament_fisherman (email, tournament_id);
+CREATE UNIQUE INDEX idx_unique_tournament_fisherman_tournament_id_email ON tournament_fisherman (tournament_id, email,);
 
 /*Create index for FK*/
 CREATE INDEX IF NOT EXISTS idx_tournament_fisherman_tournament_id ON tournament_fisherman (tournament_id);
@@ -112,8 +112,10 @@ CREATE TABLE IF NOT EXISTS tournament_category (
     category_type TEXT CHECK (category_type IN ('points', 'weight')) NOT NULL DEFAULT 'weight',
     category_limit INTEGER NOT NULL DEFAULT 1,
     created_at DATETIME DEFAULT current_timestamp,
-    FOREIGN KEY (tournament_id) REFERENCES tournament (id)
+    FOREIGN KEY (tournament_id) REFERENCES tournament (id),
 );
+
+CREATE UNIQUE INDEX idx_unique_tournament_category_tournament_id_name ON tournament_fisherman (tournament_id, name);
 
 CREATE INDEX IF NOT EXISTS idx_tournament_category_created_at ON tournament_category (created_at);
 
@@ -122,7 +124,7 @@ CREATE TABLE IF NOT EXISTS tournament_entry (
     id INTEGER PRIMARY KEY,
     tournament_id INTEGER NOT NULL,
     tournament_fisherman_id INTEGER NOT NULL,
-    tournament_boat_id INTEGER DEFAULT NULL,
+    tournament_boat_id INTEGER NOT NULL,
     tournament_category_id INTEGER NOT NULL,
     value REAL NOT NULL DEFAULT 0,
     created_at DATETIME DEFAULT current_timestamp,

@@ -32,9 +32,9 @@ export const typeDefs = `
     id: ID!
     value: Float!
     date: Date!
-    fisherman: Fisherman
-    category: Category
-    boat: Boat
+    fisherman: Fisherman!
+    category: Category!
+    boat: Boat!
   }
 
   enum CategoryType {
@@ -70,6 +70,13 @@ export const typeDefs = `
     date: Date
   }
 
+  input CategoryInput {
+    id: ID
+    name: String
+    type: CategoryType
+    limit: Int
+  }
+
   type Query {
     event(id: ID!): Event
     events(orderBy: OrderBy, direction: Direction): [Event!]!
@@ -81,5 +88,8 @@ export const typeDefs = `
     tournamentCreate(input: TournamentInput!): Tournament!
     tournamentUpdate(input: TournamentInput!): Tournament!
     tournamentDelete(id: ID!): ID
+    categoryCreate(tournamentId: ID!, input: CategoryInput!): Category!
+    categoryUpdate(input: CategoryInput!): Category!
+    categoryDelete(id: ID!): ID
   }
 `;
