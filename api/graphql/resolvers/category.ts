@@ -1,5 +1,7 @@
+import { GraphQLError } from "graphql";
 import { Env } from "../../env";
 import { Nautico } from "../../../models";
+/* QUERY RESOLVERS */
 export async function getCategories(
   tournament: Nautico.Tournament,
   _: unknown,
@@ -49,6 +51,54 @@ export async function getCategoryFromEntry(
   }
 
   return toCategory(results[0]);
+}
+
+/*MUTATION RESOLVERS */
+
+export async function categoryCreate(
+  _: unknown,
+  args: { tournamentId: number; input: CategoryInput },
+  env: Env,
+): Promise<Nautico.Tournament.Category> {
+  const { tournamentId, input } = args;
+  const { name, type = "weight", limit = 1 } = input;
+  const { DB } = env;
+  if (!tournamentId) {
+    throw new GraphQLError(
+      `Cannot create a category because required property 'tournamentId' is missing`,
+    );
+  }
+
+  if (!name) {
+    throw new GraphQLError(
+      `Cannot create a category because required property 'name' is missing`,
+    );
+  }
+
+  const queryColumns = [`"name"`, "type", `category_limit`];
+  const queryValues = [`'${name}'`, `'${type}'`, `${limit}`];
+
+  const query = `
+    INSERT INTO tournament
+      (${queryColumns.join(",")})
+    VALUES
+      (${queryValues.join(",")})
+    RETURNING *;
+  `;
+
+  try {
+    const { results } = await DB.prepare(query).all();
+    return toCategory(results[0]);
+  } catch (e) {
+    throw new GraphQLError(e.message);
+  }
+}
+
+interface CategoryInput {
+  id?: number;
+  name?: string;
+  type?: "points" | "weight";
+  limit?: number;
 }
 
 function toCategory(row: Record<string, unknown>): Nautico.Tournament.Category {

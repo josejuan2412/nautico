@@ -32,9 +32,9 @@ export const typeDefs = `
     id: ID!
     value: Float!
     date: Date!
-    fisherman: Fisherman
-    category: Category
-    boat: Boat
+    fisherman: Fisherman!
+    category: Category!
+    boat: Boat!
   }
 
   enum CategoryType {
