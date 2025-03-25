@@ -3,7 +3,7 @@ import { createSchema } from "graphql-yoga";
 import { typeDefs } from "../schema";
 
 import { getEvents, getEventById } from "./event";
-import { getTournaments, getTournament } from "./tournament";
+import { getTournaments, getTournament, tournamentCreate } from "./tournament";
 import { getEntriesFromCategory, getEntriesFromTournament } from "./entry";
 import {
   getFishermansFromTournament,
@@ -20,6 +20,9 @@ export const schema = createSchema({
       events: getEvents,
       tournament: getTournament,
       tournaments: getTournaments,
+    },
+    Mutation: {
+      tournamentCreate,
     },
     Tournament: {
       fishermans: getFishermansFromTournament,

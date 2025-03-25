@@ -45,7 +45,7 @@ CREATE INDEX IF NOT EXISTS idx_event_file_group_created_at ON event_file_group (
 
 CREATE TABLE IF NOT EXISTS tournament (
     id INTEGER PRIMARY KEY,
-    name TEXT NOT NULL DEFAULT '',
+    name TEXT NOT NULL UNIQUE,
     slug TEXT NOT NULL UNIQUE,
     position INTEGER DEFAULT 0,
     date DATETIME DEFAULT current_timestamp,

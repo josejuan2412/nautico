@@ -61,10 +61,22 @@ export const typeDefs = `
     categories: [Category!]!
   }
 
+  input TournamentInput {
+    id: ID
+    name: String
+    slug: String
+    position: Int
+    date: Date
+  }
+
   type Query {
     event(id: ID!): Event
     events(orderBy: OrderBy, direction: Direction): [Event!]!
     tournament(id: ID, latest: Boolean): Tournament
     tournaments(orderBy: OrderBy, direction: Direction): [Tournament!]!
+  }
+
+  type Mutation {
+    tournamentCreate(input: TournamentInput!): Tournament!
   }
 `;
