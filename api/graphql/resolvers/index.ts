@@ -23,6 +23,7 @@ import {
   getBoatFromEntry,
   boatCreate,
   boatUpdate,
+  boatDelete,
 } from "./boat";
 import {
   getCategories,
@@ -53,6 +54,7 @@ export const schema = createSchema({
       fishermanDelete,
       boatCreate,
       boatUpdate,
+      boatDelete,
     },
     Tournament: {
       fishermans: getFishermansFromTournament,

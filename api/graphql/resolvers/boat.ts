@@ -138,6 +138,32 @@ export async function boatUpdate(
   }
 }
 
+export async function boatDelete(
+  _: unknown,
+  args: { id: number },
+  env: Env,
+): Promise<number | null> {
+  const { id } = args;
+  const { DB } = env;
+  if (!id) {
+    throw new GraphQLError(
+      `Cannot delete a boat because required property 'id' is missing`,
+    );
+  }
+
+  const query = `
+    DELETE FROM ${TABLE_NAME} WHERE id = ? RETURNING *;
+  `;
+
+  const { results } = await DB.prepare(query)
+    .bind(parseInt(`${id}`))
+    .all();
+  if (!results.length) {
+    return null;
+  }
+  return id;
+}
+
 interface BoatInput {
   id?: number;
   name?: string;
