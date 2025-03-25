@@ -34,11 +34,9 @@ export const schema = createSchema({
       tournaments: getTournaments,
     },
     Mutation: {
-      /*Tournament mutations*/
       tournamentCreate,
       tournamentUpdate,
       tournamentDelete,
-      /*Category mutations*/
       categoryCreate,
       categoryUpdate,
       categoryDelete,
