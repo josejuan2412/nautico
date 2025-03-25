@@ -1,3 +1,4 @@
+import { GraphQLError } from "graphql";
 import { Env } from "../../env";
 import { Nautico } from "../../../models";
 
@@ -49,6 +50,53 @@ export async function getBoatFromEntry(
   }
 
   return toBoat(results[0]);
+}
+
+/*MUTATION RESOLVERS */
+export async function boatCreate(
+  _: unknown,
+  args: { tournamentId: number; input: BoatInput },
+  env: Env,
+): Promise<Nautico.Tournament.Boat> {
+  const { tournamentId, input } = args;
+  const { name } = input;
+  const { DB } = env;
+
+  if (!tournamentId) {
+    throw new GraphQLError(
+      `Cannot create a fisherman because required property 'tournamentId' is missing`,
+    );
+  }
+
+  if (!name) {
+    throw new GraphQLError(
+      `Cannot create a fisherman because required property 'name' is missing`,
+    );
+  }
+
+  const queryColumns = [`"name"`, "tournament_id"];
+
+  const queryValues = [`'${name}'`, `${tournamentId}`];
+
+  const query = `
+    INSERT INTO tournament_boat
+      (${queryColumns.join(",")})
+    VALUES
+      (${queryValues.join(",")})
+    RETURNING *;
+  `;
+
+  try {
+    const { results } = await DB.prepare(query).all();
+    return toBoat(results[0]);
+  } catch (e) {
+    throw new GraphQLError(e.message);
+  }
+}
+
+interface BoatInput {
+  id?: number;
+  name?: string;
 }
 
 function toBoat(row: Record<string, unknown>): Nautico.Tournament.Boat {

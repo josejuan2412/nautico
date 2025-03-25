@@ -84,6 +84,11 @@ export const typeDefs = `
     isEnabled: Boolean
   }
 
+  input BoatInput {
+    id: ID
+    name: String
+  }
+
   type Query {
     event(id: ID!): Event
     events(orderBy: OrderBy, direction: Direction): [Event!]!
@@ -101,5 +106,6 @@ export const typeDefs = `
     fishermanCreate(tournamentId: ID!, input: FishermanInput!): Fisherman!
     fishermanUpdate(input: FishermanInput!): Fisherman!
     fishermanDelete(id: ID!): ID
+    boatCreate(tournamentId: ID!, input: BoatInput!): Boat!
   }
 `;
