@@ -80,5 +80,6 @@ export const typeDefs = `
   type Mutation {
     tournamentCreate(input: TournamentInput!): Tournament!
     tournamentUpdate(input: TournamentInput!): Tournament!
+    tournamentDelete(id: ID!): ID
   }
 `;

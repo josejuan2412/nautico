@@ -8,6 +8,7 @@ import {
   getTournament,
   tournamentCreate,
   tournamentUpdate,
+  tournamentDelete,
 } from "./tournament";
 import { getEntriesFromCategory, getEntriesFromTournament } from "./entry";
 import {
@@ -29,6 +30,7 @@ export const schema = createSchema({
     Mutation: {
       tournamentCreate,
       tournamentUpdate,
+      tournamentDelete,
     },
     Tournament: {
       fishermans: getFishermansFromTournament,

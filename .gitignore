@@ -137,3 +137,7 @@ dist
 
 # Wrangler
 .wrangler
+
+# MacOSX DS_Store
+.DS_Store
+*.DS_Store
