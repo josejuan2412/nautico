@@ -24,6 +24,7 @@ export const typeDefs = `
   type Fisherman {
     id: ID!
     name: String!
+    email: String
     isEnabled: Boolean!
   }
 

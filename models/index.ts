@@ -19,6 +19,7 @@ export namespace Nautico {
     export interface Fisherman {
       id: number;
       name: string;
+      email: string | null;
       isEnabled: boolean;
       createdAt: Date;
     }

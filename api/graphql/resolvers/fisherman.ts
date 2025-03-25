@@ -54,10 +54,11 @@ export async function getFishermanFromEntry(
 function toFisherman(
   row: Record<string, unknown>,
 ): Nautico.Tournament.Fisherman {
-  const { id, name, is_enabled, created_at } = row;
+  const { id, name, is_enabled, created_at, email } = row;
   return {
     id: parseInt(`${id}`),
     name: `${name || ""}`,
+    email: typeof email === "string" ? email : null,
     isEnabled: parseInt(`${is_enabled}`) ? true : false,
     createdAt: new Date(`${created_at}`),
   };

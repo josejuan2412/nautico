@@ -11,11 +11,13 @@ export async function getEntriesFromTournament(
 
   const query = `
     SELECT
-        *
+        te.*
     FROM
-        tournament_entry
+        tournament_entry te
+        LEFT JOIN tournament_fisherman tf ON (tf.id = te.tournament_fisherman_id)
     WHERE
-        tournament_id = ?
+        te.tournament_id = ?
+        AND tf.is_enabled = TRUE
     ORDER BY
         "value" DESC,
         created_at ASC;`;
@@ -38,29 +40,33 @@ export async function getEntriesFromCategory(
 
   let query = `
     SELECT
-        *
+      te.*
     FROM
-        tournament_entry
+      tournament_entry te
+      LEFT JOIN tournament_fisherman tf ON (tf.id = te.tournament_fisherman_id)
     WHERE
-        tournament_category_id = ?
+      te.tournament_category_id = ?
+      AND tf.is_enabled = TRUE
     ORDER BY
-        "value" DESC,
-        created_at ASC`;
+      "value" DESC,
+      created_at ASC`;
 
   if (type === "points") {
     query = `
       SELECT
-          *,
-          SUM(value) as total
+        te.*,
+        SUM(te.value) as total
       FROM
-          tournament_entry
+        tournament_entry te
+        LEFT JOIN tournament_fisherman tf ON (tf.id = te.tournament_fisherman_id)
       WHERE
-          tournament_category_id = ?
+        tournament_category_id = ?
+        AND tf.is_enabled = TRUE
       GROUP BY
-          tournament_fisherman_id
+        tournament_fisherman_id
       ORDER BY
-          "total" DESC,
-          created_at ASC`;
+        "total" DESC,
+        created_at ASC`;
   }
 
   if (!ignoreLimit) {

@@ -76,6 +76,9 @@ CREATE TABLE IF NOT EXISTS tournament_fisherman (
     UNIQUE (name, tournament_id)
 );
 
+/*Create unique index for email*/
+CREATE UNIQUE INDEX idx_unique_email_tournament_id ON tournament_fisherman (email, tournament_id);
+
 /*Create index for FK*/
 CREATE INDEX IF NOT EXISTS idx_tournament_fisherman_tournament_id ON tournament_fisherman (tournament_id);
 
