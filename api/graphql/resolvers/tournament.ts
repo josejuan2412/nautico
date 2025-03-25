@@ -54,7 +54,6 @@ interface GetTournamentArgs {
 }
 
 /* MUTATION RESOLVERS */
-
 export async function tournamentCreate(
   _: unknown,
   args: { input: TournamentInput },
@@ -194,10 +193,12 @@ export async function tournamentDelete(
   }
 
   const query = `
-    DELETE FROM tournament WHERE id = ${id} RETURNING *;
+    DELETE FROM tournament WHERE id = ? RETURNING *;
   `;
 
-  const { results } = await DB.prepare(query).all();
+  const { results } = await DB.prepare(query)
+    .bind(parseInt(`${id}`))
+    .all();
   if (!results.length) {
     return null;
   }

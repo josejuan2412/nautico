@@ -16,7 +16,13 @@ import {
   getFishermanFromEntry,
 } from "./fisherman";
 import { getBoatsFromTournament, getBoatFromEntry } from "./boat";
-import { getCategories, getCategoryFromEntry } from "./category";
+import {
+  getCategories,
+  getCategoryFromEntry,
+  categoryCreate,
+  categoryUpdate,
+  categoryDelete,
+} from "./category";
 
 export const schema = createSchema({
   typeDefs,
@@ -28,9 +34,14 @@ export const schema = createSchema({
       tournaments: getTournaments,
     },
     Mutation: {
+      /*Tournament mutations*/
       tournamentCreate,
       tournamentUpdate,
       tournamentDelete,
+      /*Category mutations*/
+      categoryCreate,
+      categoryUpdate,
+      categoryDelete,
     },
     Tournament: {
       fishermans: getFishermansFromTournament,
