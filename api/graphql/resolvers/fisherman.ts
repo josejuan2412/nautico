@@ -104,6 +104,60 @@ export async function fishermanCreate(
   }
 }
 
+export async function fishermanUpdate(
+  _: unknown,
+  args: { input: FishermanInput },
+  env: Env,
+): Promise<Nautico.Tournament.Fisherman> {
+  const { input } = args;
+  const { id, name, email, isEnabled } = input;
+  const { DB } = env;
+
+  if (!id) {
+    throw new GraphQLError(
+      `Cannot update a fisherman because required property 'id' is missing`,
+    );
+  }
+
+  const queryValues: Array<string> = [];
+
+  if (name) {
+    queryValues.push(`"name" = '${name}'`);
+  }
+
+  if (email) {
+    queryValues.push(`email = '${email}'`);
+  }
+
+  if (isEnabled !== undefined) {
+    queryValues.push(`is_enabled = ${isEnabled ? 1 : 0}`);
+  }
+
+  if (!queryValues.length) {
+    throw new GraphQLError(
+      `Cannot update a fisherman because at least one property is required`,
+    );
+  }
+
+  const query = `
+    UPDATE tournament_fisherman SET
+      ${queryValues.join(", ")}
+    WHERE
+      id = ${id}
+    RETURNING *;
+  `;
+
+  try {
+    const { results } = await DB.prepare(query).all();
+    if (!results.length) {
+      throw new Error(`Fisherman not found for the id: ${id}`);
+    }
+    return toFisherman(results[0]);
+  } catch (e) {
+    throw new GraphQLError(e.message);
+  }
+}
+
 interface FishermanInput {
   id?: number;
   name?: string;
