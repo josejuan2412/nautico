@@ -53,17 +53,63 @@ export async function getFishermanFromEntry(
 }
 
 /*MUTATION RESOLVERS */
-/*export async function fishermanCreate(
+export async function fishermanCreate(
   _: unknown,
   args: { tournamentId: number; input: FishermanInput },
   env: Env,
 ): Promise<Nautico.Tournament.Fisherman> {
+  const { tournamentId, input } = args;
+  const { name, email, isEnabled } = input;
+  const { DB } = env;
 
+  if (!tournamentId) {
+    throw new GraphQLError(
+      `Cannot create a fisherman because required property 'tournamentId' is missing`,
+    );
+  }
+
+  if (!name) {
+    throw new GraphQLError(
+      `Cannot create a fisherman because required property 'name' is missing`,
+    );
+  }
+
+  const queryColumns = [`"name"`, "tournament_id"];
+
+  const queryValues = [`'${name}'`, `${tournamentId}`];
+
+  if (email) {
+    queryColumns.push("email");
+    queryValues.push(`'${email}'`);
+  }
+
+  if (isEnabled) {
+    queryColumns.push("is_enabled");
+    queryValues.push("1");
+  }
+
+  const query = `
+    INSERT INTO tournament_fisherman
+      (${queryColumns.join(",")})
+    VALUES
+      (${queryValues.join(",")})
+    RETURNING *;
+  `;
+
+  try {
+    const { results } = await DB.prepare(query).all();
+    return toFisherman(results[0]);
+  } catch (e) {
+    throw new GraphQLError(e.message);
+  }
 }
 
 interface FishermanInput {
-
-}*/
+  id?: number;
+  name?: string;
+  email?: string;
+  isEnabled?: boolean;
+}
 
 export async function fishermanDelete(
   _: unknown,
