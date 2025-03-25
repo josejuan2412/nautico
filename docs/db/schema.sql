@@ -76,11 +76,14 @@ CREATE TABLE IF NOT EXISTS tournament_fisherman (
     UNIQUE (name, tournament_id)
 );
 
-/*Create unique index for email*/
-CREATE UNIQUE INDEX idx_unique_tournament_fisherman_tournament_id_email ON tournament_fisherman (tournament_id, email,);
-
 /*Create index for FK*/
 CREATE INDEX IF NOT EXISTS idx_tournament_fisherman_tournament_id ON tournament_fisherman (tournament_id);
+
+/*Create unique index for email*/
+CREATE UNIQUE INDEX idx_unique_tournament_fisherman_tournament_id_email ON tournament_fisherman (tournament_id, email);
+
+/*Create unique index for name*/
+CREATE UNIQUE INDEX idx_unique_tournament_fisherman_tournament_id_name ON tournament_fisherman (tournament_id, name);
 
 /*Create index for sorting*/
 CREATE INDEX IF NOT EXISTS idx_tournament_fisherman_created_at ON tournament_fisherman (created_at);

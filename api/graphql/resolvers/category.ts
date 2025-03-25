@@ -150,6 +150,13 @@ export async function categoryUpdate(
   }
 }
 
+interface CategoryInput {
+  id?: number;
+  name?: string;
+  type?: "points" | "weight";
+  limit?: number;
+}
+
 export async function categoryDelete(
   _: unknown,
   args: { id: number },
@@ -174,13 +181,6 @@ export async function categoryDelete(
     return null;
   }
   return id;
-}
-
-interface CategoryInput {
-  id?: number;
-  name?: string;
-  type?: "points" | "weight";
-  limit?: number;
 }
 
 function toCategory(row: Record<string, unknown>): Nautico.Tournament.Category {
