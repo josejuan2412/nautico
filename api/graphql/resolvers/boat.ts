@@ -2,6 +2,8 @@ import { GraphQLError } from "graphql";
 import { Env } from "../../env";
 import { Nautico } from "../../../models";
 
+const TABLE_NAME = `tournament_boat`;
+
 export async function getBoatsFromTournament(
   tournament: Nautico.Tournament,
   _: unknown,
@@ -14,7 +16,7 @@ export async function getBoatsFromTournament(
     SELECT
         *
     FROM
-        tournament_boat
+        ${TABLE_NAME}
     WHERE
         tournament_id = ?;`;
 
@@ -38,7 +40,7 @@ export async function getBoatFromEntry(
         tb.*
     FROM
         tournament_entry te
-        LEFT JOIN tournament_boat tb ON (te.tournament_boat_id = tb.id)
+        LEFT JOIN ${TABLE_NAME} tb ON (te.tournament_boat_id = tb.id)
     WHERE
         te.id = ${id} AND tb.id IS NOT NULL;`;
 
@@ -64,13 +66,13 @@ export async function boatCreate(
 
   if (!tournamentId) {
     throw new GraphQLError(
-      `Cannot create a fisherman because required property 'tournamentId' is missing`,
+      `Cannot create a boat because required property 'tournamentId' is missing`,
     );
   }
 
   if (!name) {
     throw new GraphQLError(
-      `Cannot create a fisherman because required property 'name' is missing`,
+      `Cannot create a boat because required property 'name' is missing`,
     );
   }
 
@@ -79,7 +81,7 @@ export async function boatCreate(
   const queryValues = [`'${name}'`, `${tournamentId}`];
 
   const query = `
-    INSERT INTO tournament_boat
+    INSERT INTO ${TABLE_NAME}
       (${queryColumns.join(",")})
     VALUES
       (${queryValues.join(",")})
@@ -88,6 +90,48 @@ export async function boatCreate(
 
   try {
     const { results } = await DB.prepare(query).all();
+    return toBoat(results[0]);
+  } catch (e) {
+    throw new GraphQLError(e.message);
+  }
+}
+
+export async function boatUpdate(
+  _: unknown,
+  args: { input: BoatInput },
+  env: Env,
+): Promise<Nautico.Tournament.Boat> {
+  const { input } = args;
+  const { id, name } = input;
+  const { DB } = env;
+
+  if (!id) {
+    throw new GraphQLError(
+      `Cannot update a boat because required property 'id' is missing`,
+    );
+  }
+
+  if (!name) {
+    throw new GraphQLError(
+      `Cannot update a boat because required property 'name' is missing`,
+    );
+  }
+
+  const queryValues: Array<string> = [`"name" = '${name}'`];
+
+  const query = `
+    UPDATE ${TABLE_NAME} SET
+      ${queryValues.join(", ")}
+    WHERE
+      id = ${id}
+    RETURNING *;
+  `;
+
+  try {
+    const { results } = await DB.prepare(query).all();
+    if (!results.length) {
+      throw new Error(`Boat not found for the id: ${id}`);
+    }
     return toBoat(results[0]);
   } catch (e) {
     throw new GraphQLError(e.message);
