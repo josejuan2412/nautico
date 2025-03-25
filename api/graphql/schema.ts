@@ -91,5 +91,6 @@ export const typeDefs = `
     categoryCreate(tournamentId: ID!, input: CategoryInput!): Category!
     categoryUpdate(input: CategoryInput!): Category!
     categoryDelete(id: ID!): ID
+    fishermanDelete(id: ID!): ID
   }
 `;
