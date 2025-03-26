@@ -60,7 +60,7 @@ export const typeDefs = `
     fishermans: [Fisherman!]!
     boats: [Boat!]!
     entries: [Entry!]!
-    categories: [Category!]!
+    categories(orderBy: OrderBy, direction: Direction): [Category!]!
   }
 
   input TournamentInput {

@@ -4,10 +4,11 @@ import { Nautico } from "../../../models";
 /* QUERY RESOLVERS */
 export async function getCategories(
   tournament: Nautico.Tournament,
-  _: unknown,
+  args: GetCategoriesArgs,
   env: Env,
 ): Promise<Array<Nautico.Tournament.Category>> {
   const { id } = tournament;
+  const { orderBy = "position", direction = "asc" } = args;
   const { DB } = env;
 
   const query = `
@@ -16,13 +17,19 @@ export async function getCategories(
     FROM
       tournament_category
     WHERE
-      tournament_id = ?;`;
+      tournament_id = ?
+    ORDER BY ${orderBy === "date" ? "created_at" : orderBy} ${direction};`;
 
   const { results } = await DB.prepare(query)
     .bind(parseInt(`${id}`))
     .all();
 
   return results.map(toCategory);
+}
+
+export interface GetCategoriesArgs {
+  orderBy?: "position" | "date";
+  direction?: "asc" | "desc";
 }
 
 export async function getCategoryFromEntry(
