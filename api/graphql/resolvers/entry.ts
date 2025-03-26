@@ -2,7 +2,7 @@ import { GraphQLError } from "graphql";
 import { Env } from "../../env";
 import { Nautico } from "../../../models";
 
-const TABLE_NAME = `tournament_entry`;
+export const ENTRY_TABLE_NAME = `tournament_entry`;
 
 export async function getEntriesFromTournament(
   tournament: Nautico.Tournament,
@@ -16,7 +16,7 @@ export async function getEntriesFromTournament(
     SELECT
         te.*
     FROM
-        ${TABLE_NAME} te
+        ${ENTRY_TABLE_NAME} te
         LEFT JOIN tournament_fisherman tf
           ON (tf.id = te.tournament_fisherman_id)
     WHERE
@@ -46,7 +46,7 @@ export async function getEntriesFromCategory(
     SELECT
       te.*
     FROM
-      ${TABLE_NAME} te
+      ${ENTRY_TABLE_NAME} te
       LEFT JOIN tournament_fisherman tf
         ON (tf.id = te.tournament_fisherman_id)
     WHERE
@@ -62,7 +62,7 @@ export async function getEntriesFromCategory(
         te.*,
         SUM(te.value) as total
       FROM
-        ${TABLE_NAME} te
+        ${ENTRY_TABLE_NAME} te
         LEFT JOIN tournament_fisherman tf
           ON (tf.id = te.tournament_fisherman_id)
       WHERE
@@ -201,12 +201,12 @@ export async function entryCreate(
     value,
   ];
   if (date) {
-    queryColumns.push(`"date"`);
+    queryColumns.push(`"created_at"`);
     queryValues.push(`datetime('${date.toString()}')`);
   }
 
   const query = `
-    INSERT INTO ${TABLE_NAME}
+    INSERT INTO ${ENTRY_TABLE_NAME}
       (${queryColumns.join(",")})
     VALUES
       (${queryValues.join(",")})
@@ -240,7 +240,7 @@ export async function entryUpdate(
     queryValues.push(`"value" = ${value}`);
   }
   if (date) {
-    queryValues.push(`"date" = datetime('${date.toString()}')`);
+    queryValues.push(`"created_at" = datetime('${date.toString()}')`);
   }
   if (!queryValues.length) {
     throw new GraphQLError(
@@ -248,7 +248,7 @@ export async function entryUpdate(
     );
   }
   const query = `
-    UPDATE ${TABLE_NAME} SET
+    UPDATE ${ENTRY_TABLE_NAME} SET
       ${queryValues.join(", ")}
     WHERE
       id = ${id}
@@ -286,7 +286,7 @@ export async function entryDelete(
   }
 
   const query = `
-    DELETE FROM  ${TABLE_NAME} WHERE id = ? RETURNING *;
+    DELETE FROM  ${ENTRY_TABLE_NAME} WHERE id = ? RETURNING *;
   `;
 
   const { results } = await DB.prepare(query)
