@@ -81,11 +81,11 @@ export async function tournamentCreate(
   }
 
   const queryColumns = [`"name"`, "slug"];
-  const queryValues = [`'${name}'`, `'${slug}'`];
+  const queryValues: Array<string | number> = [`'${name}'`, `'${slug}'`];
 
   if (position !== undefined) {
     queryColumns.push(`"position"`);
-    queryValues.push(`${position}`);
+    queryValues.push(position);
   }
 
   if (date) {

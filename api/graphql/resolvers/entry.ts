@@ -17,7 +17,8 @@ export async function getEntriesFromTournament(
         te.*
     FROM
         ${TABLE_NAME} te
-        LEFT JOIN tournament_fisherman tf ON (tf.id = te.tournament_fisherman_id)
+        LEFT JOIN tournament_fisherman tf
+          ON (tf.id = te.tournament_fisherman_id)
     WHERE
         te.tournament_id = ?
         AND tf.is_enabled = TRUE
@@ -46,7 +47,8 @@ export async function getEntriesFromCategory(
       te.*
     FROM
       ${TABLE_NAME} te
-      LEFT JOIN tournament_fisherman tf ON (tf.id = te.tournament_fisherman_id)
+      LEFT JOIN tournament_fisherman tf
+        ON (tf.id = te.tournament_fisherman_id)
     WHERE
       te.tournament_category_id = ?
       AND tf.is_enabled = TRUE
@@ -61,7 +63,8 @@ export async function getEntriesFromCategory(
         SUM(te.value) as total
       FROM
         ${TABLE_NAME} te
-        LEFT JOIN tournament_fisherman tf ON (tf.id = te.tournament_fisherman_id)
+        LEFT JOIN tournament_fisherman tf
+          ON (tf.id = te.tournament_fisherman_id)
       WHERE
         tournament_category_id = ?
         AND tf.is_enabled = TRUE
@@ -102,6 +105,121 @@ interface EntriesFromCategoryArgs {
 }
 
 /*MUTATION RESOLVERS */
+
+export async function entryCreate(
+  _: unknown,
+  args: {
+    tournamentId: number;
+    categoryId: number;
+    fishermanId: number;
+    boatId: number;
+    input: EntryInput;
+  },
+  env: Env,
+): Promise<Nautico.Tournament.Entry> {
+  const { tournamentId, categoryId, fishermanId, boatId, input } = args;
+  const { value, date } = input;
+  const { DB } = env;
+  if (!value) {
+    throw new GraphQLError(
+      `Cannot create an entry because required property 'value' is missing`,
+    );
+  }
+
+  const category = await DB.prepare(
+    `SELECT * FROM tournament_category
+    WHERE id = ?;`,
+  )
+    .bind(parseInt(`${categoryId}`))
+    .all();
+
+  if (!category.results) {
+    throw new GraphQLError(
+      `Can't create an entry because the category doesn't exist`,
+    );
+  }
+
+  if (`${category.results[0]["tournament_id"]}` !== `${tournamentId}`) {
+    throw new GraphQLError(
+      `Can't create an entry because the tournament in the category do not
+      match the target tournament`,
+    );
+  }
+
+  const fisherman = await DB.prepare(
+    `SELECT * FROM tournament_fisherman
+    WHERE id = ?;`,
+  )
+    .bind(parseInt(`${fishermanId}`))
+    .all();
+
+  if (!fisherman.results) {
+    throw new GraphQLError(
+      `Can't create an entry because the fisherman doesn't exist`,
+    );
+  }
+
+  if (`${fisherman.results[0]["tournament_id"]}` !== `${tournamentId}`) {
+    throw new GraphQLError(
+      `Can't create an entry because the tournament for the fisherman do not
+      match the target tournament`,
+    );
+  }
+
+  const boat = await DB.prepare(
+    `SELECT * FROM tournament_boat
+    WHERE id = ?;`,
+  )
+    .bind(parseInt(`${boatId}`))
+    .all();
+
+  if (!boat.results) {
+    throw new GraphQLError(
+      `Can't create an entry because the boat doesn't exist`,
+    );
+  }
+
+  if (`${boat.results[0]["tournament_id"]}` !== `${tournamentId}`) {
+    throw new GraphQLError(
+      `Can't create an entry because the tournament for the boat do not
+      match the target tournament`,
+    );
+  }
+
+  const queryColumns = [
+    "tournament_id",
+    "tournament_category_id",
+    "tournament_fisherman_id",
+    "tournament_boat_id",
+    "value",
+  ];
+  const queryValues: Array<number | string | Date> = [
+    tournamentId,
+    categoryId,
+    fishermanId,
+    boatId,
+    value,
+  ];
+  if (date) {
+    queryColumns.push(`"date"`);
+    queryValues.push(`datetime('${date.toString()}')`);
+  }
+
+  const query = `
+    INSERT INTO ${TABLE_NAME}
+      (${queryColumns.join(",")})
+    VALUES
+      (${queryValues.join(",")})
+    RETURNING *;
+  `;
+
+  try {
+    const { results } = await DB.prepare(query).all();
+    return toEntry(results[0]);
+  } catch (e) {
+    throw new GraphQLError(e.message);
+  }
+}
 
 export async function entryUpdate(
   _: unknown,
@@ -168,7 +286,7 @@ export async function entryDelete(
   }
 
   const query = `
-    DELETE FROM tournament_entry WHERE id = ? RETURNING *;
+    DELETE FROM  ${TABLE_NAME} WHERE id = ? RETURNING *;
   `;
 
   const { results } = await DB.prepare(query)

@@ -29,8 +29,8 @@ CREATE TABLE IF NOT EXISTS event_file_group (
     position INTEGER NOT NULL DEFAULT 0,
     date DATETIME DEFAULT current_timestamp,
     created_at DATETIME DEFAULT current_timestamp,
-    FOREIGN KEY (event_id) REFERENCES event (id),
-    FOREIGN KEY (file_group_id) REFERENCES file_group (id)
+    FOREIGN KEY (event_id) REFERENCES event (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (file_group_id) REFERENCES file_group (id) ON DELETE CASCADE ON UPDATE CASCADE,
 );
 
 CREATE INDEX IF NOT EXISTS idx_event_file_group_event_id ON event_file_group (event_id);
@@ -72,7 +72,7 @@ CREATE TABLE IF NOT EXISTS tournament_fisherman (
     tournament_id INTEGER NOT NULL,
     is_enabled INTEGER NOT NULL DEFAULT 0,
     created_at DATETIME DEFAULT current_timestamp,
-    FOREIGN KEY (tournament_id) REFERENCES tournament (id)
+    FOREIGN KEY (tournament_id) REFERENCES tournament (id) ON DELETE CASCADE ON UPDATE CASCADE,
 );
 
 /*Create index for FK*/
@@ -96,7 +96,7 @@ CREATE TABLE IF NOT EXISTS tournament_boat (
     name TEXT NOT NULL DEFAULT '',
     tournament_id INTEGER NOT NULL,
     created_at DATETIME DEFAULT current_timestamp,
-    FOREIGN KEY (tournament_id) REFERENCES tournament (id),
+    FOREIGN KEY (tournament_id) REFERENCES tournament (id) ON DELETE CASCADE ON UPDATE CASCADE,
     UNIQUE (name, tournament_id)
 );
 
@@ -114,7 +114,7 @@ CREATE TABLE IF NOT EXISTS tournament_category (
     category_type TEXT CHECK (category_type IN ('points', 'weight')) NOT NULL DEFAULT 'weight',
     category_limit INTEGER NOT NULL DEFAULT 1,
     created_at DATETIME DEFAULT current_timestamp,
-    FOREIGN KEY (tournament_id) REFERENCES tournament (id),
+    FOREIGN KEY (tournament_id) REFERENCES tournament (id) ON DELETE CASCADE ON UPDATE CASCADE,
 );
 
 CREATE UNIQUE INDEX idx_unique_tournament_category_tournament_id_name ON tournament_fisherman (tournament_id, name);
@@ -130,10 +130,10 @@ CREATE TABLE IF NOT EXISTS tournament_entry (
     tournament_category_id INTEGER NOT NULL,
     value REAL NOT NULL DEFAULT 0,
     created_at DATETIME DEFAULT current_timestamp,
-    FOREIGN KEY (tournament_id) REFERENCES tournament (id),
-    FOREIGN KEY (tournament_fisherman_id) REFERENCES tournament_fisherman (id),
-    FOREIGN KEY (tournament_boat_id) REFERENCES tournament_boat (id),
-    FOREIGN KEY (tournament_category_id) REFERENCES tournament_category (id)
+    FOREIGN KEY (tournament_id) REFERENCES tournament (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (tournament_fisherman_id) REFERENCES tournament_fisherman (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (tournament_boat_id) REFERENCES tournament_boat (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (tournament_category_id) REFERENCES tournament_category (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE INDEX IF NOT EXISTS idx_tournament_entry_created_at ON tournament_entry (created_at);

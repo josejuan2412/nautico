@@ -115,6 +115,13 @@ export const typeDefs = `
     boatCreate(tournamentId: ID!, input: BoatInput!): Boat!
     boatUpdate(input: BoatInput!): Boat!
     boatDelete(id: ID!): ID
+    entryCreate(
+      tournamentId: ID!,
+      categoryId: ID!,
+      fishermanId: ID!,
+      boatId: ID!,
+      input: EntryInput!
+    ): Entry!
     entryUpdate(input: EntryInput!): Entry!
     entryDelete(id: ID!): ID
   }

@@ -12,11 +12,11 @@ export async function getCategories(
 
   const query = `
     SELECT
-        *
+      *
     FROM
-        tournament_category
+      tournament_category
     WHERE
-        tournament_id = ?;`;
+      tournament_id = ?;`;
 
   const { results } = await DB.prepare(query)
     .bind(parseInt(`${id}`))
@@ -34,14 +34,14 @@ export async function getCategoryFromEntry(
   const { DB } = env;
 
   const query = `
-  SELECT
+    SELECT
       tc.*
-  FROM
+    FROM
       tournament_entry te
       LEFT JOIN tournament_category tc ON (te.tournament_category_id = tc.id)
-  WHERE
+    WHERE
       te.id = ?
-  LIMIT 1;`;
+    LIMIT 1;`;
 
   const { results } = await DB.prepare(query)
     .bind(parseInt(`${id}`))
