@@ -14,6 +14,7 @@ export namespace Nautico {
       name: string;
       type: "points" | "weight";
       limit: number;
+      position: number;
       createdAt: Date;
     }
     export interface Fisherman {

@@ -60,7 +60,7 @@ export async function categoryCreate(
   env: Env,
 ): Promise<Nautico.Tournament.Category> {
   const { tournamentId, input } = args;
-  const { name, type = "weight", limit = 1 } = input;
+  const { name, type = "weight", limit = 1, position = 0 } = input;
   const { DB } = env;
   if (!tournamentId) {
     throw new GraphQLError(
@@ -79,8 +79,15 @@ export async function categoryCreate(
     "tournament_id",
     "category_type",
     `category_limit`,
+    "position",
   ];
-  const queryValues = [`'${name}'`, `${tournamentId}`, `'${type}'`, `${limit}`];
+  const queryValues: Array<string | number> = [
+    `'${name}'`,
+    tournamentId,
+    `'${type}'`,
+    limit,
+    position,
+  ];
 
   const query = `
     INSERT INTO tournament_category
@@ -104,7 +111,7 @@ export async function categoryUpdate(
   env: Env,
 ): Promise<Nautico.Tournament.Category> {
   const { input } = args;
-  const { id, name, type, limit } = input;
+  const { id, name, type, limit, position } = input;
   const { DB } = env;
   if (!id) {
     throw new GraphQLError(
@@ -123,6 +130,10 @@ export async function categoryUpdate(
 
   if (limit !== undefined) {
     queryValues.push(`"category_limit" = ${limit}`);
+  }
+
+  if (position !== undefined) {
+    queryValues.push(`"position" = ${position}`);
   }
 
   if (!queryValues.length) {
@@ -154,6 +165,7 @@ interface CategoryInput {
   id?: number;
   name?: string;
   type?: "points" | "weight";
+  position?: number;
   limit?: number;
 }
 
@@ -184,10 +196,11 @@ export async function categoryDelete(
 }
 
 function toCategory(row: Record<string, unknown>): Nautico.Tournament.Category {
-  const { id, name, category_type, category_limit, created_at } = row;
+  const { id, name, category_type, category_limit, created_at, position } = row;
   return {
     id: parseInt(`${id}`),
     name: `${name || ""}`,
+    position: parseInt(`${position}`),
     type: category_type as "points" | "weight",
     limit: parseInt(`${category_limit}`),
     createdAt: new Date(`${created_at}`),

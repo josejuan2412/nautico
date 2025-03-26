@@ -47,6 +47,7 @@ export const typeDefs = `
     name: String!
     type: CategoryType!
     limit: Int!
+    position: Int!
     entries(ignoreLimit: Boolean): [Entry!]!
   }
 
@@ -74,6 +75,7 @@ export const typeDefs = `
     id: ID
     name: String
     type: CategoryType
+    position: Int
     limit: Int
   }
 
