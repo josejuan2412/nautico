@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS file_group (
     id INTEGER PRIMARY KEY,
     name TEXT NOT NULL DEFAULT '',
     directory TEXT NOT NULL,
-    created_at DATETIME DEFAULT current_timestamp,
+    created_at DATETIME DEFAULT current_timestamp
 );
 
 CREATE INDEX IF NOT EXISTS idx_file_group_created_at ON file_group (created_at);
@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS event_file_group (
     date DATETIME DEFAULT current_timestamp,
     created_at DATETIME DEFAULT current_timestamp,
     FOREIGN KEY (event_id) REFERENCES event (id) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (file_group_id) REFERENCES file_group (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (file_group_id) REFERENCES file_group (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE INDEX IF NOT EXISTS idx_event_file_group_event_id ON event_file_group (event_id);
@@ -73,7 +73,7 @@ CREATE TABLE IF NOT EXISTS tournament_fisherman (
     email TEXT,
     is_enabled INTEGER NOT NULL DEFAULT 0,
     created_at DATETIME DEFAULT current_timestamp,
-    FOREIGN KEY (tournament_id) REFERENCES tournament (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (tournament_id) REFERENCES tournament (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 /*Create index for FK*/
@@ -117,7 +117,7 @@ CREATE TABLE IF NOT EXISTS tournament_category (
     category_type TEXT CHECK (category_type IN ('points', 'weight')) NOT NULL DEFAULT 'weight',
     category_limit INTEGER NOT NULL DEFAULT 1,
     created_at DATETIME DEFAULT current_timestamp,
-    FOREIGN KEY (tournament_id) REFERENCES tournament (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (tournament_id) REFERENCES tournament (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE INDEX IF NOT EXISTS idx_tournament_tournament_id ON tournament_category (tournament_id);

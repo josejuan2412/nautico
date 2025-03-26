@@ -6,15 +6,27 @@ VALUES
 
 /*Add category*/
 INSERT INTO
-    tournament_category (id, name, tournament_id, category_type)
+    tournament_category (
+        id,
+        name,
+        tournament_id,
+        category_type,
+        "position"
+    )
 VALUES
-    (1, 'Wahoo', 1, 'weight');
+    (1, 'Wahoo', 1, 'weight', 0);
 
 /*Add category*/
 INSERT INTO
-    tournament_category (id, name, tournament_id, category_type)
+    tournament_category (
+        id,
+        name,
+        tournament_id,
+        category_type,
+        "position"
+    )
 VALUES
-    (2, 'Merlin', 1, 'points');
+    (2, 'Merlin', 1, 'points', 1);
 
 /*Add fisherman in the tournament*/
 INSERT INTO
@@ -31,27 +43,28 @@ VALUES
 INSERT INTO
     tournament_boat (id, name, tournament_id)
 VALUES
-    (1, 'Last cast', 1);
+    (1, 'Last Cast', 1);
 
 /*Add tournament entry*/
 INSERT INTO
     tournament_entry (
         id,
         tournament_id,
-        tournament_fisherman_id,
         tournament_category_id,
+        tournament_fisherman_id,
+        tournament_boat_id,
         value
     )
 VALUES
-    (1, 1, 1, 1, 25.64);
+    (1, 1, 1, 1, 1, 25.64);
 
 INSERT INTO
     tournament_entry (
         id,
         tournament_id,
+        tournament_category_id,
         tournament_fisherman_id,
         tournament_boat_id,
-        tournament_category_id,
         value
     )
 VALUES
