@@ -2,36 +2,37 @@ import { createSchema } from "graphql-yoga";
 
 import { typeDefs } from "../schema";
 
-import { getEvents, getEventById } from "./event";
+import { getEvents as events, getEventById as event } from "./event";
 import {
-  getTournaments,
-  getTournament,
+  getTournaments as tournaments,
+  getTournament as tournament,
   tournamentCreate,
   tournamentUpdate,
   tournamentDelete,
 } from "./tournament";
 import {
   getEntriesFromCategory,
-  getEntriesFromTournament,
+  getEntriesFromTournament as entries,
   entryDelete,
+  entryUpdate,
 } from "./entry";
 import {
-  getFishermansFromTournament,
-  getFishermanFromEntry,
+  getFishermansFromTournament as fishermans,
+  getFishermanFromEntry as fisherman,
   fishermanCreate,
   fishermanUpdate,
   fishermanDelete,
 } from "./fisherman";
 import {
-  getBoatsFromTournament,
-  getBoatFromEntry,
+  getBoatsFromTournament as boats,
+  getBoatFromEntry as boat,
   boatCreate,
   boatUpdate,
   boatDelete,
 } from "./boat";
 import {
-  getCategories,
-  getCategoryFromEntry,
+  getCategories as categories,
+  getCategoryFromEntry as category,
   categoryCreate,
   categoryUpdate,
   categoryDelete,
@@ -41,10 +42,10 @@ export const schema = createSchema({
   typeDefs,
   resolvers: {
     Query: {
-      event: getEventById,
-      events: getEvents,
-      tournament: getTournament,
-      tournaments: getTournaments,
+      event,
+      events,
+      tournament,
+      tournaments,
     },
     Mutation: {
       tournamentCreate,
@@ -60,17 +61,18 @@ export const schema = createSchema({
       boatUpdate,
       boatDelete,
       entryDelete,
+      entryUpdate,
     },
     Tournament: {
-      fishermans: getFishermansFromTournament,
-      boats: getBoatsFromTournament,
-      entries: getEntriesFromTournament,
-      categories: getCategories,
+      fishermans,
+      boats,
+      entries,
+      categories,
     },
     Entry: {
-      fisherman: getFishermanFromEntry,
-      boat: getBoatFromEntry,
-      category: getCategoryFromEntry,
+      fisherman,
+      boat,
+      category,
     },
     Category: {
       entries: getEntriesFromCategory,

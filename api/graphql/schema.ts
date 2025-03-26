@@ -89,6 +89,12 @@ export const typeDefs = `
     name: String
   }
 
+  input EntryInput {
+    id: ID
+    value: Float
+    date: Date
+  }
+
   type Query {
     event(id: ID!): Event
     events(orderBy: OrderBy, direction: Direction): [Event!]!
@@ -107,8 +113,9 @@ export const typeDefs = `
     fishermanUpdate(input: FishermanInput!): Fisherman!
     fishermanDelete(id: ID!): ID
     boatCreate(tournamentId: ID!, input: BoatInput!): Boat!
-    boatUpdate(input: BoatInput!): Fisherman!
+    boatUpdate(input: BoatInput!): Boat!
     boatDelete(id: ID!): ID
+    entryUpdate(input: EntryInput!): Entry!
     entryDelete(id: ID!): ID
   }
 `;

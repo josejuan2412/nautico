@@ -2,6 +2,8 @@ import { GraphQLError } from "graphql";
 import { Env } from "../../env";
 import { Nautico } from "../../../models";
 
+const TABLE_NAME = `tournament_entry`;
+
 export async function getEntriesFromTournament(
   tournament: Nautico.Tournament,
   _: unknown,
@@ -14,7 +16,7 @@ export async function getEntriesFromTournament(
     SELECT
         te.*
     FROM
-        tournament_entry te
+        ${TABLE_NAME} te
         LEFT JOIN tournament_fisherman tf ON (tf.id = te.tournament_fisherman_id)
     WHERE
         te.tournament_id = ?
@@ -43,7 +45,7 @@ export async function getEntriesFromCategory(
     SELECT
       te.*
     FROM
-      tournament_entry te
+      ${TABLE_NAME} te
       LEFT JOIN tournament_fisherman tf ON (tf.id = te.tournament_fisherman_id)
     WHERE
       te.tournament_category_id = ?
@@ -58,7 +60,7 @@ export async function getEntriesFromCategory(
         te.*,
         SUM(te.value) as total
       FROM
-        tournament_entry te
+        ${TABLE_NAME} te
         LEFT JOIN tournament_fisherman tf ON (tf.id = te.tournament_fisherman_id)
       WHERE
         tournament_category_id = ?
@@ -100,6 +102,57 @@ interface EntriesFromCategoryArgs {
 }
 
 /*MUTATION RESOLVERS */
+
+export async function entryUpdate(
+  _: unknown,
+  args: { input: EntryInput },
+  env: Env,
+): Promise<Nautico.Tournament.Entry> {
+  const { input } = args;
+  const { id, value, date } = input;
+  const { DB } = env;
+  if (!id) {
+    throw new GraphQLError(
+      `Cannot update a entry because required property 'id' is missing`,
+    );
+  }
+
+  const queryValues: Array<string> = [];
+  if (value) {
+    queryValues.push(`"value" = ${value}`);
+  }
+  if (date) {
+    queryValues.push(`"date" = datetime('${date.toString()}')`);
+  }
+  if (!queryValues.length) {
+    throw new GraphQLError(
+      `Cannot update the entry because at least one property is required`,
+    );
+  }
+  const query = `
+    UPDATE ${TABLE_NAME} SET
+      ${queryValues.join(", ")}
+    WHERE
+      id = ${id}
+    RETURNING *;
+  `;
+
+  try {
+    const { results } = await DB.prepare(query).all();
+    if (!results.length) {
+      throw new Error(`Entry not found for the id: ${id}`);
+    }
+    return toEntry(results[0]);
+  } catch (e) {
+    throw new GraphQLError(e.message);
+  }
+}
+
+interface EntryInput {
+  id?: number;
+  value?: number;
+  date?: Date;
+}
 
 export async function entryDelete(
   _: unknown,

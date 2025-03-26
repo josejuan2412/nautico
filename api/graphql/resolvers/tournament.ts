@@ -148,7 +148,7 @@ export async function tournamentUpdate(
 
   if (!queryValues.length) {
     throw new GraphQLError(
-      `Cannot update a tournament because at least one property is required`,
+      `Cannot update the tournament because at least one property is required`,
     );
   }
 
