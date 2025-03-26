@@ -96,6 +96,16 @@ export async function boatCreate(
   }
 }
 
+export async function boatFromTournamentCreate(
+  tournament: Nautico.Tournament,
+  args: { tournamentId: number; input: BoatInput },
+  env: Env,
+): Promise<Nautico.Tournament.Boat> {
+  const { id } = tournament;
+  const { input } = args;
+  return boatCreate(undefined, { tournamentId: id, input }, env);
+}
+
 export async function boatUpdate(
   _: unknown,
   args: { input: BoatInput },

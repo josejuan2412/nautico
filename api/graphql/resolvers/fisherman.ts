@@ -104,6 +104,16 @@ export async function fishermanCreate(
   }
 }
 
+export async function fishermanFromTournamentCreate(
+  tournament: Nautico.Tournament,
+  args: { input: FishermanInput },
+  env: Env,
+): Promise<Nautico.Tournament.Fisherman> {
+  const { id } = tournament;
+  const { input } = args;
+  return fishermanCreate(undefined, { tournamentId: id, input }, env);
+}
+
 export async function fishermanUpdate(
   _: unknown,
   args: { input: FishermanInput },
