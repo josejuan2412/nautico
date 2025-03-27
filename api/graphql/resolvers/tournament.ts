@@ -1,6 +1,9 @@
 import { GraphQLError } from "graphql";
 import { Env } from "../../env";
 import { Nautico } from "../../../models";
+
+export const TOURNAMENT_TABLE_NAME = `tournament`;
+
 /* QUERY RESOLVERS */
 export async function getTournaments(
   _: unknown,
@@ -10,7 +13,8 @@ export async function getTournaments(
   const { orderBy = "position", direction = "asc" } = args;
   const { DB } = env;
 
-  const query = `SELECT * FROM tournament ORDER BY ${orderBy} ${direction}`;
+  const query = `SELECT * FROM ${TOURNAMENT_TABLE_NAME}
+    ORDER BY ${orderBy} ${direction}`;
 
   const { results } = await DB.prepare(query).all();
 
@@ -34,9 +38,11 @@ export async function getTournament(
     throw new Error("You must specify an id");
   }
 
-  let query = `SELECT * FROM tournament WHERE id = ${id} LIMIT 1;`;
+  let query = `SELECT * FROM ${TOURNAMENT_TABLE_NAME}
+    WHERE id = ${id} LIMIT 1;`;
   if (latest) {
-    query = `SELECT * FROM tournament ORDER BY "date" DESC LIMIT 1;`;
+    query = `SELECT * FROM ${TOURNAMENT_TABLE_NAME}
+      ORDER BY "date" DESC LIMIT 1;`;
   }
 
   const { results } = await DB.prepare(query).all();
@@ -94,7 +100,7 @@ export async function tournamentCreate(
   }
 
   const query = `
-    INSERT INTO tournament
+    INSERT INTO ${TOURNAMENT_TABLE_NAME}
       (${queryColumns.join(",")})
     VALUES
       (${queryValues.join(",")})
@@ -153,7 +159,7 @@ export async function tournamentUpdate(
   }
 
   const query = `
-    UPDATE tournament SET
+    UPDATE ${TOURNAMENT_TABLE_NAME} SET
       ${queryValues.join(", ")}
     WHERE
       id = ${id}
@@ -193,7 +199,7 @@ export async function tournamentDelete(
   }
 
   const query = `
-    DELETE FROM tournament WHERE id = ? RETURNING *;
+    DELETE FROM ${TOURNAMENT_TABLE_NAME} WHERE id = ? RETURNING *;
   `;
 
   const { results } = await DB.prepare(query)

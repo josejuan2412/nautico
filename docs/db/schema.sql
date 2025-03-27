@@ -1,3 +1,15 @@
+/*Table that tracks sailing*/
+CREATE TABLE IF NOT EXISTS sail (
+    id INTEGER PRIMARY KEY,
+    boat TEXT NOT NULL DEFAULT '',
+    captain TEXT NOT NULL DEFAULT '',
+    crew INTEGER NOT NULL DEFAULT 1,
+    destination TEXT NOT NULL DEFAULT '',
+    departure DATETIME NOT NULL DEFAULT current_timestamp,
+    arrival DATETIME NOT NULL DEFAULT current_timestamp,
+    created_at DATETIME DEFAULT current_timestamp
+);
+
 /*Table that enables to group files in a group*/
 CREATE TABLE IF NOT EXISTS file_group (
     id INTEGER PRIMARY KEY,
