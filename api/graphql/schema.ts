@@ -114,20 +114,31 @@ export const typeDefs = `
     date: Date
   }
 
+  input SailInput {
+    id: ID
+    boat: String
+    captain: String
+    crew: Int
+    destination: String
+    departure: Date
+    arrival: Date
+  }
+
   type Query {
     event(id: ID!): Event
     events(orderBy: OrderBy, direction: Direction): [Event!]!
     tournament(id: ID, latest: Boolean): Tournament
     tournaments(orderBy: OrderBy, direction: Direction): [Tournament!]!
     sails(
-      start: Date!
-      end: Date!
+      start: Date
+      end: Date
       direction: Direction
       filterBy: SailFilterBy
     ): [Sail!]!
   }
 
   type Mutation {
+    sailCreate(input: SailInput!): Sail!
     tournamentCreate(input: TournamentInput!): Tournament!
     tournamentUpdate(input: TournamentInput!): Tournament!
     tournamentDelete(id: ID!): ID

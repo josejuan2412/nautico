@@ -14,13 +14,36 @@ export async function getSails(
   const { direction = "desc", filterBy = "departure" } = args;
   const { DB } = env;
 
+  console.log(`ARGS: `, args);
+  console.log(`TYPE: `, typeof args.start);
+
   const start = args.start
-    ? DateTime.fromJSDate(args.start)
+    ? DateTime.fromJSDate(
+        typeof args.start === "string" ? new Date(args.start) : args.start,
+      )
     : DateTime.now().minus({ days: 7 });
-  const end = args.end ? DateTime.fromJSDate(args.end) : DateTime.now();
+  const end = args.end
+    ? DateTime.fromJSDate(
+        typeof args.end === "string" ? new Date(args.end) : args.end,
+      )
+    : DateTime.now();
+
+  if (!start.isValid) {
+    throw new GraphQLError(
+      `The property 'start' with value "${args.start}" is invalid`,
+    );
+  }
+
+  if (!end.isValid) {
+    throw new GraphQLError(
+      `The property 'end' with value (${args.end}) is invalid`,
+    );
+  }
 
   if (start >= end) {
-    throw new GraphQLError(`The startDate can not be larger than the endDate`);
+    throw new GraphQLError(
+      `The 'start' date (${start.toISO()}) can not be larger than the 'end' date (${end.toISO()})`,
+    );
   }
 
   const startDate = start.toFormat("yyyy-LL-dd");
@@ -31,14 +54,16 @@ export async function getSails(
       AND '${endDate} 23:59:59'
     ORDER BY ${filterBy} ${direction}`;
 
+  console.log(`QUERY:`, query);
+
   const { results } = await DB.prepare(query).all();
 
   return results.map(toSail);
 }
 
 interface GetSailsArgs {
-  start: Date;
-  end: Date;
+  start: Date | string;
+  end: Date | string;
   direction: "asc" | "desc";
   filterBy: "departure" | "arrival";
 }
@@ -129,13 +154,13 @@ export async function sailCreate(
 }
 
 interface SailInput {
-  id?: number;
-  boat?: string;
-  captain?: string;
-  crew?: number;
-  destination?: Date;
-  departure?: Date;
-  arrival?: Date;
+  id: number;
+  boat: string;
+  captain: string;
+  crew: number;
+  destination: string;
+  departure: Date;
+  arrival: Date;
 }
 
 export function toSail(row: Record<string, unknown>): Nautico.Sail {
