@@ -1,12 +1,29 @@
 export const typeDefs = `
   scalar Date
+
   enum OrderBy {
     position
     date
   }
+
   enum Direction {
     asc
     desc
+  }
+
+  type Sail {
+    id: ID!
+    boat: String!
+    captain: String!
+    crew: Int!
+    destination: String!
+    departure: Date!
+    arrival: Date!
+  }
+
+  enum SailFilterBy {
+    departure
+    arrival
   }
 
   type Event {
@@ -37,11 +54,6 @@ export const typeDefs = `
     boat: Boat!
   }
 
-  enum CategoryType {
-    points
-    weight
-  }
-
   type Category {
     id: ID!
     name: String!
@@ -49,6 +61,11 @@ export const typeDefs = `
     limit: Int!
     position: Int!
     entries(ignoreLimit: Boolean): [Entry!]!
+  }
+
+  enum CategoryType {
+    points
+    weight
   }
 
   type Tournament {
@@ -102,6 +119,12 @@ export const typeDefs = `
     events(orderBy: OrderBy, direction: Direction): [Event!]!
     tournament(id: ID, latest: Boolean): Tournament
     tournaments(orderBy: OrderBy, direction: Direction): [Tournament!]!
+    sails(
+      start: Date!
+      end: Date!
+      direction: Direction
+      filterBy: SailFilterBy
+    ): [Sail!]!
   }
 
   type Mutation {
@@ -118,10 +141,10 @@ export const typeDefs = `
     boatUpdate(input: BoatInput!): Boat!
     boatDelete(id: ID!): ID
     entryCreate(
-      tournamentId: ID!,
-      categoryId: ID!,
-      fishermanId: ID!,
-      boatId: ID!,
+      tournamentId: ID!
+      categoryId: ID!
+      fishermanId: ID!
+      boatId: ID!
       input: EntryInput!
     ): Entry!
     entryUpdate(input: EntryInput!): Entry!

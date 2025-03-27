@@ -1,10 +1,49 @@
 import { GraphQLError } from "graphql";
+import { DateTime } from "luxon";
 import { Nautico } from "../../../models";
 import { Env } from "../../env";
 
 export const SAIL_TABLE_NAME = `sail`;
 
-/*MUTATION Resolvers*/
+/* QUERY RESOLVERS */
+export async function getSails(
+  _: unknown,
+  args: GetSailsArgs,
+  env: Env,
+): Promise<Array<Nautico.Sail>> {
+  const { direction = "desc", filterBy = "departure" } = args;
+  const { DB } = env;
+
+  const start = args.start
+    ? DateTime.fromJSDate(args.start)
+    : DateTime.now().minus({ days: 7 });
+  const end = args.end ? DateTime.fromJSDate(args.end) : DateTime.now();
+
+  if (start >= end) {
+    throw new GraphQLError(`The startDate can not be larger than the endDate`);
+  }
+
+  const startDate = start.toFormat("yyyy-LL-dd");
+  const endDate = end.toFormat("yyyy-LL-dd");
+
+  const query = `SELECT * FROM ${SAIL_TABLE_NAME}
+    WHERE ${filterBy} BETWEEN '${startDate} 00:00:00'
+      AND '${endDate} 23:59:59'
+    ORDER BY ${filterBy} ${direction}`;
+
+  const { results } = await DB.prepare(query).all();
+
+  return results.map(toSail);
+}
+
+interface GetSailsArgs {
+  start: Date;
+  end: Date;
+  direction: "asc" | "desc";
+  filterBy: "departure" | "arrival";
+}
+
+/*MUTATION RESOLVERS*/
 export async function sailCreate(
   _: unknown,
   args: { input: SailInput },
