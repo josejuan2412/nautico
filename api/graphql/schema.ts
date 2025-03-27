@@ -139,6 +139,7 @@ export const typeDefs = `
 
   type Mutation {
     sailCreate(input: SailInput!): Sail!
+    sailUpdate(input: SailInput!): Sail!
     tournamentCreate(input: TournamentInput!): Tournament!
     tournamentUpdate(input: TournamentInput!): Tournament!
     tournamentDelete(id: ID!): ID

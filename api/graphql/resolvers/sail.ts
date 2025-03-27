@@ -54,8 +54,6 @@ export async function getSails(
       AND '${endDate} 23:59:59'
     ORDER BY ${filterBy} ${direction}`;
 
-  console.log(`QUERY:`, query);
-
   const { results } = await DB.prepare(query).all();
 
   return results.map(toSail);
@@ -147,6 +145,97 @@ export async function sailCreate(
 
   try {
     const { results } = await DB.prepare(query).all();
+    return toSail(results[0]);
+  } catch (e) {
+    throw new GraphQLError(e.message);
+  }
+}
+
+export async function sailUpdate(
+  _: unknown,
+  args: { input: SailInput },
+  env: Env,
+): Promise<Nautico.Sail> {
+  const { input } = args;
+  const { id, boat, captain, crew, destination, departure, arrival } = input;
+  const { DB } = env;
+
+  if (!id) {
+    throw new GraphQLError(
+      `Cannot update a sail because required property 'id' is missing`,
+    );
+  }
+
+  const queryValues: Array<string> = [];
+
+  if (boat) {
+    queryValues.push(`boat = '${boat}'`);
+  }
+
+  if (captain) {
+    queryValues.push(`captain = '${captain}'`);
+  }
+
+  if (crew) {
+    queryValues.push(`crew = ${crew}`);
+  }
+
+  if (destination) {
+    queryValues.push(`destination = '${crew}'`);
+  }
+
+  if (departure && !arrival) {
+    throw new GraphQLError(
+      `Cannot update a sail 'departure' property without an 'arrival' property`,
+    );
+  }
+
+  if (!departure && arrival) {
+    throw new GraphQLError(
+      `Cannot update a sail 'arrival' property without an 'departure' property`,
+    );
+  }
+
+  if (departure && arrival) {
+    const departureDt = DateTime.fromJSDate(
+      typeof departure === "string" ? new Date(departure) : departure,
+    );
+    const arrivalDt = DateTime.fromJSDate(
+      typeof arrival === "string" ? new Date(arrival) : arrival,
+    );
+
+    if (departureDt >= arrivalDt) {
+      throw new GraphQLError(
+        `Cannot create a sail because arrival must be larger than departure`,
+      );
+    }
+    queryValues.push(
+      `departure = datetime('${departureDt.toJSDate().toString()}')`,
+    );
+    queryValues.push(
+      `arrival = datetime('${arrivalDt.toJSDate().toString()}')`,
+    );
+  }
+
+  if (!queryValues.length) {
+    throw new GraphQLError(
+      `Cannot update the sail because at least one property is required`,
+    );
+  }
+
+  const query = `
+    UPDATE ${SAIL_TABLE_NAME} SET
+      ${queryValues.join(", ")}
+    WHERE
+      id = ${id}
+    RETURNING *;
+  `;
+
+  try {
+    const { results } = await DB.prepare(query).all();
+    if (!results.length) {
+      throw new Error(`Sail not found for the id: ${id}`);
+    }
     return toSail(results[0]);
   } catch (e) {
     throw new GraphQLError(e.message);
