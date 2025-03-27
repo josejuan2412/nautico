@@ -2,7 +2,7 @@ import { GraphQLError } from "graphql";
 import { Nautico } from "../../../models";
 import { Env } from "../../env";
 
-export const SAIL_TABLE_NAME = `tournament`;
+export const SAIL_TABLE_NAME = `sail`;
 
 /*MUTATION Resolvers*/
 export async function sailCreate(

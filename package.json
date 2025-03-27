@@ -34,6 +34,7 @@
     "graphql-yoga": "^5.13.2",
     "hono": "^4.4.0",
     "lucide-react": "^0.483.0",
+    "luxon": "^3.6.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^6.10.0",
