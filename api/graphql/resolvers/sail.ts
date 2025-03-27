@@ -252,6 +252,32 @@ interface SailInput {
   arrival: Date;
 }
 
+export async function sailDelete(
+  _: unknown,
+  args: { id: number },
+  env: Env,
+): Promise<number | null> {
+  const { id } = args;
+  const { DB } = env;
+  if (!id) {
+    throw new GraphQLError(
+      `Cannot delete a sail because required property 'id' is missing`,
+    );
+  }
+
+  const query = `
+    DELETE FROM ${SAIL_TABLE_NAME} WHERE id = ? RETURNING *;
+  `;
+
+  const { results } = await DB.prepare(query)
+    .bind(parseInt(`${id}`))
+    .all();
+  if (!results.length) {
+    return null;
+  }
+  return id;
+}
+
 export function toSail(row: Record<string, unknown>): Nautico.Sail {
   const {
     id,
