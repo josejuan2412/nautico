@@ -1,0 +1,23 @@
+.sail {
+    height: 100%;
+    max-width: 1024px;
+
+    margin: 0 auto;
+}
+
+.sails h2 {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.loading,
+.error {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.error {
+    color: rgb(255, 59, 48);
+}

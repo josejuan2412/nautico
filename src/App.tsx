@@ -23,7 +23,7 @@ function App() {
       element: <Tournament />,
     },
     {
-      path: "/voyages",
+      path: "/departures",
       element: <Departures />,
     },
     {
