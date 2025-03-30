@@ -38,6 +38,17 @@ export namespace Nautico {
     }
   }
 
+  export interface Sail {
+    id: number;
+    boat: string;
+    captain: string;
+    crew: number;
+    destination: string;
+    departure: Date;
+    arrival: Date;
+    createdAt: Date;
+  }
+
   export interface FileGroup {
     id: number;
     name: string;
