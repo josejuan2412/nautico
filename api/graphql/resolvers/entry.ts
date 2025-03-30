@@ -139,7 +139,7 @@ export async function entryCreate(
     .bind(parseInt(`${categoryId}`))
     .all();
 
-  if (!category.results) {
+  if (!category.results.length) {
     throw new GraphQLError(
       `Can't create an entry because the category doesn't exist`,
     );
@@ -159,7 +159,7 @@ export async function entryCreate(
     .bind(parseInt(`${fishermanId}`))
     .all();
 
-  if (!fisherman.results) {
+  if (!fisherman.results.length) {
     throw new GraphQLError(
       `Can't create an entry because the fisherman doesn't exist`,
     );
@@ -179,7 +179,7 @@ export async function entryCreate(
     .bind(parseInt(`${boatId}`))
     .all();
 
-  if (!boat.results) {
+  if (!boat.results.length) {
     throw new GraphQLError(
       `Can't create an entry because the boat doesn't exist`,
     );
@@ -206,7 +206,7 @@ export async function entryCreate(
     fishermanId,
     boatId,
     value,
-    witness,
+    `'${witness}'`,
   ];
   if (date) {
     queryColumns.push(`"created_at"`);
