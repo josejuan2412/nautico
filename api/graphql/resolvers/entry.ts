@@ -118,11 +118,17 @@ export async function entryCreate(
   env: Env,
 ): Promise<Nautico.Tournament.Entry> {
   const { tournamentId, categoryId, fishermanId, boatId, input } = args;
-  const { value, date } = input;
+  const { value, date, witness } = input;
   const { DB } = env;
   if (!value) {
     throw new GraphQLError(
       `Cannot create an entry because required property 'value' is missing`,
+    );
+  }
+
+  if (!witness) {
+    throw new GraphQLError(
+      `Cannot create an entry because required property 'witness' is missing`,
     );
   }
 
@@ -192,6 +198,7 @@ export async function entryCreate(
     "tournament_fisherman_id",
     "tournament_boat_id",
     "value",
+    "witness",
   ];
   const queryValues: Array<number | string | Date> = [
     tournamentId,
@@ -199,6 +206,7 @@ export async function entryCreate(
     fishermanId,
     boatId,
     value,
+    witness,
   ];
   if (date) {
     queryColumns.push(`"created_at"`);
@@ -227,7 +235,7 @@ export async function entryUpdate(
   env: Env,
 ): Promise<Nautico.Tournament.Entry> {
   const { input } = args;
-  const { id, value, date } = input;
+  const { id, value, date, witness } = input;
   const { DB } = env;
   if (!id) {
     throw new GraphQLError(
@@ -238,6 +246,9 @@ export async function entryUpdate(
   const queryValues: Array<string> = [];
   if (value) {
     queryValues.push(`"value" = ${value}`);
+  }
+  if (witness) {
+    queryValues.push(`witness = '${witness}'`);
   }
   if (date) {
     queryValues.push(`"created_at" = datetime('${date.toString()}')`);
@@ -269,6 +280,7 @@ export async function entryUpdate(
 interface EntryInput {
   id?: number;
   value?: number;
+  witness?: string;
   date?: Date;
 }
 
@@ -299,10 +311,11 @@ export async function entryDelete(
 }
 
 function toEntry(row: Record<string, unknown>): Nautico.Tournament.Entry {
-  const { id, value, created_at } = row;
+  const { id, value, witness, created_at } = row;
   return {
     id: parseInt(`${id}`),
     value: parseFloat(`${value}`),
+    witness: `${witness}`,
     date: new Date(`${created_at}`),
   };
 }

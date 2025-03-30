@@ -147,6 +147,7 @@ CREATE TABLE IF NOT EXISTS tournament_entry (
     tournament_category_id INTEGER NOT NULL,
     tournament_fisherman_id INTEGER NOT NULL,
     tournament_boat_id INTEGER NOT NULL,
+    witness TEXT NOT NULL DEFAULT '',
     value REAL NOT NULL DEFAULT 0,
     created_at DATETIME DEFAULT current_timestamp,
     FOREIGN KEY (tournament_id) REFERENCES tournament (id) ON DELETE CASCADE ON UPDATE CASCADE,

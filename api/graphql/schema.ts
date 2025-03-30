@@ -50,6 +50,7 @@ export const typeDefs = `
     value: Float!
     date: Date!
     fisherman: Fisherman!
+    witness: String!
     category: Category!
     boat: Boat!
   }
@@ -111,6 +112,7 @@ export const typeDefs = `
   input EntryInput {
     id: ID
     value: Float
+    witness: String
     date: Date
   }
 
