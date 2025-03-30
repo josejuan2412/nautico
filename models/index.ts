@@ -34,6 +34,7 @@ export namespace Nautico {
     export interface Entry {
       id: number;
       value: number;
+      witness: string;
       date: Date;
     }
   }
