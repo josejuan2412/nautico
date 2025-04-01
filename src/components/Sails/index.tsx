@@ -104,7 +104,7 @@ export function Sails({ start, end }: SalesProps) {
 function Loading() {
   return (
     <div className={styles["loading"]}>
-      <Spinner size="lg" className="bg-black dark:bg-white" />
+      <Spinner size="large" />
     </div>
   );
 }
