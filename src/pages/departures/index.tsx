@@ -1,11 +1,12 @@
 import styles from "./Departures.module.css";
 
-import { Sails, DatePickerDemo } from "../../components/Sails";
+import { Sails } from "../../components/Sails";
+import { DatePicker } from "@/components/ui/date-picker";
 
 export default function Departures() {
   return (
     <div className={styles["view"]}>
-      <DatePickerDemo />
+      <DatePicker />
       <Sails />
     </div>
   );
