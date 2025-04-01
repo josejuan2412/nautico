@@ -1,4 +1,4 @@
-// import { useState } from "react";
+import { FormEvent, useState } from "react";
 import styles from "./Departures.module.css";
 
 import { Sails } from "../../components/Sails";
@@ -16,7 +16,8 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { FormEvent } from "react";
+
+import { DateTime } from "luxon";
 
 export default function Departures() {
   // const [date, setDate] = useState<Date | undefined>(undefined);
@@ -25,7 +26,6 @@ export default function Departures() {
       <SheetTrigger asChild>
         <div className={styles["view"]}>
           <Button variant="outline">Open</Button>
-          <DateTimePicker />
           <Sails />
         </div>
       </SheetTrigger>
@@ -35,6 +35,17 @@ export default function Departures() {
 }
 
 function RegistrationForm() {
+  const defaultDeparture = DateTime.now().toJSDate();
+  const defaultArrival = DateTime.now().plus({ hours: 4 }).toJSDate();
+
+  const [boat, setBoat] = useState("");
+  const [departure, setDeparture] = useState<Date | undefined>(
+    defaultDeparture,
+  );
+  const [arrival, setArrival] = useState<Date | undefined>(defaultArrival);
+
+  const isValid: boolean = !!(boat && departure && arrival);
+
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log(`I send data`);
@@ -49,22 +60,61 @@ function RegistrationForm() {
           </SheetDescription>
         </SheetHeader>
         <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name
+          <div className="grid grid-cols-4 items-center gap-10">
+            <Label htmlFor="name" className="text-left">
+              Embarcación
             </Label>
-            <Input id="name" value="Pedro Duarte" className="col-span-3" />
+            <Input
+              required
+              id="boat"
+              value={boat}
+              onChange={(e) => {
+                setBoat(e.target.value);
+              }}
+              className="col-span-3"
+            />
           </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
-              Username
+          <div className="grid grid-cols-4 items-center gap-10">
+            <Label htmlFor="username" className="text-left">
+              Capitán
+            </Label>
+            <Input
+              required
+              id="username"
+              value="@peduarte"
+              className="col-span-3"
+            />
+          </div>
+          <div className="grid grid-cols-4 items-center gap-10">
+            <Label htmlFor="username" className="text-left">
+              Tripulación
             </Label>
             <Input id="username" value="@peduarte" className="col-span-3" />
+          </div>
+          <div className="grid grid-cols-4 items-center gap-10">
+            <Label htmlFor="username" className="text-left">
+              Destino
+            </Label>
+            <Input id="username" value="@peduarte" className="col-span-3" />
+          </div>
+          <div className="grid grid-cols-4 items-center gap-10">
+            <Label htmlFor="username" className="text-left">
+              Salida
+            </Label>
+            <DateTimePicker date={departure} setDate={setDeparture} />
+          </div>
+          <div className="grid grid-cols-4 items-center gap-10">
+            <Label htmlFor="username" className="text-left">
+              Entrada
+            </Label>
+            <DateTimePicker date={arrival} setDate={setArrival} />
           </div>
         </div>
         <SheetFooter>
           <SheetClose asChild>
-            <Button type="submit">Save changes</Button>
+            <Button disabled={!isValid} type="submit">
+              Enviar
+            </Button>
           </SheetClose>
         </SheetFooter>
       </form>

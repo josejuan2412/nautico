@@ -12,8 +12,8 @@ import {
 } from "@/components/ui/popover";
 import { TimePicker } from "@/components/ui/time-picker-12h";
 
-export function DateTimePicker() {
-  const [date, setDate] = React.useState<Date>();
+export function DateTimePicker(props: DateTimeProps) {
+  const { date, setDate } = props;
 
   /**
    * carry over the current time when a user clicks a new day
@@ -37,7 +37,7 @@ export function DateTimePicker() {
         <Button
           variant={"outline"}
           className={cn(
-            "w-[280px] justify-start text-left font-normal",
+            "col-span-3 justify-start text-left font-normal",
             !date && "text-muted-foreground",
           )}
         >
@@ -58,4 +58,9 @@ export function DateTimePicker() {
       </PopoverContent>
     </Popover>
   );
+}
+
+interface DateTimeProps {
+  date: Date | undefined;
+  setDate: React.Dispatch<React.SetStateAction<Date | undefined>>;
 }
