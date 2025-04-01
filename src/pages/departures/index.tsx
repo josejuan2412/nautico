@@ -23,12 +23,12 @@ export default function Departures() {
   // const [date, setDate] = useState<Date | undefined>(undefined);
   return (
     <Sheet>
-      <SheetTrigger asChild>
-        <div className={styles["view"]}>
+      <div className={styles["view"]}>
+        <SheetTrigger asChild>
           <Button variant="outline">Open</Button>
-          <Sails />
-        </div>
-      </SheetTrigger>
+        </SheetTrigger>
+        <Sails />
+      </div>
       <RegistrationForm />
     </Sheet>
   );
