@@ -25,6 +25,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
+import { useState } from "react";
 
 const RegistrationFormSchema = z
   .object({
@@ -64,8 +65,7 @@ const RegistrationFormSchema = z
   });
 
 export function RegistrationForm({ onClose }: RegistrationFormProps) {
-  const departure = DateTime.now().toJSDate();
-  const arrival = DateTime.now().plus({ hours: 4 }).toJSDate();
+  const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<z.infer<typeof RegistrationFormSchema>>({
     resolver: zodResolver(RegistrationFormSchema),
@@ -74,13 +74,19 @@ export function RegistrationForm({ onClose }: RegistrationFormProps) {
       captain: "",
       crew: 1,
       destination: "",
-      departure,
-      arrival,
+      departure: DateTime.now().toJSDate(),
+      arrival: DateTime.now().plus({ hours: 4 }).toJSDate(),
     },
   });
 
   const onSubmit = (values: z.infer<typeof RegistrationFormSchema>) => {
+    setIsLoading(true);
     console.log(values);
+    setTimeout(() => {
+      setIsLoading(false);
+      form.reset();
+      onClose();
+    }, 3000);
   };
 
   return (
@@ -218,7 +224,13 @@ export function RegistrationForm({ onClose }: RegistrationFormProps) {
           </div>
           <SheetFooter>
             <SheetClose asChild>
-              <Button type="submit">Enviar</Button>
+              {isLoading ? (
+                <Button disabled type="submit">
+                  Loading
+                </Button>
+              ) : (
+                <Button type="submit">Enviar</Button>
+              )}
             </SheetClose>
           </SheetFooter>
         </form>
