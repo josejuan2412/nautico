@@ -48,10 +48,12 @@ const RegistrationFormSchema = z
         required_error: "Fecha de salida es requerida",
       })
       .refine(
-        (data) => {
-          const selectedDate = data;
-          const minValidDate = DateTime.now().minus({ minutes: 30 }).toJSDate();
-          return selectedDate > minValidDate;
+        (departure) => {
+          // This is the minimum amount that you can set the departure
+          const minValidDeparture = DateTime.now()
+            .minus({ minutes: 30 })
+            .toJSDate();
+          return departure > minValidDeparture;
         },
         {
           message: "La hora de salida no puede ser en el pasado",
