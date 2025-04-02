@@ -13,7 +13,8 @@ import {
 import { TimePicker } from "@/components/ui/time-picker-12h";
 
 export function DateTimePicker(props: DateTimeProps) {
-  const { date, setDate } = props;
+  const { id, onChange, value } = props;
+  const [date, setDate] = React.useState<Date>(value || new Date());
 
   /**
    * carry over the current time when a user clicks a new day
@@ -31,22 +32,27 @@ export function DateTimePicker(props: DateTimeProps) {
     setDate(newDateFull);
   };
 
+  React.useEffect(() => {
+    onChange(date);
+  }, [date, onChange]);
+
   return (
     <Popover>
       <PopoverTrigger asChild>
         <Button
           variant={"outline"}
           className={cn(
-            "col-span-3 justify-start text-left font-normal",
+            "flex h-10 w-full justify-start text-left font-normal",
             !date && "text-muted-foreground",
           )}
         >
           <CalendarIcon className="mr-2 h-4 w-4" />
-          {date ? format(date, "PPP HH:mm:ss a") : <span>Pick a date</span>}
+          {date ? format(date, "PPP hh:mm:ss a") : <span>Pick a date</span>}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0">
         <Calendar
+          id={id}
           mode="single"
           selected={date}
           onSelect={(d) => handleSelect(d)}
@@ -61,6 +67,7 @@ export function DateTimePicker(props: DateTimeProps) {
 }
 
 interface DateTimeProps {
-  date: Date | undefined;
-  setDate: React.Dispatch<React.SetStateAction<Date | undefined>>;
+  value: Date | undefined;
+  onChange: (date: Date) => void;
+  id?: string;
 }

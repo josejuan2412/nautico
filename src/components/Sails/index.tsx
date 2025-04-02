@@ -13,13 +13,16 @@ import {
 
 import { Nautico } from "../../../models";
 
+import { RegistrationForm } from "./RegistrationForm";
+
 const DT_FORMAT = "yyyy LLL dd, h:mm:a";
 
 import styles from "./Sails.module.css";
-export function Sails({ start, end }: SalesProps) {
+
+function Sails({ start, end }: SalesProps) {
   if (!start) {
     start = DateTime.now()
-      .minus({ days: 7 })
+      .minus({ days: 50 })
       .set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
       .toJSDate();
   }
@@ -137,3 +140,5 @@ const GET_SAILS = gql`
     }
   }
 `;
+
+export { Sails, RegistrationForm };
