@@ -2,7 +2,6 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { DateTime } from "luxon";
-
 import { X } from "lucide-react";
 
 import { DateTimePicker } from "@/components/ui/date-time-picker";
@@ -25,7 +24,8 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { useState } from "react";
+import { useEffect } from "react";
+import { gql, useMutation } from "@apollo/client";
 
 const RegistrationFormSchema = z
   .object({
@@ -65,7 +65,7 @@ const RegistrationFormSchema = z
   });
 
 export function RegistrationForm({ onClose }: RegistrationFormProps) {
-  const [isLoading, setIsLoading] = useState(false);
+  const [registerSail, { data, loading, error }] = useMutation(REGISTER_SAIL);
 
   const form = useForm<z.infer<typeof RegistrationFormSchema>>({
     resolver: zodResolver(RegistrationFormSchema),
@@ -79,14 +79,31 @@ export function RegistrationForm({ onClose }: RegistrationFormProps) {
     },
   });
 
+  useEffect(() => {
+    if (!data) return;
+    console.log(`Success sending the data: `, data);
+    form.reset();
+    onClose();
+  }, [data, onClose, form]);
+
+  useEffect(() => {
+    if (!error) return;
+    alert(error.message);
+  }, [error]);
+
   const onSubmit = (values: z.infer<typeof RegistrationFormSchema>) => {
-    setIsLoading(true);
-    console.log(values);
-    setTimeout(() => {
-      setIsLoading(false);
-      form.reset();
-      onClose();
-    }, 3000);
+    const { departure, arrival } = values;
+    const input = {
+      ...values,
+      departure: departure.toISOString(),
+      arrival: arrival.toISOString(),
+    };
+    console.log(`Input: `, input);
+    registerSail({
+      variables: {
+        input,
+      },
+    });
   };
 
   return (
@@ -224,7 +241,7 @@ export function RegistrationForm({ onClose }: RegistrationFormProps) {
           </div>
           <SheetFooter>
             <SheetClose asChild>
-              {isLoading ? (
+              {loading ? (
                 <Button disabled type="submit">
                   Loading
                 </Button>
@@ -242,3 +259,17 @@ export function RegistrationForm({ onClose }: RegistrationFormProps) {
 interface RegistrationFormProps {
   onClose: () => void;
 }
+
+const REGISTER_SAIL = gql`
+  mutation SailCreate($input: SailInput!) {
+    sailCreate(input: $input) {
+      id
+      boat
+      captain
+      crew
+      destination
+      departure
+      arrival
+    }
+  }
+`;

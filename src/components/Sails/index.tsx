@@ -29,6 +29,7 @@ function Sails({ start, end }: SalesProps) {
 
   if (!end) {
     end = DateTime.now()
+      .plus({ days: 50 })
       .set({
         hour: 23,
         minute: 59,

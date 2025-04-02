@@ -59,7 +59,13 @@ export function DateTimePicker(props: DateTimeProps) {
           initialFocus
         />
         <div className="p-3 border-t border-border">
-          <TimePicker setDate={setDate} date={date} />
+          <TimePicker
+            setDate={(d) => {
+              if (!d) return;
+              setDate(d);
+            }}
+            date={date}
+          />
         </div>
       </PopoverContent>
     </Popover>
