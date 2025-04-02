@@ -27,6 +27,7 @@ CREATE TABLE IF NOT EXISTS event (
     id INTEGER PRIMARY KEY,
     name TEXT NOT NULL DEFAULT '',
     date DATETIME DEFAULT current_timestamp,
+    is_enabled INTEGER NOT NULL DEFAULT 0,
     position INTEGER DEFAULT 0
 );
 
