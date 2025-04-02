@@ -2,7 +2,9 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { DateTime } from "luxon";
-import { X } from "lucide-react";
+import { X, AlertCircle } from "lucide-react";
+
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 import { DateTimePicker } from "@/components/ui/date-time-picker";
 import { Button } from "@/components/ui/button";
@@ -65,7 +67,8 @@ const RegistrationFormSchema = z
   });
 
 export function RegistrationForm({ onClose }: RegistrationFormProps) {
-  const [registerSail, { data, loading, error }] = useMutation(REGISTER_SAIL);
+  const [registerSail, { data, loading, error, reset }] =
+    useMutation(REGISTER_SAIL);
 
   const form = useForm<z.infer<typeof RegistrationFormSchema>>({
     resolver: zodResolver(RegistrationFormSchema),
@@ -79,17 +82,24 @@ export function RegistrationForm({ onClose }: RegistrationFormProps) {
     },
   });
 
+  const {
+    formState: { errors },
+  } = form;
+
   useEffect(() => {
     if (!data) return;
-    console.log(`Success sending the data: `, data);
     form.reset();
+    reset();
     onClose();
-  }, [data, onClose, form]);
+  }, [data, onClose, form, reset]);
 
   useEffect(() => {
     if (!error) return;
-    alert(error.message);
-  }, [error]);
+    form.setError("root", {
+      type: "custom",
+      message: error.message,
+    });
+  }, [error, form]);
 
   const onSubmit = (values: z.infer<typeof RegistrationFormSchema>) => {
     const { departure, arrival } = values;
@@ -98,7 +108,8 @@ export function RegistrationForm({ onClose }: RegistrationFormProps) {
       departure: departure.toISOString(),
       arrival: arrival.toISOString(),
     };
-    console.log(`Input: `, input);
+
+    form.clearErrors();
     registerSail({
       variables: {
         input,
@@ -122,6 +133,13 @@ export function RegistrationForm({ onClose }: RegistrationFormProps) {
             <SheetDescription>
               Llene el formulario para llenar el viaje
             </SheetDescription>
+            {errors.root?.message && (
+              <Alert variant="destructive">
+                <AlertCircle className="h-4 w-4" />
+                <AlertTitle>Error</AlertTitle>
+                <AlertDescription>{errors.root.message}</AlertDescription>
+              </Alert>
+            )}
           </SheetHeader>
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-1 items-center gap-10">
