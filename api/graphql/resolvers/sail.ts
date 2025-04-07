@@ -14,9 +14,6 @@ export async function getSails(
   const { direction = "desc", filterBy = "departure" } = args;
   const { DB } = env;
 
-  console.log(`ARGS: `, args);
-  console.log(`TYPE: `, typeof args.start);
-
   const start = args.start
     ? DateTime.fromJSDate(
         typeof args.start === "string" ? new Date(args.start) : args.start,
