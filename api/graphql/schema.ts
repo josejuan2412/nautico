@@ -33,6 +33,14 @@ export const typeDefs = `
     date: Date!
   }
 
+  type FileGroup {
+    id: ID!
+    name: String!
+    directory: String!
+    date: Date!
+    files: [String!]!
+  }
+
   type Boat {
     id: ID!
     name: String!
@@ -128,6 +136,7 @@ export const typeDefs = `
 
   type Query {
     event(id: ID!): Event
+    fileGroups: [FileGroup!]!
     events(orderBy: OrderBy, direction: Direction): [Event!]!
     tournament(id: ID, latest: Boolean): Tournament
     tournaments(orderBy: OrderBy, direction: Direction): [Tournament!]!

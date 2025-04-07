@@ -51,7 +51,7 @@ const RegistrationFormSchema = z
         (departure) => {
           // This is the minimum amount that you can set the departure
           const minValidDeparture = DateTime.now()
-            .minus({ minutes: 30 })
+            .minus({ hour: 1 })
             .toJSDate();
           return departure > minValidDeparture;
         },

@@ -55,7 +55,7 @@ export namespace Nautico {
     name: string;
     directory: string;
     date: Date;
-    files?: Array<File>;
+    files: Array<File>;
   }
 
   export interface File {
