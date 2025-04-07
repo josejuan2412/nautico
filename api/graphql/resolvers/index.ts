@@ -3,6 +3,11 @@ import { createSchema } from "graphql-yoga";
 import { typeDefs } from "../schema";
 
 import { getSails as sails, sailCreate, sailUpdate, sailDelete } from "./sail";
+import {
+  getFileGroups as fileGroups,
+  getFileGroup as fileGroup,
+  getFileGroupsByEvent,
+} from "./file-group";
 import { getEvents as events, getEventById as event } from "./event";
 import {
   getTournaments as tournaments,
@@ -46,6 +51,8 @@ export const schema = createSchema({
     Query: {
       event,
       events,
+      fileGroup,
+      fileGroups,
       tournament,
       tournaments,
       sails,
@@ -69,6 +76,9 @@ export const schema = createSchema({
       entryCreate,
       entryUpdate,
       entryDelete,
+    },
+    Event: {
+      fileGroups: getFileGroupsByEvent,
     },
     Tournament: {
       fishermans,

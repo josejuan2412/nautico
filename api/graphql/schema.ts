@@ -31,14 +31,24 @@ export const typeDefs = `
     name: String!
     position: Int!
     date: Date!
+    fileGroups(orderBy: OrderBy, direction: Direction): [FileGroup!]!
   }
 
   type FileGroup {
     id: ID!
     name: String!
     directory: String!
+    files: [File!]!
     date: Date!
-    files: [String!]!
+  }
+
+  type File {
+    id: ID!
+    key: String!
+    url: String!
+    version: String!
+    size: Int!
+    uploaded: Date!
   }
 
   type Boat {
@@ -136,8 +146,9 @@ export const typeDefs = `
 
   type Query {
     event(id: ID!): Event
-    fileGroups: [FileGroup!]!
     events(orderBy: OrderBy, direction: Direction): [Event!]!
+    fileGroup(id: ID!): FileGroup
+    fileGroups(direction: Direction): [FileGroup!]!
     tournament(id: ID, latest: Boolean): Tournament
     tournaments(orderBy: OrderBy, direction: Direction): [Tournament!]!
     sails(

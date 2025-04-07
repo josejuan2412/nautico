@@ -2,7 +2,7 @@ import { GraphQLError } from "graphql";
 import { Env } from "../../env";
 import { Nautico } from "../../../models";
 
-export const ENTRY_TABLE_NAME = `tournament_entry`;
+export const TABLE_NAME = `tournament_entry`;
 
 export async function getEntriesFromTournament(
   tournament: Nautico.Tournament,
@@ -16,7 +16,7 @@ export async function getEntriesFromTournament(
     SELECT
         te.*
     FROM
-        ${ENTRY_TABLE_NAME} te
+        ${TABLE_NAME} te
         LEFT JOIN tournament_fisherman tf
           ON (tf.id = te.tournament_fisherman_id)
     WHERE
@@ -46,7 +46,7 @@ export async function getEntriesFromCategory(
     SELECT
       te.*
     FROM
-      ${ENTRY_TABLE_NAME} te
+      ${TABLE_NAME} te
       LEFT JOIN tournament_fisherman tf
         ON (tf.id = te.tournament_fisherman_id)
     WHERE
@@ -62,7 +62,7 @@ export async function getEntriesFromCategory(
         te.*,
         SUM(te.value) as total
       FROM
-        ${ENTRY_TABLE_NAME} te
+        ${TABLE_NAME} te
         LEFT JOIN tournament_fisherman tf
           ON (tf.id = te.tournament_fisherman_id)
       WHERE
@@ -214,7 +214,7 @@ export async function entryCreate(
   }
 
   const query = `
-    INSERT INTO ${ENTRY_TABLE_NAME}
+    INSERT INTO ${TABLE_NAME}
       (${queryColumns.join(",")})
     VALUES
       (${queryValues.join(",")})
@@ -259,7 +259,7 @@ export async function entryUpdate(
     );
   }
   const query = `
-    UPDATE ${ENTRY_TABLE_NAME} SET
+    UPDATE ${TABLE_NAME} SET
       ${queryValues.join(", ")}
     WHERE
       id = ${id}
@@ -298,7 +298,7 @@ export async function entryDelete(
   }
 
   const query = `
-    DELETE FROM  ${ENTRY_TABLE_NAME} WHERE id = ? RETURNING *;
+    DELETE FROM  ${TABLE_NAME} WHERE id = ? RETURNING *;
   `;
 
   const { results } = await DB.prepare(query)

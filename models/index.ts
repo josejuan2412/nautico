@@ -50,6 +50,13 @@ export namespace Nautico {
     createdAt: Date;
   }
 
+  export interface Event {
+    id: number;
+    name: string;
+    position: number;
+    date: Date;
+  }
+
   export interface FileGroup {
     id: number;
     name: string;
@@ -65,12 +72,5 @@ export namespace Nautico {
     version: string;
     size: number;
     uploaded: Date;
-  }
-
-  export interface Event {
-    id: number;
-    name: string;
-    position: number;
-    date: Date;
   }
 }
