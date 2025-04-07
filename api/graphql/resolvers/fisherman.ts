@@ -2,13 +2,20 @@ import { GraphQLError } from "graphql";
 
 import { Env } from "../../env";
 import { Nautico } from "../../../models";
+import { TABLE_NAME as ENTRY_TABLE_NAME } from "./entry";
+
+type Tournament = Nautico.Tournament;
+type Fisherman = Nautico.Tournament.Fisherman;
+type Entry = Nautico.Tournament.Entry;
+
+export const TABLE_NAME = `tournament_fisherman`;
 
 /* QUERY RESOLVERS */
 export async function getFishermansFromTournament(
-  tournament: Nautico.Tournament,
+  tournament: Tournament,
   _: unknown,
   env: Env,
-): Promise<Array<Nautico.Tournament.Fisherman>> {
+): Promise<Array<Fisherman>> {
   const { id } = tournament;
   const { DB } = env;
 
@@ -16,7 +23,7 @@ export async function getFishermansFromTournament(
     SELECT
         *
     FROM
-        tournament_fisherman
+        ${TABLE_NAME}
     WHERE
         tournament_id = ?;`;
 
@@ -28,10 +35,10 @@ export async function getFishermansFromTournament(
 }
 
 export async function getFishermanFromEntry(
-  entry: Nautico.Tournament.Entry,
+  entry: Entry,
   _: unknown,
   env: Env,
-): Promise<Nautico.Tournament.Fisherman | null> {
+): Promise<Fisherman | null> {
   const { id } = entry;
   const { DB } = env;
 
@@ -39,8 +46,8 @@ export async function getFishermanFromEntry(
   SELECT
       tf.*
   FROM
-      tournament_entry te
-      LEFT JOIN tournament_fisherman tf ON (te.tournament_fisherman_id = tf.id)
+      ${ENTRY_TABLE_NAME} te
+      LEFT JOIN ${TABLE_NAME} tf ON (te.tournament_fisherman_id = tf.id)
   WHERE
       te.id = ?;`;
 
@@ -59,7 +66,7 @@ export async function fishermanCreate(
   _: unknown,
   args: { tournamentId: number; input: FishermanInput },
   env: Env,
-): Promise<Nautico.Tournament.Fisherman> {
+): Promise<Fisherman> {
   const { tournamentId, input } = args;
   const { name, email, isEnabled } = input;
   const { DB } = env;
@@ -91,7 +98,7 @@ export async function fishermanCreate(
   }
 
   const query = `
-    INSERT INTO tournament_fisherman
+    INSERT INTO ${TABLE_NAME}
       (${queryColumns.join(",")})
     VALUES
       (${queryValues.join(",")})
@@ -107,10 +114,10 @@ export async function fishermanCreate(
 }
 
 export async function fishermanFromTournamentCreate(
-  tournament: Nautico.Tournament,
+  tournament: Tournament,
   args: { input: FishermanInput },
   env: Env,
-): Promise<Nautico.Tournament.Fisherman> {
+): Promise<Fisherman> {
   const { id } = tournament;
   const { input } = args;
   return fishermanCreate(undefined, { tournamentId: id, input }, env);
@@ -120,7 +127,7 @@ export async function fishermanUpdate(
   _: unknown,
   args: { input: FishermanInput },
   env: Env,
-): Promise<Nautico.Tournament.Fisherman> {
+): Promise<Fisherman> {
   const { input } = args;
   const { id, name, email, isEnabled } = input;
   const { DB } = env;
@@ -152,7 +159,7 @@ export async function fishermanUpdate(
   }
 
   const query = `
-    UPDATE tournament_fisherman SET
+    UPDATE ${TABLE_NAME} SET
       ${queryValues.join(", ")}
     WHERE
       id = ${id}
@@ -191,7 +198,7 @@ export async function fishermanDelete(
   }
 
   const query = `
-    DELETE FROM tournament_fisherman WHERE id = ? RETURNING *;
+    DELETE FROM ${TABLE_NAME} WHERE id = ? RETURNING *;
   `;
 
   const { results } = await DB.prepare(query)
@@ -203,9 +210,7 @@ export async function fishermanDelete(
   return id;
 }
 
-function toFisherman(
-  row: Record<string, unknown>,
-): Nautico.Tournament.Fisherman {
+function toFisherman(row: Record<string, unknown>): Fisherman {
   const { id, name, is_enabled, created_at, email } = row;
   return {
     id: parseInt(`${id}`),

@@ -57,6 +57,9 @@ CREATE INDEX IF NOT EXISTS idx_event_file_group_date ON event_file_group (date);
 
 CREATE INDEX IF NOT EXISTS idx_event_file_group_created_at ON event_file_group (created_at);
 
+/*Create unique index for name*/
+CREATE UNIQUE INDEX IF NOT EXISTS idx_event_file_group_event_id_file_group_id ON event_file_group (event_id, file_group_id);
+
 CREATE TABLE IF NOT EXISTS tournament (
     id INTEGER PRIMARY KEY,
     name TEXT NOT NULL UNIQUE,

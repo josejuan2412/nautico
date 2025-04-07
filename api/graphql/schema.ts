@@ -31,6 +31,7 @@ export const typeDefs = `
     name: String!
     position: Int!
     date: Date!
+    fileGroups(orderBy: OrderBy, direction: Direction): [FileGroup!]!
   }
 
   type FileGroup {

@@ -1,20 +1,66 @@
 import { Env } from "../../env";
 import { Nautico } from "../../../models";
 
-export const FILE_GROUP_TABLE_NAME = `file_group`;
+export const TABLE_NAME = `file_group`;
 
 type FileGroup = Nautico.FileGroup;
+type Event = Nautico.Event;
+
+export async function getFileGroupsByEvent(
+  event: Event,
+  args: FileGroupByEventArgs,
+  env: Env,
+): Promise<Array<FileGroup>> {
+  const { id } = event;
+  const { orderBy = "position", direction = "asc" } = args;
+  const { DB } = env;
+  const query = `
+    SELECT
+      fg.id as id,
+      efg."name" as name,
+      fg.directory,
+      efg.created_at as date,
+      efg."position" as "position"
+    FROM
+      event_file_group efg
+      LEFT JOIN ${TABLE_NAME} fg ON (efg.file_group_id = fg.id)
+    WHERE
+      efg.event_id = ?
+    ORDER BY ${orderBy} ${direction};`;
+  const { results } = await DB.prepare(query)
+    .bind(parseInt(`${id}`))
+    .all();
+
+  const fileGroups = results.map(toFileGroup);
+  for (const fileGroup of fileGroups) {
+    if (!fileGroup.directory) {
+      continue;
+    }
+    await getFiles(fileGroup, env);
+  }
+
+  return fileGroups;
+}
+
+interface FileGroupByEventArgs {
+  orderBy?: "position" | "date";
+  direction?: "asc" | "desc";
+}
 
 export async function getFileGroups(
   _: unknown,
-  args: GetFileGroupsArgs,
+  args: FileGroupsArgs,
   env: Env,
 ): Promise<Array<FileGroup>> {
   const { direction = "asc" } = args;
   const { DB } = env;
 
-  const query = `SELECT * FROM ${FILE_GROUP_TABLE_NAME}
-    ORDER BY created_at ${direction}`;
+  const query = `
+    SELECT
+      *
+    FROM ${TABLE_NAME}
+    ORDER BY
+      created_at ${direction}`;
   const { results } = await DB.prepare(query).all();
 
   const fileGroups = results.map(toFileGroup);
@@ -28,13 +74,13 @@ export async function getFileGroups(
   return fileGroups;
 }
 
-interface GetFileGroupsArgs {
+interface FileGroupsArgs {
   direction?: "asc" | "desc";
 }
 
 export async function getFileGroup(
   _: unknown,
-  args: GetFileGroupArgs,
+  args: FileGroupArgs,
   env: Env,
 ): Promise<FileGroup | null> {
   const { id } = args;
@@ -43,10 +89,16 @@ export async function getFileGroup(
     throw new Error("You must specify an id");
   }
 
-  const query = `SELECT * FROM ${FILE_GROUP_TABLE_NAME}
-    WHERE id = ${id} LIMIT 1;`;
+  const query = `
+    SELECT
+      *
+    FROM ${TABLE_NAME}
+    WHERE
+      id = ? LIMIT 1;`;
 
-  const { results } = await DB.prepare(query).all();
+  const { results } = await DB.prepare(query)
+    .bind(parseInt(`${id}`))
+    .all();
 
   if (!results.length) {
     return null;
@@ -58,7 +110,7 @@ export async function getFileGroup(
   return fileGroup;
 }
 
-interface GetFileGroupArgs {
+interface FileGroupArgs {
   id: number;
 }
 
