@@ -14,19 +14,20 @@ export async function getFileGroupsByEvent(
   const { id } = event;
   const { orderBy = "position", direction = "asc" } = args;
   const { DB } = env;
+  const order = orderBy === "position" ? "position" : "created_at";
   const query = `
     SELECT
       fg.id as id,
       efg."name" as name,
       fg.directory,
-      efg.date as date,
+      efg.date as created_at,
       efg."position" as "position"
     FROM
       event_file_group efg
       LEFT JOIN ${TABLE_NAME} fg ON (efg.file_group_id = fg.id)
     WHERE
       efg.event_id = ?
-    ORDER BY ${orderBy} ${direction};`;
+    ORDER BY ${order} ${direction};`;
   const { results } = await DB.prepare(query)
     .bind(parseInt(`${id}`))
     .all();
