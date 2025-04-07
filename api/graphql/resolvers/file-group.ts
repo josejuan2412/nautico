@@ -1,6 +1,8 @@
 import { Env } from "../../env";
 import { Nautico } from "../../../models";
 
+export const FILE_GROUP_TABLE_NAME = `file_group`;
+
 type FileGroup = Nautico.FileGroup;
 
 export async function getFileGroups(
@@ -11,15 +13,16 @@ export async function getFileGroups(
   const { direction = "asc" } = args;
   const { DB } = env;
 
-  const query = `SELECT * FROM file_group ORDER BY created_at ${direction}`;
+  const query = `SELECT * FROM ${FILE_GROUP_TABLE_NAME}
+    ORDER BY created_at ${direction}`;
   const { results } = await DB.prepare(query).all();
 
   const fileGroups = results.map(toFileGroup);
-  for (const group of fileGroups) {
-    if (!group.directory) {
+  for (const fileGroup of fileGroups) {
+    if (!fileGroup.directory) {
       continue;
     }
-    await getFiles(group, env);
+    await getFiles(fileGroup, env);
   }
 
   return fileGroups;
@@ -27,6 +30,36 @@ export async function getFileGroups(
 
 interface GetFileGroupsArgs {
   direction?: "asc" | "desc";
+}
+
+export async function getFileGroup(
+  _: unknown,
+  args: GetFileGroupArgs,
+  env: Env,
+): Promise<FileGroup | null> {
+  const { id } = args;
+  const { DB } = env;
+  if (id === undefined) {
+    throw new Error("You must specify an id");
+  }
+
+  const query = `SELECT * FROM ${FILE_GROUP_TABLE_NAME}
+    WHERE id = ${id} LIMIT 1;`;
+
+  const { results } = await DB.prepare(query).all();
+
+  if (!results.length) {
+    return null;
+  }
+
+  const fileGroup = toFileGroup(results[0]);
+  await getFiles(fileGroup, env);
+
+  return fileGroup;
+}
+
+interface GetFileGroupArgs {
+  id: number;
 }
 
 async function getFiles(group: FileGroup, env: Env) {

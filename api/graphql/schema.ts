@@ -146,6 +146,7 @@ export const typeDefs = `
   type Query {
     event(id: ID!): Event
     events(orderBy: OrderBy, direction: Direction): [Event!]!
+    fileGroup(id: ID!): FileGroup
     fileGroups(direction: Direction): [FileGroup!]!
     tournament(id: ID, latest: Boolean): Tournament
     tournaments(orderBy: OrderBy, direction: Direction): [Tournament!]!

@@ -1,6 +1,8 @@
 import { GraphQLError } from "graphql";
+
 import { Env } from "../../env";
 import { Nautico } from "../../../models";
+
 /* QUERY RESOLVERS */
 export async function getFishermansFromTournament(
   tournament: Nautico.Tournament,
