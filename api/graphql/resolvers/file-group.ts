@@ -19,7 +19,7 @@ export async function getFileGroupsByEvent(
       fg.id as id,
       efg."name" as name,
       fg.directory,
-      efg.created_at as date,
+      efg.date as date,
       efg."position" as "position"
     FROM
       event_file_group efg
