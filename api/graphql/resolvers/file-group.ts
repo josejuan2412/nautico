@@ -32,15 +32,7 @@ export async function getFileGroupsByEvent(
     .bind(parseInt(`${id}`))
     .all();
 
-  const fileGroups = results.map(toFileGroup);
-  for (const fileGroup of fileGroups) {
-    if (!fileGroup.directory) {
-      continue;
-    }
-    await getFiles(fileGroup, env);
-  }
-
-  return fileGroups;
+  return results.map(toFileGroup);
 }
 
 interface FileGroupByEventArgs {
@@ -64,15 +56,7 @@ export async function getFileGroups(
       created_at ${direction}`;
   const { results } = await DB.prepare(query).all();
 
-  const fileGroups = results.map(toFileGroup);
-  for (const fileGroup of fileGroups) {
-    if (!fileGroup.directory) {
-      continue;
-    }
-    await getFiles(fileGroup, env);
-  }
-
-  return fileGroups;
+  return results.map(toFileGroup);
 }
 
 interface FileGroupsArgs {
@@ -105,34 +89,41 @@ export async function getFileGroup(
     return null;
   }
 
-  const fileGroup = toFileGroup(results[0]);
-  await getFiles(fileGroup, env);
-
-  return fileGroup;
+  return toFileGroup(results[0]);
 }
 
 interface FileGroupArgs {
   id: number;
 }
 
-async function getFiles(group: FileGroup, env: Env) {
-  const { directory } = group;
+export async function getFiles(
+  fileGroup: FileGroup,
+  _: unknown,
+  env: Env,
+): Promise<Array<Nautico.File>> {
+  const { directory } = fileGroup;
   const { BUCKET, BUCKET_DOMAIN } = env;
+  const files: Array<Nautico.File> = [];
+  if (!fileGroup.directory) {
+    return files;
+  }
   const { objects } = await BUCKET.list({
     prefix: directory,
   });
 
-  group.files = objects.map((obj) => {
+  for (const obj of objects) {
     const { etag, key, version, size, uploaded } = obj;
-    return {
+    files.push({
       id: etag,
       key,
       version,
       size,
       uploaded,
       url: `${BUCKET_DOMAIN}/${key}`,
-    };
-  });
+    });
+  }
+
+  return files;
 }
 
 function toFileGroup(row: Record<string, unknown>): FileGroup {

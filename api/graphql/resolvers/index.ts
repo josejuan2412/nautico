@@ -7,6 +7,7 @@ import {
   getFileGroups as fileGroups,
   getFileGroup as fileGroup,
   getFileGroupsByEvent,
+  getFiles as files,
 } from "./file-group";
 import { getEvents as events, getEventById as event } from "./event";
 import {
@@ -79,6 +80,9 @@ export const schema = createSchema({
     },
     Event: {
       fileGroups: getFileGroupsByEvent,
+    },
+    FileGroup: {
+      files,
     },
     Tournament: {
       fishermans,
