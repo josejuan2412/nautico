@@ -1,4 +1,6 @@
 import { gql, useQuery } from "@apollo/client";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
+
 import { Nautico } from "../../../models";
 
 import styles from "./Event.module.css";
@@ -61,7 +63,7 @@ function FileGroupComponent(fileGroup: Nautico.FileGroup) {
         {files.map((f) => {
           const { id, url } = f;
           return (
-            <figure id={id}>
+            <figure id={id} className="rounded-md object-cover">
               <img src={url} />
             </figure>
           );
