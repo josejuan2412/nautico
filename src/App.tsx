@@ -9,8 +9,9 @@ import {
 import "./App.css";
 import Home from "./pages/home";
 import Tournament from "./pages/tournament";
-import Departures from "./pages/departures";
+import Departure from "./pages/departure";
 import History from "./pages/history";
+import Events from "./pages/event";
 
 function App() {
   const routes = [
@@ -24,11 +25,15 @@ function App() {
     },
     {
       path: "/departures",
-      element: <Departures />,
+      element: <Departure />,
     },
     {
       path: "/history",
       element: <History />,
+    },
+    {
+      path: "/events",
+      element: <Events />,
     },
     {
       path: "*",

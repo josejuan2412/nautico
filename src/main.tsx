@@ -4,8 +4,10 @@ import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import "./index.css";
 import App from "./App.tsx";
 
+// const API_DOMAIN = "http://localhost:8788";
+const API_DOMAIN = "https://dev.nautico.fennex.dev";
 const client = new ApolloClient({
-  uri: "http://localhost:8788/api/graphql",
+  uri: `${API_DOMAIN}/api/graphql`,
   cache: new InMemoryCache(),
 });
 

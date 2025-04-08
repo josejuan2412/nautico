@@ -4,7 +4,7 @@ import styles from "./Departures.module.css";
 
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetTrigger } from "@/components/ui/sheet";
-import { Sails, RegistrationForm } from "../../components/Sails";
+import { Sails, RegistrationForm } from "../../components/sails";
 
 export default function Departures() {
   const [isOpen, setIsOpen] = useState(false);

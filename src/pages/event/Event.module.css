@@ -1,0 +1,48 @@
+.view {
+    padding: 20px;
+    height: 100%;
+    bakground: white;
+    overflow: auto;
+}
+
+.view h1 {
+    font-size: 2rem;
+}
+
+.view h2 {
+    font-size: 1.5rem;
+    padding: 10px 0px;
+}
+
+.view h3 {
+    font-size: 1.2rem;
+    padding: 10px 0px;
+}
+
+.events {
+    margin: 0px auto;
+}
+
+.filegroup > div {
+    margin-top: 25px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr;
+    gap: 20px 20px;
+    grid-template-areas: ". . . .";
+}
+
+.filegroup figure {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    padding: 30px;
+}
+
+.filegroup figure img {
+    object-fit: cover;
+    max-width: 100%;
+    margin: auto;
+    max-height: 350px;
+}
