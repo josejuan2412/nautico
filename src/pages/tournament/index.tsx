@@ -1,6 +1,6 @@
 import styles from "./Tournament.module.css";
 
-import { Leaderboard } from "../../components/leaderboard";
+import { Leaderboard } from "../../components/leaderboards";
 
 export default function View() {
   return (
