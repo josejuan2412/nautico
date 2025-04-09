@@ -23,26 +23,6 @@
     margin: 0px auto;
 }
 
-.filegroup > div {
-    margin-top: 25px;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-rows: 1fr;
-    gap: 20px 20px;
-    grid-template-areas: ". . . .";
-}
-
-.filegroup figure {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    padding: 30px;
-}
-
-.filegroup figure img {
-    object-fit: cover;
-    max-width: 100%;
-    margin: auto;
-    max-height: 350px;
+.images {
+    margin-top: 20px;
 }

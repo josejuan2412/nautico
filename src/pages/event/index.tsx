@@ -1,4 +1,10 @@
+import { useEffect, useState } from "react";
 import { gql, useQuery } from "@apollo/client";
+import Lightbox from "yet-another-react-lightbox";
+import { MasonryPhotoAlbum } from "react-photo-album";
+
+import "react-photo-album/masonry.css";
+import styles from "./Event.module.css";
 
 import {
   Select,
@@ -9,9 +15,6 @@ import {
 } from "@/components/ui/select";
 
 import { Nautico } from "../../../models";
-
-import styles from "./Event.module.css";
-import { useState } from "react";
 
 export default function View() {
   return (
@@ -90,6 +93,7 @@ function EventComponent({ name, fileGroups }: Event) {
 }
 
 function FilesComponent({ fileGroupId }: { fileGroupId: string }) {
+  const [slides, setSlides] = useState<Array<Slide>>([]);
   const { loading, error, data } = useQuery<{ fileGroup: Nautico.FileGroup }>(
     GET_FILEGROUP,
     {
@@ -98,6 +102,27 @@ function FilesComponent({ fileGroupId }: { fileGroupId: string }) {
       },
     },
   );
+
+  useEffect(() => {
+    if (loading) return;
+    if (error) return;
+    if (!data) return;
+    const {
+      fileGroup: { files },
+    } = data;
+    async function getDimensions(files: Array<Nautico.File>) {
+      const response: Array<Slide> = [];
+      for (const { url } of files) {
+        const { width, height } = await getImageDimensions(url);
+        response.push({ width, height, src: url });
+      }
+
+      setSlides(response);
+    }
+
+    getDimensions(files);
+  }, [data, loading, error]);
+
   if (loading) {
     return <div>Loading</div>;
   }
@@ -105,28 +130,72 @@ function FilesComponent({ fileGroupId }: { fileGroupId: string }) {
     return <div>${error.message}</div>;
   }
 
-  if (!data) {
+  if (!slides.length) {
     return null;
   }
 
-  const {
-    fileGroup: { files },
-  } = data;
-
   return (
-    <div className={styles["filegroup"]}>
-      <div>
-        {files.map((f) => {
-          const { id, url } = f;
-          return (
-            <figure key={id} id={id} className="rounded-md object-cover">
-              <img src={url} />
-            </figure>
-          );
-        })}
-      </div>
+    <div className={styles["images"]}>
+      <Gallery slides={slides} />
     </div>
   );
+}
+
+function Gallery({ slides }: { slides: Array<Slide> }) {
+  const [index, setIndex] = useState(-1);
+  return (
+    <>
+      <MasonryPhotoAlbum
+        photos={slides}
+        onClick={({ index: current }) => {
+          console.log(`I click the index: `, index);
+          setIndex(current);
+        }}
+        sizes={{
+          size: "1168px",
+          sizes: [
+            {
+              viewport: "(max-width: 1200px)",
+              size: "calc(100vw - 32px)",
+            },
+          ],
+        }}
+      />
+      <Lightbox
+        index={index}
+        slides={slides}
+        open={index >= 0}
+        close={() => setIndex(-1)}
+      />
+    </>
+  );
+}
+
+async function getImageDimensions(src: string) {
+  return new Promise<Dimensions>((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => {
+      resolve({
+        width: img.width,
+        height: img.height,
+      });
+    };
+    img.onerror = (err) => {
+      reject(err);
+    };
+    img.src = src;
+  });
+}
+
+interface Dimensions {
+  width: number;
+  height: number;
+}
+
+interface Slide {
+  src: string;
+  width: number;
+  height: number;
 }
 
 /*function FileGroupComponent(fileGroup: Nautico.FileGroup) {
