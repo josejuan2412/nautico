@@ -7,7 +7,7 @@ import "./index.css";
 import App from "./App.tsx";
 
 // const API_DOMAIN = "http://localhost:8788";
-const API_DOMAIN = "";
+const API_DOMAIN = "https://develop.nautico.fennex.dev";
 const client = new ApolloClient({
   uri: `${API_DOMAIN}/api/graphql`,
   cache: new InMemoryCache(),
