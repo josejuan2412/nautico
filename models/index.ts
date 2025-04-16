@@ -4,6 +4,7 @@ export namespace Nautico {
     name: string;
     slug: string;
     position: number;
+    isEnabled: boolean;
     date: Date;
     createdAt: Date;
   }

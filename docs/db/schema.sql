@@ -65,6 +65,7 @@ CREATE TABLE IF NOT EXISTS tournament (
     name TEXT NOT NULL UNIQUE,
     slug TEXT NOT NULL UNIQUE,
     position INTEGER DEFAULT 0,
+    is_enabled INTEGER NOT NULL DEFAULT 1,
     date DATETIME DEFAULT current_timestamp,
     created_at DATETIME DEFAULT current_timestamp
 );
@@ -74,6 +75,9 @@ CREATE INDEX IF NOT EXISTS idx_tournament_slug ON tournament (slug);
 
 /*Create index for sorting*/
 CREATE INDEX IF NOT EXISTS idx_tournament_position ON tournament (position);
+
+/*Create index that checks if the tournament is enabled*/
+CREATE INDEX IF NOT EXISTS idx_tournament_is_enabled ON tournament (is_enabled);
 
 /*Create index for sorting*/
 CREATE INDEX IF NOT EXISTS idx_tournament_date ON tournament (date);

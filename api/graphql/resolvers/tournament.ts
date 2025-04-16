@@ -4,12 +4,14 @@ import { Nautico } from "../../../models";
 
 export const TOURNAMENT_TABLE_NAME = `tournament`;
 
+type Tournament = Nautico.Tournament;
+
 /* QUERY RESOLVERS */
 export async function getTournaments(
   _: unknown,
   args: GetTournamentsArgs,
   env: Env,
-): Promise<Array<Nautico.Tournament>> {
+): Promise<Array<Tournament>> {
   const { orderBy = "position", direction = "asc" } = args;
   const { DB } = env;
 
@@ -30,7 +32,7 @@ export async function getTournament(
   _: unknown,
   args: GetTournamentArgs,
   env: Env,
-): Promise<Nautico.Tournament | null> {
+): Promise<Tournament | null> {
   const { id, latest } = args;
   const { DB } = env;
 
@@ -42,6 +44,7 @@ export async function getTournament(
     WHERE id = ${id} LIMIT 1;`;
   if (latest) {
     query = `SELECT * FROM ${TOURNAMENT_TABLE_NAME}
+      WHERE is_enabled = 1
       ORDER BY "date" DESC LIMIT 1;`;
   }
 
@@ -64,9 +67,9 @@ export async function tournamentCreate(
   _: unknown,
   args: { input: TournamentInput },
   env: Env,
-): Promise<Nautico.Tournament> {
+): Promise<Tournament> {
   const { input } = args;
-  const { name, slug, position, date } = input;
+  const { name, slug, position, date, isEnabled = true } = input;
   const { DB } = env;
   if (!name) {
     throw new GraphQLError(
@@ -86,8 +89,12 @@ export async function tournamentCreate(
     );
   }
 
-  const queryColumns = [`"name"`, "slug"];
-  const queryValues: Array<string | number> = [`'${name}'`, `'${slug}'`];
+  const queryColumns = [`"name"`, "slug", "is_enabled"];
+  const queryValues: Array<string | number> = [
+    `'${name}'`,
+    `'${slug}'`,
+    `${isEnabled ? "1" : "0"}`,
+  ];
 
   if (position !== undefined) {
     queryColumns.push(`"position"`);
@@ -119,9 +126,9 @@ export async function tournamentUpdate(
   _: unknown,
   args: { input: TournamentInput },
   env: Env,
-): Promise<Nautico.Tournament> {
+): Promise<Tournament> {
   const { input } = args;
-  const { id, name, slug, position, date } = input;
+  const { id, name, slug, position, date, isEnabled } = input;
   const { DB } = env;
   if (!id) {
     throw new GraphQLError(
@@ -146,6 +153,10 @@ export async function tournamentUpdate(
 
   if (position !== undefined) {
     queryValues.push(`"position" = ${position}`);
+  }
+
+  if (isEnabled !== undefined) {
+    queryValues.push(`"is_enabled" = ${isEnabled ? "1" : "0"}`);
   }
 
   if (date) {
@@ -182,6 +193,7 @@ interface TournamentInput {
   name?: string;
   slug?: string;
   position?: number;
+  isEnabled?: boolean;
   date?: Date;
 }
 
@@ -211,13 +223,14 @@ export async function tournamentDelete(
   return id;
 }
 
-function toTournament(row: Record<string, unknown>): Nautico.Tournament {
-  const { id, name, slug, position, date, created_at } = row;
+function toTournament(row: Record<string, unknown>): Tournament {
+  const { id, name, slug, position, date, created_at, is_enabled } = row;
   return {
     id: parseInt(`${id}`),
     name: `${name || ""}`,
     slug: `${slug || ""}`,
     position: parseInt(`${position}`),
+    isEnabled: parseInt(`${is_enabled}`) ? true : false,
     date: new Date(`${date}`),
     createdAt: new Date(`${created_at}`),
   };

@@ -105,6 +105,7 @@ export const typeDefs = `
     slug: String
     position: Int
     date: Date
+    isEnabled: Boolean
   }
 
   input CategoryInput {

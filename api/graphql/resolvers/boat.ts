@@ -1,14 +1,19 @@
 import { GraphQLError } from "graphql";
 import { Env } from "../../env";
 import { Nautico } from "../../../models";
+import { D1Database } from "@cloudflare/workers-types";
+
+type Tournament = Nautico.Tournament;
+type Boat = Nautico.Tournament.Boat;
+type Entry = Nautico.Tournament.Entry;
 
 const TABLE_NAME = `tournament_boat`;
 
 export async function getBoatsFromTournament(
-  tournament: Nautico.Tournament,
+  tournament: Tournament,
   _: unknown,
   env: Env,
-): Promise<Array<Nautico.Tournament.Boat>> {
+): Promise<Array<Boat>> {
   const { id } = tournament;
   const { DB } = env;
 
@@ -28,10 +33,10 @@ export async function getBoatsFromTournament(
 }
 
 export async function getBoatFromEntry(
-  entry: Nautico.Tournament.Entry,
+  entry: Entry,
   _: unknown,
   env: Env,
-): Promise<Nautico.Tournament.Boat | null> {
+): Promise<Boat | null> {
   const { id } = entry;
   const { DB } = env;
 
@@ -59,9 +64,9 @@ export async function boatCreate(
   _: unknown,
   args: { tournamentId: number; input: BoatInput },
   env: Env,
-): Promise<Nautico.Tournament.Boat> {
+): Promise<Boat> {
   const { tournamentId, input } = args;
-  const { name } = input;
+  let { name } = input;
   const { DB } = env;
 
   if (!tournamentId) {
@@ -74,6 +79,13 @@ export async function boatCreate(
     throw new GraphQLError(
       `Cannot create a boat because required property 'name' is missing`,
     );
+  }
+
+  name = clean(name);
+
+  const boat = await getFromName(DB, name, tournamentId);
+  if (boat) {
+    return boat;
   }
 
   const queryColumns = [`"name"`, "tournament_id"];
@@ -97,10 +109,10 @@ export async function boatCreate(
 }
 
 export async function boatFromTournamentCreate(
-  tournament: Nautico.Tournament,
+  tournament: Tournament,
   args: { tournamentId: number; input: BoatInput },
   env: Env,
-): Promise<Nautico.Tournament.Boat> {
+): Promise<Boat> {
   const { id } = tournament;
   const { input } = args;
   return boatCreate(undefined, { tournamentId: id, input }, env);
@@ -110,9 +122,10 @@ export async function boatUpdate(
   _: unknown,
   args: { input: BoatInput },
   env: Env,
-): Promise<Nautico.Tournament.Boat> {
+): Promise<Boat> {
   const { input } = args;
-  const { id, name } = input;
+  let { name } = input;
+  const { id } = input;
   const { DB } = env;
 
   if (!id) {
@@ -126,6 +139,8 @@ export async function boatUpdate(
       `Cannot update a boat because required property 'name' is missing`,
     );
   }
+
+  name = clean(name);
 
   const queryValues: Array<string> = [`"name" = '${name}'`];
 
@@ -179,7 +194,40 @@ interface BoatInput {
   name?: string;
 }
 
-function toBoat(row: Record<string, unknown>): Nautico.Tournament.Boat {
+async function getFromName(
+  DB: D1Database,
+  name: string,
+  tournamentId: number,
+): Promise<Boat | null> {
+  const query = `
+    SELECT
+        *
+    FROM
+        ${TABLE_NAME}
+    WHERE
+        tournament_id = ? AND name = '${name}';`;
+
+  const { results } = await DB.prepare(query)
+    .bind(parseInt(`${tournamentId}`))
+    .all();
+
+  if (!results.length) {
+    return null;
+  }
+
+  return toBoat(results[0]);
+}
+
+function clean(name: string): string {
+  return name
+    .toUpperCase()
+    .trim()
+    .split(" ")
+    .filter((i) => i)
+    .join(" ");
+}
+
+function toBoat(row: Record<string, unknown>): Boat {
   const { id, name, created_at } = row;
   return {
     id: parseInt(`${id}`),

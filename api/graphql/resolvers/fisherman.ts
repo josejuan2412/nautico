@@ -1,4 +1,5 @@
 import { GraphQLError } from "graphql";
+import { D1Database } from "@cloudflare/workers-types";
 
 import { Env } from "../../env";
 import { Nautico } from "../../../models";
@@ -83,14 +84,24 @@ export async function fishermanCreate(
     );
   }
 
-  const queryColumns = [`"name"`, "tournament_id"];
-
-  const queryValues = [`'${name}'`, `${tournamentId}`];
-
-  if (email) {
-    queryColumns.push("email");
-    queryValues.push(`'${email}'`);
+  if (!email) {
+    throw new GraphQLError(
+      `Cannot create a fisherman because required property 'email' is missing`,
+    );
   }
+
+  const fisherman = await getFromEmail(DB, email.toLowerCase(), tournamentId);
+  if (fisherman) {
+    return fisherman;
+  }
+
+  const queryColumns = [`"name"`, "tournament_id", "email"];
+
+  const queryValues = [
+    `'${clean(name)}'`,
+    `${tournamentId}`,
+    `'${email.toLowerCase()}'`,
+  ];
 
   if (isEnabled) {
     queryColumns.push("is_enabled");
@@ -141,11 +152,11 @@ export async function fishermanUpdate(
   const queryValues: Array<string> = [];
 
   if (name) {
-    queryValues.push(`"name" = '${name}'`);
+    queryValues.push(`"name" = '${clean(name)}'`);
   }
 
   if (email) {
-    queryValues.push(`email = '${email}'`);
+    queryValues.push(`email = '${email.toLowerCase()}'`);
   }
 
   if (isEnabled !== undefined) {
@@ -208,6 +219,39 @@ export async function fishermanDelete(
     return null;
   }
   return id;
+}
+
+async function getFromEmail(
+  DB: D1Database,
+  email: string,
+  tournamentId: number,
+): Promise<Fisherman | null> {
+  const query = `
+    SELECT
+        *
+    FROM
+        ${TABLE_NAME}
+    WHERE
+        tournament_id = ? AND email = '${email}';`;
+
+  const { results } = await DB.prepare(query)
+    .bind(parseInt(`${tournamentId}`))
+    .all();
+
+  if (!results.length) {
+    return null;
+  }
+
+  return toFisherman(results[0]);
+}
+
+function clean(name: string): string {
+  return name
+    .toLowerCase()
+    .trim()
+    .split(" ")
+    .filter((i) => i)
+    .join(" ");
 }
 
 function toFisherman(row: Record<string, unknown>): Fisherman {
