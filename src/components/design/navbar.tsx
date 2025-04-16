@@ -95,7 +95,7 @@ export default function NavbarElement() {
             <NavItem>
               <NavLink href="/">
                 {" "}
-                <p>Nuestros Servicios</p>
+                <p>Inicio</p>
               </NavLink>
             </NavItem>
           </Nav>
