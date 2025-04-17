@@ -1,8 +1,10 @@
+import { useEffect } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { DateTime } from "luxon";
 import { X, AlertCircle } from "lucide-react";
+import { gql, useMutation } from "@apollo/client";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
@@ -26,8 +28,6 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { useEffect } from "react";
-import { gql, useMutation } from "@apollo/client";
 
 const RegistrationFormSchema = z
   .object({
