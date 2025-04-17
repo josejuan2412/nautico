@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { useForm } from "react-hook-form";
-import { AlertCircle, Pi } from "lucide-react";
+import { AlertCircle } from "lucide-react";
+import { toast } from "sonner";
 import { gql, useMutation } from "@apollo/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -49,7 +50,7 @@ export function RegistrationForm({ tournamentId }: RegistrationFormProps) {
     if (!data) return;
     form.reset();
     reset();
-    console.log(`SUCCESSFULL REGISTATION`, data);
+    toast.success("Usuario registrado con exito");
   }, [data, form, reset]);
 
   useEffect(() => {

@@ -4,6 +4,8 @@ import {
   RouterProvider,
 } from "react-router-dom";
 
+import { Toaster } from "@/components/ui/sonner";
+
 // import reactLogo from "./assets/react.svg";
 // import viteLogo from "/vite.svg";
 import "./App.css";
@@ -45,6 +47,7 @@ function App() {
     <>
       <div className="app">
         <RouterProvider router={router} />
+        <Toaster />
       </div>
     </>
   );
