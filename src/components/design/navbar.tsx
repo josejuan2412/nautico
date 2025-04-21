@@ -84,7 +84,7 @@ export default function NavbarElement() {
             </NavItem>
             <NavItem>
               <NavLink data-placement="bottom" href="/events" title="">
-                <p>Fotos de Eventos</p>
+                <p>Galeria de Eventos</p>
               </NavLink>
             </NavItem>
             <NavItem>

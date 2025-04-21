@@ -1,0 +1,13 @@
+.view {
+  height: 100%;
+  width: 100%;
+  background-color: black;
+  color: white;
+}
+
+.history {
+  width: 90%;
+  height: 100%;
+  padding-top: 5%;
+  margin: auto;
+}

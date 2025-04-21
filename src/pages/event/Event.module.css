@@ -1,28 +1,37 @@
 .view {
-    padding: 20px;
-    height: 100%;
+  padding: 20px;
+  height: 100%;
+  width: 100%;
+  background-color: black;
+  color: white;
+  overflow: auto;
+}
 
-    overflow: auto;
+.gallery {
+  width: 90%;
+  height: 100%;
+  padding-top: 11%;
+  margin: auto;
 }
 
 .view h1 {
-    font-size: 2rem;
+  font-size: 2rem;
 }
 
 .view h2 {
-    font-size: 1.5rem;
-    padding: 10px 0px;
+  font-size: 1.5rem;
+  padding: 10px 0px;
 }
 
 .view h3 {
-    font-size: 1.2rem;
-    padding: 10px 0px;
+  font-size: 1.2rem;
+  padding: 10px 0px;
 }
 
 .events {
-    margin: 0px auto;
+  margin: 0px auto;
 }
 
 .images {
-    margin-top: 20px;
+  margin-top: 20px;
 }

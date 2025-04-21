@@ -14,19 +14,21 @@ export default function Intro() {
           <Container>
             <div className="motto text-center">
               <h1>Club Náutico Caribe</h1>
-              <h3>Start designing your landing page here.</h3>
+              <h3>
+                Punto de encuentro para amantes del mar y la Pesca Deportiva
+              </h3>
               <br />
               <Button
-                href=""
+                href="/tournaments"
                 className="btn-round mr-1"
                 color="neutral"
-                target="_blank"
                 outline
               >
                 <i className="fa fa-play" />
                 Torneo de Pesca
               </Button>
               <Button
+                href="/departures"
                 className="btn-round"
                 color="neutral"
                 type="button"
