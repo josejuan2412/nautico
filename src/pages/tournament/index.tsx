@@ -11,7 +11,7 @@ export default function View() {
         <h2 className="text-center">
           <strong>Torneo de Pesca 2025</strong>
         </h2>
-        <img src={Banner} alt="Torneo de Pesca" />;
+        <img src={Banner} alt="Torneo de Pesca" />
         <Leaderboard />
         <div>
           <p>

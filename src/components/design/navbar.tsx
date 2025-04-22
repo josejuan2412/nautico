@@ -1,6 +1,6 @@
 import React from "react";
-
 import classnames from "classnames";
+import Banner from "../../assets/img/banner.jpg";
 
 import {
   Collapse,
@@ -72,6 +72,11 @@ export default function NavbarElement() {
         >
           <Nav navbar>
             <NavItem>
+              <NavLink href="/">
+                <p>Inicio</p>
+              </NavLink>
+            </NavItem>
+            <NavItem>
               <NavLink data-placement="bottom" href="/departures" title="">
                 <p>Registro de Salidas</p>
               </NavLink>
@@ -89,12 +94,6 @@ export default function NavbarElement() {
             <NavItem>
               <NavLink data-placement="bottom" href="/history" title="">
                 <p>Historia del Club</p>
-              </NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink href="/">
-                {" "}
-                <p>Inicio</p>
               </NavLink>
             </NavItem>
           </Nav>

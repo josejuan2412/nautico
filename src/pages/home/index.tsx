@@ -104,7 +104,7 @@ export default function View() {
           <Container>
             <h2 className="title">Conoce un poco de nuestra historia</h2>
             <Row>
-              <Col md="4">
+              <Col md="12">
                 <Card className="card-profile card-plain">
                   <div className="">
                     <a href="/history">
