@@ -8,6 +8,9 @@ export default function View() {
       <div className={styles["view"]}>
         <div className="section section-dark text-center">
           <div className={styles["history"]}>
+            <h1>
+              <strong>Fundación del Club Nautico Caribe</strong>
+            </h1>
             <img src={History} alt="Historia del Club" />;
             <p>
               Nos llena de mucha satisfacción haber logrado la recuperación de

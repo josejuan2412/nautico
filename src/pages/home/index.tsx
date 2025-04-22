@@ -1,15 +1,6 @@
 import Intro from "../../components/design/intro";
 import NavbarElement from "../../components/design/navbar";
-import {
-  Button,
-  Card,
-  CardBody,
-  CardFooter,
-  CardTitle,
-  Container,
-  Row,
-  Col,
-} from "reactstrap";
+import { Card, CardBody, CardTitle, Container, Row, Col } from "reactstrap";
 
 import { BsGlobeAmericas } from "react-icons/bs";
 import { GiCctvCamera } from "react-icons/gi";

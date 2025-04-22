@@ -15,12 +15,12 @@ export default function Departures() {
   };
 
   return (
-    <div>
+    <div className={styles["view"]}>
       <Sheet open={isOpen}>
-        <NavbarElement />
-        <div className={styles["view"]}>
-          <div className="page-header section-dark text-center">
-            <div className={styles["btn-bottom"]}>
+        <div className={styles["max-height"]}>
+          <NavbarElement />
+          <div className={styles["sails"]}>
+            <div className="content-center">
               {" "}
               <SheetTrigger asChild>
                 <Button
@@ -33,12 +33,17 @@ export default function Departures() {
                 </Button>
               </SheetTrigger>
             </div>
-            <div className={styles["sails-table"]}>
-              {" "}
+            <div className={styles["sails-heading"]}>
+              <h3>
+                <strong>Salidas Recientes</strong>
+              </h3>
+            </div>
+            <div>
               <Sails />
             </div>
           </div>
         </div>
+
         <RegistrationForm onClose={onClose} />
       </Sheet>
     </div>

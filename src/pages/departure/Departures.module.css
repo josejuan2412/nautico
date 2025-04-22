@@ -1,25 +1,48 @@
 .view {
   height: 100%;
   width: 100%;
-  background-color: black;
+  padding: auto;
+}
+
+.max-height {
+  background-color: #0b1011;
+  background-position: center center;
+  background-size: cover;
+  min-height: 100vh;
+  max-height: 999px;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.sails {
+  width: 90% !important;
+  height: 90% !important;
+  padding-top: 15%;
+  margin: auto;
+}
+
+.sails-heading h3 {
+  color: white;
 }
 
 .add-sail {
-  padding-top: 90%;
+  padding: auto;
 }
 
 .btn-bottom {
-  position: absolute;
+  /* position: absolute;
   margin-left: -50px;
   left: 50%;
   width: 100px;
-  bottom: 5%;
+  bottom: 85%; */
 }
 
 .sails-table {
+  color: white;
   max-width: 90%;
-  /* min-height: 70%; */
-  /* height: 50vh; */
+  min-height: 70%;
+  height: 50vh;
   position: absolute;
-  bottom: 75%;
+  bottom: 70%;
 }
