@@ -11,6 +11,12 @@ import {
   Col,
 } from "reactstrap";
 
+import { BsGlobeAmericas } from "react-icons/bs";
+import { GiCctvCamera } from "react-icons/gi";
+import { BiSolidDrink } from "react-icons/bi";
+
+import History from "../../assets/img/history1.png";
+
 export default function View() {
   return (
     <div>
@@ -35,10 +41,12 @@ export default function View() {
             <br />
             <br />
             <Row>
-              <Col md="3">
+              <Col md="4">
                 <div className="info">
-                  <div className="icon icon-info">
-                    <i className="nc-icon nc-album-2" />
+                  <div className="icon ">
+                    <i className="nc-icon ">
+                      <BsGlobeAmericas />
+                    </i>
                   </div>
                   <div className="description">
                     <h4 className="info-title">Muelles y rampas</h4>
@@ -54,10 +62,12 @@ export default function View() {
                   </div>
                 </div>
               </Col>
-              <Col md="3">
+              <Col md="4">
                 <div className="info">
-                  <div className="icon icon-info">
-                    <i className="nc-icon nc-bulb-63" />
+                  <div className="icon ">
+                    <i className="nc-icon ">
+                      <GiCctvCamera />
+                    </i>
                   </div>
                   <div className="description">
                     <h4 className="info-title">Vigilancia y seguridad 24/7</h4>
@@ -73,10 +83,12 @@ export default function View() {
                   </div>
                 </div>
               </Col>
-              <Col md="3">
+              <Col md="4">
                 <div className="info">
-                  <div className="icon icon-info">
-                    <i className="nc-icon nc-chart-bar-32" />
+                  <div className="icon ">
+                    <i className="nc-icon ">
+                      <BiSolidDrink />
+                    </i>
                   </div>
                   <div className="description">
                     <h4 className="info-title">Bar</h4>
@@ -103,13 +115,13 @@ export default function View() {
             <Row>
               <Col md="4">
                 <Card className="card-profile card-plain">
-                  <div className="card-avatar">
-                    <a href="#pablo" onClick={(e) => e.preventDefault()}>
-                      <img alt="..." src="" />
+                  <div className="">
+                    <a href="/history">
+                      <img src={History} alt="Historia del Club" />;
                     </a>
                   </div>
                   <CardBody>
-                    <a href="#pablo" onClick={(e) => e.preventDefault()}>
+                    <a href="/history">
                       <div className="author">
                         <CardTitle tag="h4">Desde 1954</CardTitle>
                         <h6 className="card-category">
@@ -124,33 +136,9 @@ export default function View() {
                       de 1957, con actas, estatutos y personería jurídica
                       avalados por el Ministerio de Gobierno y Justicia.
                     </p>
+                    <br />
+                    <a>Conoce mas...</a>
                   </CardBody>
-                  <CardFooter className="text-center">
-                    <Button
-                      className="btn-just-icon btn-neutral"
-                      color="link"
-                      href="#pablo"
-                      onClick={(e) => e.preventDefault()}
-                    >
-                      <i className="fa fa-twitter" />
-                    </Button>
-                    <Button
-                      className="btn-just-icon btn-neutral ml-1"
-                      color="link"
-                      href="#pablo"
-                      onClick={(e) => e.preventDefault()}
-                    >
-                      <i className="fa fa-google-plus" />
-                    </Button>
-                    <Button
-                      className="btn-just-icon btn-neutral ml-1"
-                      color="link"
-                      href="#pablo"
-                      onClick={(e) => e.preventDefault()}
-                    >
-                      <i className="fa fa-linkedin" />
-                    </Button>
-                  </CardFooter>
                 </Card>
               </Col>
             </Row>

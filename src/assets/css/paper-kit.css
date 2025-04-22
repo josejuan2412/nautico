@@ -6181,6 +6181,10 @@ License - nucleoapp.com/license/
   margin-bottom: 0;
 }
 
+.main-header {
+  background-image: url("../../assets/img/boat.jpg");
+}
+
 .page-header {
   background-color: #b2afab;
   background-position: center center;

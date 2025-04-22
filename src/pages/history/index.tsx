@@ -1,5 +1,6 @@
 import NavbarElement from "../../components/design/navbar";
 import styles from "./History.module.css";
+import History from "../../assets/img/history2.png";
 export default function View() {
   return (
     <div>
@@ -7,6 +8,7 @@ export default function View() {
       <div className={styles["view"]}>
         <div className="section section-dark text-center">
           <div className={styles["history"]}>
+            <img src={History} alt="Historia del Club" />;
             <p>
               Nos llena de mucha satisfacción haber logrado la recuperación de
               la primera Acta donde se fundó el Club Náutico Caribe, Junto con
@@ -120,7 +122,6 @@ export default function View() {
               <li>José Brewer</li>
               <li>Manuel E. Samaniego</li>
             </ol>
-
             <br />
             <br />
             <br />

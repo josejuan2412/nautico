@@ -7,7 +7,6 @@ import "./index.css";
 //UI Styles
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./assets/css/paper-kit.css";
-import "./assets/demo/demo.css";
 
 import App from "./App.tsx";
 
