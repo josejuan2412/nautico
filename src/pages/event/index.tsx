@@ -18,11 +18,13 @@ import { Nautico } from "../../../models";
 
 export default function View() {
   return (
-    <div className={styles["view"]}>
-      <NavbarElement />
-      <div className={styles["gallery"]}>
-        {/* <h1>Galeria de Eventos</h1> */}
-        <SelectedEvent id={1} />
+    <div>
+      <div className={styles["view"]}>
+        <NavbarElement />
+        <div className={styles["gallery"]}>
+          {/* <h1>Galeria de Eventos</h1> */}
+          <SelectedEvent id={1} />
+        </div>
       </div>
     </div>
   );

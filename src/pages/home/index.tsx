@@ -1,12 +1,27 @@
 import Intro from "../../components/design/intro";
 import NavbarElement from "../../components/design/navbar";
-import { Card, CardBody, CardTitle, Container, Row, Col } from "reactstrap";
+import {
+  Card,
+  CardBody,
+  CardTitle,
+  Container,
+  Row,
+  Col,
+  Form,
+  Input,
+  InputGroupText,
+  InputGroup,
+  Button,
+} from "reactstrap";
+
+import styles from "./Home.module.css";
 
 import { BsGlobeAmericas } from "react-icons/bs";
 import { GiCctvCamera } from "react-icons/gi";
 import { BiSolidDrink } from "react-icons/bi";
 
 import History from "../../assets/img/history1.png";
+import whatsapp from "../../assets/img/whatsapp.png";
 
 export default function View() {
   return (
@@ -105,8 +120,8 @@ export default function View() {
             <h2 className="title">Conoce un poco de nuestra historia</h2>
             <Row>
               <Col md="12">
-                <Card className="card-profile card-plain">
-                  <div className="">
+                <Card className="card-plain">
+                  <div className={styles["history"]}>
                     <a href="/history">
                       <img src={History} alt="Historia del Club" />;
                     </a>
@@ -128,7 +143,7 @@ export default function View() {
                       avalados por el Ministerio de Gobierno y Justicia.
                     </p>
                     <br />
-                    <a>Conoce mas...</a>
+                    <a href="/history">Conoce mas...</a>
                   </CardBody>
                 </Card>
               </Col>
@@ -140,8 +155,68 @@ export default function View() {
             <Row>
               <Col className="ml-auto mr-auto" md="8">
                 <h2 className="text-center">Contactenos</h2>
-                <p>Agregar mapa, link de whatsap, correo, etc</p>
+                <Row>
+                  <Col md="6">
+                    <label>Whatsapp</label>
+                    <a
+                      aria-label="Chat on WhatsApp"
+                      href="https://wa.me/+50761804991"
+                    >
+                      <img alt="Envianos un Mensaje" src={whatsapp} />
+                    </a>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col md="6">
+                    <label>Email</label>
+                    <a href="clubnauticocaribe@yahoo.com.mx">
+                      clubnauticocaribe@yahoo.com.mx
+                    </a>
+                  </Col>
+                </Row>
               </Col>
+            </Row>
+            <Row>
+              <div style={{ position: "relative" }}>
+                <div
+                  style={{
+                    position: "relative",
+                    paddingBottom: "75%",
+                    height: 0,
+                    overflow: "hidden",
+                  }}
+                >
+                  <iframe
+                    style={{
+                      position: "absolute",
+                      top: 0,
+                      left: 0,
+                      width: "100%",
+                      height: "100%",
+                      border: 0,
+                    }}
+                    loading="lazy"
+                    // allowfullscreen
+                    src="https://maps.google.com/maps?q=club+nautico+caribe+colon&output=embed"
+                  ></iframe>
+                </div>
+                <a
+                  href="https://nauticocaribe.com"
+                  rel="noopener"
+                  target="_blank"
+                  style={{
+                    position: "absolute",
+                    width: "1px",
+                    height: "1px",
+                    padding: 0,
+                    margin: "-1px",
+                    overflow: "hidden",
+                    clip: " rect(0,0,0,0)",
+                    whiteSpace: "nowrap",
+                    border: 0,
+                  }}
+                ></a>
+              </div>
             </Row>
           </Container>
         </div>

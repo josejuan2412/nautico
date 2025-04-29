@@ -5,7 +5,7 @@
 }
 
 .max-height {
-  background-color: #0b1011;
+  /* background-color: #0b1011; */
   background-position: center center;
   background-size: cover;
   min-height: 100vh;
@@ -15,11 +15,31 @@
   width: 100%;
 }
 
-.sails {
-  width: 90% !important;
-  height: 90% !important;
-  padding-top: 15%;
-  margin: auto;
+@media only screen and (max-width: 2000px) {
+  .sails {
+    width: 90% !important;
+    height: 90% !important;
+    padding-top: 20%;
+    margin: auto;
+  }
+}
+
+@media only screen and (max-width: 950px) {
+  .sails {
+    width: 90% !important;
+    height: 90% !important;
+    padding-top: 20%;
+    margin: auto;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .sails {
+    width: 90% !important;
+    height: 90% !important;
+    padding-top: 30%;
+    margin: auto;
+  }
 }
 
 .sails-heading h3 {

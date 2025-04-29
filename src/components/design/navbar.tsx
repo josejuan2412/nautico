@@ -1,6 +1,6 @@
 import React from "react";
 import classnames from "classnames";
-import Banner from "../../assets/img/banner.jpg";
+import Logo from "../../assets/img/Nautico.png";
 
 import {
   Collapse,
@@ -51,7 +51,11 @@ export default function NavbarElement() {
             href="/index"
             title="Club Nautico Caribe"
           >
-            Inicio
+            <img
+              style={{ height: "6vh" }}
+              src={Logo}
+              alt="Club Nautico Caribe"
+            />
           </NavbarBrand>
           <button
             aria-expanded={navbarCollapse}

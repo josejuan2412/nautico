@@ -1,23 +1,27 @@
 .leaderboard {
-    height: 100%;
-    max-width: 1024px;
-
-    margin: 0 auto;
+  height: 100%;
+  max-width: 1024px;
+  margin: 0 auto;
 }
 
 .categories h2 {
-    margin-top: 20px;
-    margin-bottom: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  color: white;
 }
 
 .loading,
 .error {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 }
 
 .error {
-    color: rgb(255, 59, 48);
+  color: rgb(255, 59, 48);
+}
+
+table thead tr th {
+  color: white;
 }
