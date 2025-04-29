@@ -5,6 +5,7 @@ import { MasonryPhotoAlbum } from "react-photo-album";
 
 import "react-photo-album/masonry.css";
 import styles from "./Event.module.css";
+import NavbarElement from "../../components/design/navbar";
 
 import {
   Select,
@@ -13,14 +14,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
 import { Nautico } from "../../../models";
 
 export default function View() {
   return (
-    <div className={styles["view"]}>
-      <h1>Events</h1>
-      <SelectedEvent id={1} />
+    <div>
+      <div className={styles["view"]}>
+        <NavbarElement />
+        <div className={styles["gallery"]}>
+          {/* <h1>Galeria de Eventos</h1> */}
+          <SelectedEvent id={1} />
+        </div>
+      </div>
     </div>
   );
 }
@@ -70,7 +75,7 @@ function EventComponent({ name, fileGroups }: Event) {
 
   return (
     <div className={styles["event"]}>
-      <h2>{name}</h2>
+      <h1>{name}</h1>
       <div>
         <Select onValueChange={setSelected} defaultValue={selected}>
           <SelectTrigger className="w-[180px]">

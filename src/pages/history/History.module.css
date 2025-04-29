@@ -1,57 +1,39 @@
 .view {
-  padding: 20px;
   height: 100%;
   width: 100%;
   /* background-color: black; */
   color: white;
-  overflow: auto;
 }
 
 @media only screen and (max-width: 2000px) {
-  .gallery {
+  .history {
     width: 90%;
     height: 100%;
-    padding-top: 15%;
+    padding-top: 10%;
     margin: auto;
   }
 }
 
 @media only screen and (max-width: 950px) {
-  .gallery {
+  .history {
     width: 90%;
     height: 100%;
-    padding-top: 11%;
+    padding-top: 5%;
     margin: auto;
   }
 }
 
 @media only screen and (max-width: 600px) {
-  .gallery {
+  .history {
     width: 90%;
     height: 100%;
-    padding-top: 20%;
+    padding-top: 5%;
     margin: auto;
   }
 }
 
-.view h1 {
-  font-size: 2rem;
-}
-
-.view h2 {
-  font-size: 1.5rem;
-  padding: 10px 0px;
-}
-
-.view h3 {
-  font-size: 1.2rem;
-  padding: 10px 0px;
-}
-
-.events {
-  margin: 0px auto;
-}
-
-.images {
-  margin-top: 20px;
+.history img {
+  width: 50%;
+  height: 50%;
+  margin: auto;
 }

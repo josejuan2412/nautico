@@ -12,6 +12,9 @@ import {
 } from "@/components/ui/table";
 import { Nautico } from "../../../models";
 import styles from "./Leaderboard.module.css";
+
+import { Container, Row } from "reactstrap";
+
 export function Leaderboard() {
   const { loading, error, data } = useQuery<{ tournament: Tournament }>(
     GET_LEADERBOARD,
@@ -39,9 +42,9 @@ export function Leaderboard() {
 
   return (
     <div className={styles["leaderboard"]}>
-      <h1 className="scroll-m-20 text-4 font-extrabold tracking-tight lg:text-5xl">
-        {tournament.name}
-      </h1>
+      <h2 className="scroll-m-20 text-4 font-extrabold tracking-tight lg:text-5xl text-center">
+        <strong>{tournament.name}</strong>
+      </h2>
       <div className={styles["categories"]}>
         {tournament.categories.map((c, i) => (
           <CategoryComponent key={i} {...c} />
@@ -65,12 +68,16 @@ function CategoryComponent(category: Category) {
     return null;
   }
   return (
-    <div className={styles["categories"]}>
-      <h2 className="max-w-xl scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0">
-        {name}
-      </h2>
-      <Entries {...category} />
-    </div>
+    <Container>
+      <Row>
+        <div className={styles["categories"]}>
+          <h3 className="max-w-xl scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0">
+            <strong>{name.toUpperCase()}</strong>
+          </h3>
+          <Entries {...category} />
+        </div>
+      </Row>
+    </Container>
   );
 }
 
@@ -81,10 +88,10 @@ export function Entries(category: Category) {
       <TableHeader>
         <TableRow>
           <TableHead className="w-[50px]">Peso</TableHead>
-          <TableHead>Bote</TableHead>
-          <TableHead>Pescador</TableHead>
-          <TableHead className="w-[100px] text-left">Testigo</TableHead>
-          <TableHead className="text-right">Fecha/Hora</TableHead>
+          <TableHead className="w-[100px]">Bote</TableHead>
+          <TableHead className="w-[100px]">Pescador</TableHead>
+          <TableHead className="w-[100px]">Testigo</TableHead>
+          <TableHead className="text-right w-[100px]">Fecha/Hora</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -95,8 +102,8 @@ export function Entries(category: Category) {
               <TableCell className="font-medium">{value}</TableCell>
               <TableCell>{boat.name}</TableCell>
               <TableCell>{fisherman.name}</TableCell>
-              <TableCell className="w-[100px] text-left">{witness}</TableCell>
-              <TableCell className="text-right">
+              <TableCell className="w-[100px]">{witness}</TableCell>
+              <TableCell>
                 {DateTime.fromJSDate(new Date(`${date}`)).toFormat(
                   "yyyy LLL dd, h:mm:a",
                 )}
