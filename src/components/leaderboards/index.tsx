@@ -13,7 +13,7 @@ import {
 import { Nautico } from "../../../models";
 import styles from "./Leaderboard.module.css";
 
-import { Container, Row } from "reactstrap";
+import { Container, Row, Col } from "reactstrap";
 
 export function Leaderboard() {
   const { loading, error, data } = useQuery<{ tournament: Tournament }>(
@@ -50,6 +50,46 @@ export function Leaderboard() {
           <CategoryComponent key={i} {...c} />
         ))}
       </div>
+      <Container>
+        <div className="section section-dark">
+          <Row>
+            <Col>
+              <div>
+                <p>
+                  <strong>Peso minimo por especie</strong>
+                </p>
+                <ul>
+                  <li>Wahoo: 25 Libras</li>
+                  <li>Dorado: 10 Libras</li>
+                  <li>Tuna: 20 Libras</li>
+                  <li>Kingfish: 15 Libras</li>
+                  <li>Barracuda: 15 Libras</li>
+                  <li>Jurel: 10 Libras</li>
+                  <li>Sabalo Real: 80 Libras</li>
+                  <li>Robalo: 10 Libras</li>
+                  <li>Bojala: 50 Libras</li>
+                  <li>Mero: 50 Libras</li>
+                </ul>
+              </div>
+            </Col>
+            <Col>
+              <div>
+                <p>
+                  <strong>Reglamento Oficial de Torneo</strong>
+                </p>
+                <a
+                  href="https://docs.nauticocaribe.com/rules.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-center"
+                >
+                  Descargar
+                </a>
+              </div>
+            </Col>
+          </Row>
+        </div>
+      </Container>
     </div>
   );
 }
@@ -83,15 +123,18 @@ function CategoryComponent(category: Category) {
 
 export function Entries(category: Category) {
   const { entries } = category;
+  console.log(category);
   return (
     <Table className="max-w-5xl">
       <TableHeader>
         <TableRow>
-          <TableHead className="w-[50px]">Peso</TableHead>
+          <TableHead className="w-[50px]">
+            {category.type === "weight" ? "Peso" : "Puntos"}
+          </TableHead>
           <TableHead className="w-[100px]">Bote</TableHead>
           <TableHead className="w-[100px]">Pescador</TableHead>
           <TableHead className="w-[100px]">Testigo</TableHead>
-          <TableHead className="text-right w-[100px]">Fecha/Hora</TableHead>
+          <TableHead className="text-right w-[100px]">Fecha</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -104,9 +147,9 @@ export function Entries(category: Category) {
               <TableCell>{fisherman.name}</TableCell>
               <TableCell className="w-[100px]">{witness}</TableCell>
               <TableCell>
-                {DateTime.fromJSDate(new Date(`${date}`)).toFormat(
-                  "yyyy LLL dd, h:mm:a",
-                )}
+                {DateTime.fromJSDate(new Date(`${date}`)).toFormat("dd LLLL", {
+                  locale: "es",
+                })}
               </TableCell>
             </TableRow>
           );
@@ -140,6 +183,7 @@ const GET_LEADERBOARD = gql`
         id
         name
         limit
+        type
         entries {
           id
           value

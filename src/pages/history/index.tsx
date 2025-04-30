@@ -11,7 +11,9 @@ export default function View() {
             <h1>
               <strong>Fundación del Club Nautico Caribe</strong>
             </h1>
-            <img src={History} alt="Historia del Club" />;
+            <img src={History} alt="Historia del Club" />
+            <br />
+            <br />
             <p>
               Nos llena de mucha satisfacción haber logrado la recuperación de
               la primera Acta donde se fundó el Club Náutico Caribe, Junto con

@@ -1,11 +1,11 @@
 .leaderboard {
   height: 100%;
-  max-width: 1024px;
+  /* max-width: 1024px; */
   margin: 0 auto;
 }
 
 .categories h2 {
-  margin-top: 20px;
+  margin-top: 30px;
   margin-bottom: 20px;
   color: white;
 }

@@ -1,18 +1,6 @@
 import Intro from "../../components/design/intro";
 import NavbarElement from "../../components/design/navbar";
-import {
-  Card,
-  CardBody,
-  CardTitle,
-  Container,
-  Row,
-  Col,
-  Form,
-  Input,
-  InputGroupText,
-  InputGroup,
-  Button,
-} from "reactstrap";
+import { Card, CardBody, CardTitle, Container, Row, Col } from "reactstrap";
 
 import styles from "./Home.module.css";
 
@@ -62,9 +50,6 @@ export default function View() {
                       capacidad permiten botar y retirar botes de cualquier
                       tamaño de forma rápida y segura.
                     </p>
-                    {/* <Button className="btn-link" color="info" href="#pablo">
-                      See more
-                    </Button> */}
                   </div>
                 </div>
               </Col>
@@ -83,9 +68,6 @@ export default function View() {
                       garantizar la protección de su embarcación en todo
                       momento.
                     </p>
-                    {/* <Button className="btn-link" color="info" href="#pablo">
-                      See more
-                    </Button> */}
                   </div>
                 </div>
               </Col>
@@ -106,9 +88,6 @@ export default function View() {
                       otros navegantes o disfrutar de la puesta de sol, nuestro
                       bar es el punto de encuentro perfecto dentro de la marina.
                     </p>
-                    {/* <Button className="btn-link" color="info" href="#pablo">
-                      See more
-                    </Button> */}
                   </div>
                 </div>
               </Col>
@@ -169,7 +148,7 @@ export default function View() {
                 <Row>
                   <Col md="6">
                     <label>Email</label>
-                    <a href="clubnauticocaribe@yahoo.com.mx">
+                    <a href="mailto:clubnauticocaribe@yahoo.com.mx">
                       clubnauticocaribe@yahoo.com.mx
                     </a>
                   </Col>
@@ -196,7 +175,6 @@ export default function View() {
                       border: 0,
                     }}
                     loading="lazy"
-                    // allowfullscreen
                     src="https://maps.google.com/maps?q=club+nautico+caribe+colon&output=embed"
                   ></iframe>
                 </div>
