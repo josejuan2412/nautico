@@ -1,0 +1,23 @@
+.view {
+  /* height: 100vh; */
+  /* width: 100%; */
+  /* background-color: black; */
+  color: white;
+}
+
+.tournament {
+  /* width: 90%;
+  height: 100%; 
+  /* padding-top: 16%;  */
+  /*ESTO DEBE SER DINAMICO */
+  margin: auto;
+}
+
+.tournament img {
+  width: 60%;
+  margin: auto;
+}
+
+.tournament h2 {
+  margin: auto;
+}

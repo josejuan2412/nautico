@@ -1,0 +1,12 @@
+.registration-form {
+    max-width: 400px;
+    margin: 0 auto;
+    margin-top: 20px;
+}
+
+.history img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 40%;
+}

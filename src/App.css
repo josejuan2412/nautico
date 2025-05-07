@@ -1,8 +1,10 @@
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+}
+
+.app {
+  /* width: 100vw;
+  height: 100vh; */
+  background-color: #0b1011;
 }
 
 .logo {
@@ -39,4 +41,8 @@
 
 .read-the-docs {
   color: #888;
+}
+
+::-webkit-scrollbar {
+  display: none;
 }

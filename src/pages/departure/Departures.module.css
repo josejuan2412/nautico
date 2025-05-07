@@ -1,0 +1,68 @@
+.view {
+  height: 100%;
+  width: 100%;
+  padding: auto;
+}
+
+.max-height {
+  /* background-color: #0b1011; */
+  background-position: center center;
+  background-size: cover;
+  min-height: 100vh;
+  max-height: 999px;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+@media only screen and (max-width: 2000px) {
+  .sails {
+    width: 90% !important;
+    height: 90% !important;
+    padding-top: 20%;
+    margin: auto;
+  }
+}
+
+@media only screen and (max-width: 950px) {
+  .sails {
+    width: 90% !important;
+    height: 90% !important;
+    padding-top: 20%;
+    margin: auto;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .sails {
+    width: 90% !important;
+    height: 90% !important;
+    padding-top: 30%;
+    margin: auto;
+  }
+}
+
+.sails-heading h3 {
+  color: white;
+}
+
+.add-sail {
+  padding: auto;
+}
+
+.btn-bottom {
+  /* position: absolute;
+  margin-left: -50px;
+  left: 50%;
+  width: 100px;
+  bottom: 85%; */
+}
+
+.sails-table {
+  color: white;
+  max-width: 90%;
+  min-height: 70%;
+  height: 50vh;
+  position: absolute;
+  bottom: 70%;
+}

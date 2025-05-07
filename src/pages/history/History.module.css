@@ -1,0 +1,39 @@
+.view {
+  height: 100%;
+  width: 100%;
+  /* background-color: black; */
+  color: white;
+}
+
+@media only screen and (max-width: 2000px) {
+  .history {
+    width: 90%;
+    height: 100%;
+    padding-top: 10%;
+    margin: auto;
+  }
+}
+
+@media only screen and (max-width: 950px) {
+  .history {
+    width: 90%;
+    height: 100%;
+    padding-top: 5%;
+    margin: auto;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .history {
+    width: 90%;
+    height: 100%;
+    padding-top: 5%;
+    margin: auto;
+  }
+}
+
+.history img {
+  width: 50%;
+  height: 50%;
+  margin: auto;
+}
