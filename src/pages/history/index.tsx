@@ -9,7 +9,7 @@ export default function View() {
         <div className="section section-dark text-center">
           <div className={styles["history"]}>
             <h1>
-              <strong>Fundación del Club Nautico Caribe</strong>
+              <strong>Fundación del Club Náutico Caribe</strong>
             </h1>
             <img src={History} alt="Historia del Club" />
             <br />

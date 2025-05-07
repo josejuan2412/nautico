@@ -46,11 +46,14 @@ export function RegistrationForm({ tournamentId }: RegistrationFormProps) {
     formState: { errors },
   } = form;
 
+  let showForm = true;
+
   useEffect(() => {
     if (!data) return;
     form.reset();
     reset();
     toast.success("Usuario registrado con exito");
+    showForm = false;
   }, [data, form, reset]);
 
   useEffect(() => {
@@ -83,67 +86,72 @@ export function RegistrationForm({ tournamentId }: RegistrationFormProps) {
   };
   return (
     <Form {...form}>
-      <h2>Formulatio de registro</h2>
-      {errors.root?.message && (
-        <Alert variant="destructive">
-          <AlertCircle className="h-4 w-4" />
-          <AlertTitle>Error</AlertTitle>
-          <AlertDescription>{errors.root.message}</AlertDescription>
-        </Alert>
-      )}
-      <form onSubmit={form.handleSubmit(onSubmit)}>
-        <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-1 items-center gap-10">
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Nombre</FormLabel>
-                  <FormControl>
-                    <Input {...field} required />
-                  </FormControl>
-                  <FormDescription>Nombre del participante</FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="grid grid-cols-1 items-center gap-10">
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input {...field} required />
-                  </FormControl>
-                  <FormDescription>Email del participante</FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="grid grid-cols-1 items-center gap-10">
-            <FormField
-              control={form.control}
-              name="boat"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Bote</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormDescription>Nombre del bote</FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
+      {showForm && (
+        <div>
+          {" "}
+          <h2>Formulatio de registro</h2>
+          {errors.root?.message && (
+            <Alert variant="destructive">
+              <AlertCircle className="h-4 w-4" />
+              <AlertTitle>Error</AlertTitle>
+              <AlertDescription>{errors.root.message}</AlertDescription>
+            </Alert>
+          )}
+          <form onSubmit={form.handleSubmit(onSubmit)}>
+            <div className="grid gap-4 py-4">
+              <div className="grid grid-cols-1 items-center gap-10">
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Nombre</FormLabel>
+                      <FormControl>
+                        <Input {...field} required />
+                      </FormControl>
+                      <FormDescription>Nombre del participante</FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="grid grid-cols-1 items-center gap-10">
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
+                        <Input {...field} required />
+                      </FormControl>
+                      <FormDescription>Email del participante</FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="grid grid-cols-1 items-center gap-10">
+                <FormField
+                  control={form.control}
+                  name="boat"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Bote</FormLabel>
+                      <FormControl>
+                        <Input {...field} />
+                      </FormControl>
+                      <FormDescription>Nombre del bote</FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
+            <Button type="submit">{loading ? "Procesando" : "Enviar"}</Button>
+          </form>
         </div>
-        <Button type="submit">{loading ? "Procesando" : "Enviar"}</Button>
-      </form>
+      )}
     </Form>
   );
 }

@@ -13,9 +13,12 @@ import {
 import { Nautico } from "../../../models";
 import styles from "./Leaderboard.module.css";
 
-import { Container, Row, Col } from "reactstrap";
+import { Container, Row, Col, Button } from "reactstrap";
+
+import { RegistrationForm } from "../tournament/index";
 
 export function Leaderboard() {
+  let showForm = false;
   const { loading, error, data } = useQuery<{ tournament: Tournament }>(
     GET_LEADERBOARD,
     {
@@ -77,15 +80,37 @@ export function Leaderboard() {
                 <p>
                   <strong>Reglamento Oficial de Torneo</strong>
                 </p>
-                <a
+                <Button
                   href="https://docs.nauticocaribe.com/rules.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-center"
+                  className="btn btn-danger"
                 >
                   Descargar
-                </a>
+                </Button>
               </div>
+              <br />
+              <br />
+              <div>
+                <p>
+                  <strong>Quiero participar en el Torneo</strong>
+                </p>
+                <Button
+                  className="btn btn-success"
+                  onClick={() => {
+                    showForm = true;
+                  }}
+                >
+                  Registrate
+                </Button>
+              </div>
+            </Col>
+          </Row>
+          <br />
+
+          <Row>
+            <Col>
+              <RegistrationForm tournamentId={tournament.id} />
             </Col>
           </Row>
         </div>
@@ -123,7 +148,6 @@ function CategoryComponent(category: Category) {
 
 export function Entries(category: Category) {
   const { entries } = category;
-  console.log(category);
   return (
     <Table className="max-w-5xl">
       <TableHeader>

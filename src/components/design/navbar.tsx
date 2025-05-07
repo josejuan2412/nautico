@@ -49,12 +49,12 @@ export default function NavbarElement() {
           <NavbarBrand
             data-placement="bottom"
             href="/index"
-            title="Club Nautico Caribe"
+            title="Club Náutico Caribe"
           >
             <img
               style={{ height: "6vh" }}
               src={Logo}
-              alt="Club Nautico Caribe"
+              alt="Club Náutico Caribe"
             />
           </NavbarBrand>
           <button
@@ -92,7 +92,7 @@ export default function NavbarElement() {
             </NavItem>
             <NavItem>
               <NavLink data-placement="bottom" href="/events" title="">
-                <p>Galeria de Eventos</p>
+                <p>Galería de Eventos</p>
               </NavLink>
             </NavItem>
             <NavItem>

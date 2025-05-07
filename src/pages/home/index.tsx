@@ -1,5 +1,6 @@
 import Intro from "../../components/design/intro";
 import NavbarElement from "../../components/design/navbar";
+import Footer from "../../components/design/footer";
 import { Card, CardBody, CardTitle, Container, Row, Col } from "reactstrap";
 
 import styles from "./Home.module.css";
@@ -122,7 +123,7 @@ export default function View() {
                       avalados por el Ministerio de Gobierno y Justicia.
                     </p>
                     <br />
-                    <a href="/history">Conoce mas...</a>
+                    <a href="/history">Conoce más ...</a>
                   </CardBody>
                 </Card>
               </Col>
@@ -132,72 +133,94 @@ export default function View() {
         <div className="section landing-section">
           <Container>
             <Row>
-              <Col className="ml-auto mr-auto" md="8">
-                <h2 className="text-center">Contactenos</h2>
-                <Row>
-                  <Col md="6">
-                    <label>Whatsapp</label>
-                    <a
-                      aria-label="Chat on WhatsApp"
-                      href="https://wa.me/+50761804991"
-                    >
-                      <img alt="Envianos un Mensaje" src={whatsapp} />
-                    </a>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col md="6">
-                    <label>Email</label>
-                    <a href="mailto:clubnauticocaribe@yahoo.com.mx">
-                      clubnauticocaribe@yahoo.com.mx
-                    </a>
-                  </Col>
-                </Row>
-              </Col>
+              <h2 className="text-center">Contáctenos</h2>
             </Row>
             <Row>
-              <div style={{ position: "relative" }}>
-                <div
-                  style={{
-                    position: "relative",
-                    paddingBottom: "75%",
-                    height: 0,
-                    overflow: "hidden",
-                  }}
-                >
-                  <iframe
+              <Col>
+                {" "}
+                <Col className="ml-auto mr-auto" md="8">
+                  <Row>
+                    <Col>
+                      <label>Whatsapp</label>
+                      <a
+                        aria-label="Chat on WhatsApp"
+                        href="https://wa.me/+50761804991"
+                      >
+                        <img
+                          alt="Envianos un Mensaje"
+                          src={whatsapp}
+                          style={{ height: "40%" }}
+                        />
+                      </a>
+                    </Col>
+                  </Row>
+                  <br />
+                  <Row>
+                    <Col>
+                      <label>Email</label>
+                      <a href="mailto:clubnauticocaribe@yahoo.com.mx">
+                        clubnauticocaribe@yahoo.com.mx
+                      </a>
+                    </Col>
+                  </Row>
+                  <br />
+                  <Row>
+                    <Col>
+                      <label>Teléfonos: </label>
+                      <br />
+                      <a href="tel:+5074453390">+507 445-3390</a>
+                      <br />
+                      <a href="tel:+50761804991">+507 6180-4991</a>
+                    </Col>
+                  </Row>
+                </Col>
+              </Col>
+              <Col>
+                {" "}
+                <div style={{ position: "relative" }}>
+                  <div
+                    style={{
+                      position: "relative",
+                      paddingBottom: "75%",
+                      height: 0,
+                      overflow: "hidden",
+                    }}
+                  >
+                    <iframe
+                      style={{
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        width: "100%",
+                        height: "100%",
+                        border: 0,
+                      }}
+                      loading="lazy"
+                      src="https://maps.google.com/maps?q=club+nautico+caribe+colon&output=embed"
+                    ></iframe>
+                  </div>
+                  <a
+                    href="https://nauticocaribe.com"
+                    rel="noopener"
+                    target="_blank"
                     style={{
                       position: "absolute",
-                      top: 0,
-                      left: 0,
-                      width: "100%",
-                      height: "100%",
+                      width: "1px",
+                      height: "1px",
+                      padding: 0,
+                      margin: "-1px",
+                      overflow: "hidden",
+                      clip: " rect(0,0,0,0)",
+                      whiteSpace: "nowrap",
                       border: 0,
                     }}
-                    loading="lazy"
-                    src="https://maps.google.com/maps?q=club+nautico+caribe+colon&output=embed"
-                  ></iframe>
+                  ></a>
                 </div>
-                <a
-                  href="https://nauticocaribe.com"
-                  rel="noopener"
-                  target="_blank"
-                  style={{
-                    position: "absolute",
-                    width: "1px",
-                    height: "1px",
-                    padding: 0,
-                    margin: "-1px",
-                    overflow: "hidden",
-                    clip: " rect(0,0,0,0)",
-                    whiteSpace: "nowrap",
-                    border: 0,
-                  }}
-                ></a>
-              </div>
+              </Col>
             </Row>
           </Container>
         </div>
+        <Footer />
       </div>
     </div>
   );
