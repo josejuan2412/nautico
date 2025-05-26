@@ -1,6 +1,6 @@
+import { useState } from "react";
 import { gql, useQuery } from "@apollo/client";
 import { DateTime } from "luxon";
-
 import { Spinner } from "@/components/ui/spinner";
 import {
   Table,
@@ -18,6 +18,7 @@ import { Container, Row, Col, Button } from "reactstrap";
 import { RegistrationForm } from "../tournament/index";
 
 export function Leaderboard() {
+  const [isOpen, setIsOpen] = useState(false);
   const { loading, error, data } = useQuery<{ tournament: Tournament }>(
     GET_LEADERBOARD,
     {
@@ -94,7 +95,14 @@ export function Leaderboard() {
                 <p>
                   <strong>Quiero participar en el Torneo</strong>
                 </p>
-                <Button className="btn btn-success">Registrate</Button>
+                <Button
+                  className="btn btn-success"
+                  onClick={() => {
+                    setIsOpen(true);
+                  }}
+                >
+                  Registrate
+                </Button>
               </div>
             </Col>
           </Row>
@@ -102,7 +110,7 @@ export function Leaderboard() {
 
           <Row>
             <Col>
-              <RegistrationForm tournamentId={tournament.id} />
+              {isOpen && <RegistrationForm tournamentId={tournament.id} />}
             </Col>
           </Row>
         </div>
@@ -140,6 +148,11 @@ function CategoryComponent(category: Category) {
 
 export function Entries(category: Category) {
   const { entries } = category;
+
+  function titleCase(value: string) {
+    return value[0].toUpperCase() + value.slice(1).toLowerCase();
+  }
+
   return (
     <Table className="max-w-5xl">
       <TableHeader>
@@ -160,8 +173,8 @@ export function Entries(category: Category) {
             <TableRow key={id}>
               <TableCell className="font-medium">{value}</TableCell>
               <TableCell>{boat.name}</TableCell>
-              <TableCell>{fisherman.name}</TableCell>
-              <TableCell className="w-[100px]">{witness}</TableCell>
+              <TableCell>{titleCase(fisherman.name)}</TableCell>
+              <TableCell className="w-[100px]">{titleCase(witness)}</TableCell>
               <TableCell>
                 {DateTime.fromJSDate(new Date(`${date}`)).toFormat("dd LLLL", {
                   locale: "es",

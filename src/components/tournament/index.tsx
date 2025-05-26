@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { AlertCircle } from "lucide-react";
@@ -33,6 +34,8 @@ const RegistrationFormSchema = z.object({
 });
 
 export function RegistrationForm({ tournamentId }: RegistrationFormProps) {
+  const [isOpen, setIsOpen] = useState(true);
+
   const [register, { data, loading, error, reset }] = useMutation(REGISTATION);
   const form = useForm<z.infer<typeof RegistrationFormSchema>>({
     resolver: zodResolver(RegistrationFormSchema),
@@ -46,14 +49,12 @@ export function RegistrationForm({ tournamentId }: RegistrationFormProps) {
     formState: { errors },
   } = form;
 
-  let showForm = true;
-
   useEffect(() => {
     if (!data) return;
     form.reset();
     reset();
     toast.success("Usuario registrado con exito");
-    showForm = false;
+    setIsOpen(false);
   }, [data, form, reset]);
 
   useEffect(() => {
@@ -86,7 +87,7 @@ export function RegistrationForm({ tournamentId }: RegistrationFormProps) {
   };
   return (
     <Form {...form}>
-      {showForm && (
+      {isOpen && (
         <div>
           {" "}
           <h2>Formulatio de registro</h2>
