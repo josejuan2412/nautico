@@ -94,7 +94,7 @@ export default function View() {
               </Col>
             </Row>
           </Container>
-        </div>
+        </div>{" "}
         <div className="section section-dark text-center">
           <Container>
             <h2 className="title">Conoce un poco de nuestra historia</h2>
@@ -130,18 +130,29 @@ export default function View() {
             </Row>
           </Container>
         </div>
-        <div className="section landing-section">
+        {/* <div
+          className="elfsight-app-afa8e7db-106e-4c4a-b097-5c99f9d2d7cb"
+          data-elfsight-app-lazy
+        ></div> */}
+        <iframe
+          width="100%"
+          height="600vh"
+          src="https://embed.windy.com/embed.html?type=map&location=coordinates&metricRain=in&metricTemp=°C&metricWind=kt&zoom=8&overlay=waves&product=ecmwfWaves&level=surface&lat=8.965&lon=-79.969&detailLat=9.495&detailLon=-79.939&detail=true"
+        ></iframe>
+        <div className="section section-dark landing-section">
           <Container>
             <Row>
-              <h2 className="text-center">Contáctenos</h2>
+              <h2 className="text-center text-white">Contáctenos</h2>
             </Row>
             <Row>
               <Col>
                 {" "}
-                <Col className="ml-auto mr-auto" md="8">
+                <Col className="ml-auto mr-auto text-white" md="8">
                   <Row>
                     <Col>
-                      <label>Whatsapp</label>
+                      <p>
+                        <label>Whatsapp</label>
+                      </p>
                       <a
                         aria-label="Chat on WhatsApp"
                         href="https://wa.me/+50761804991"
@@ -149,28 +160,32 @@ export default function View() {
                         <img
                           alt="Envianos un Mensaje"
                           src={whatsapp}
-                          style={{ height: "40%" }}
+                          style={{ height: "30%" }}
                         />
                       </a>
                     </Col>
                   </Row>
-                  <br />
                   <Row>
                     <Col>
-                      <label>Email</label>
-                      <a href="mailto:clubnauticocaribe@yahoo.com.mx">
-                        clubnauticocaribe@yahoo.com.mx
-                      </a>
+                      <p>
+                        <label>Email </label>
+                        <a href="mailto:clubnauticocaribe@yahoo.com.mx">
+                          clubnauticocaribe@yahoo.com.mx
+                        </a>
+                      </p>
                     </Col>
                   </Row>
                   <br />
                   <Row>
                     <Col>
-                      <label>Teléfonos: </label>
-                      <br />
-                      <a href="tel:+5074453390">+507 445-3390</a>
-                      <br />
-                      <a href="tel:+50761804991">+507 6180-4991</a>
+                      <p>
+                        {" "}
+                        <label>Teléfonos: </label>
+                        <br />
+                        <a href="tel:+5074453390">+507 445-3390</a>
+                        <br />
+                        <a href="tel:+50761804991">+507 6180-4991</a>
+                      </p>
                     </Col>
                   </Row>
                 </Col>
