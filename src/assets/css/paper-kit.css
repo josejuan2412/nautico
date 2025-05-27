@@ -5540,7 +5540,7 @@ License - nucleoapp.com/license/
 }
 
 .footer {
-  background-color: #ffffff;
+  /* background-color: #ffffff; */
   line-height: 36px;
 }
 .footer.footer-black h4 {

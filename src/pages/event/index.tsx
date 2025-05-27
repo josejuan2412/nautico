@@ -19,8 +19,8 @@ import { Nautico } from "../../../models";
 export default function View() {
   return (
     <div>
+      <NavbarElement />
       <div className={styles["view"]}>
-        <NavbarElement />
         <div className={styles["gallery"]}>
           {/* <h1>Galeria de Eventos</h1> */}
           <SelectedEvent id={1} />
@@ -72,7 +72,6 @@ interface SelectEventProps {
 
 function EventComponent({ name, fileGroups }: Event) {
   const [selected, setSelected] = useState(`${fileGroups[0].id}`);
-
   return (
     <div className={styles["event"]}>
       <h1>{name}</h1>

@@ -2,7 +2,7 @@ import { Row, Container } from "reactstrap";
 
 function Footer() {
   return (
-    <footer className="footer footer-black footer-white">
+    <footer className="footer">
       <Container>
         <Row>
           <div className="credits ml-auto text-right">
